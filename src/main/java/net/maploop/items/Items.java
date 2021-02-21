@@ -6,6 +6,7 @@ import net.maploop.items.commands.PetsCommand;
 import net.maploop.items.items.*;
 import net.maploop.items.listeners.*;
 import net.maploop.items.menus.PlayerMenuUtility;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,6 +30,7 @@ public final class Items extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         getLogger().info("DIS ABLED");
+        removeStands();
     }
 
     private void registerItems() {
@@ -71,5 +73,12 @@ public final class Items extends JavaPlugin {
 
     public static Items getInstance() {
         return instance;
+    }
+
+    public void removeStands() {
+        if (BlockPlaceListener.isPlaced.keySet() == null) return;
+        for (ArmorStand stands : BlockPlaceListener.isPlaced.values()) {
+            stands.remove();
+        }
     }
 }

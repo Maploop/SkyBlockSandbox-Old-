@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class BlockPlaceListener implements Listener {
-    private HashMap<UUID, ArmorStand> isPlaced = new HashMap<>();
+    public static HashMap<UUID, ArmorStand> isPlaced = new HashMap<>();
     public HashMap<ArmorStand, Long> timer = new HashMap<>();
 
     @SuppressWarnings("unchecked")
