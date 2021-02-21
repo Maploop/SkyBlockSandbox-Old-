@@ -7,4 +7,5 @@ website: POG.com
 commands:
   items:
   pets:
+  debug:
 
