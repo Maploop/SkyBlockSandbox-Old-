@@ -18,7 +18,7 @@ public class PLASMAFLUX_POWER_ORB {
                 "§7Grants §b+125% §7base mana regen.",
                 "§7Heals §c3% §7of max §c❤ §7per second.",
                 "§7Increases all heals by §a+7.5%§7.",
-                "§7Grants §c+25 Strength§7.",
+                "§7Grants §c+25❁ Strength§7.",
                 "",
                 "§6§lLEGENDARY");
     }
