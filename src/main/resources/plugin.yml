@@ -6,4 +6,5 @@ description: ITEMS
 website: POG.com
 commands:
   items:
+  pets:
 

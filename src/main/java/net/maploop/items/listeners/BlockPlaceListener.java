@@ -59,7 +59,7 @@ public class BlockPlaceListener implements Listener {
 
                 int animate = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Spin(stand), 0L, (long) 0.3);
                 int particle = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new GreenParticle(stand), 0L, (long) 0.1);
-                int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 3);
+                int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 4);
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -108,7 +108,7 @@ public class BlockPlaceListener implements Listener {
 
             int animate = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Spin(stand), 0L, (long) 0.1);
             int particle = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new BlueParticle(stand), 0L, (long) 0.1);
-            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 10);
+            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 4);
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -153,7 +153,7 @@ public class BlockPlaceListener implements Listener {
             timer.put(stand, (System.currentTimeMillis()) + 60 * 1000);
 
             int animate = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Spin(stand), 0L, (long) 0.1);
-            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 10);
+            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 4);
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -196,7 +196,7 @@ public class BlockPlaceListener implements Listener {
             timer.put(stand, (System.currentTimeMillis()) + 60 * 1000);
 
             int animate = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Spin(stand), 0L, (long) 0.1);
-            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 10);
+            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 4);
             new BukkitRunnable() {
                 @Override
                 public void run() {

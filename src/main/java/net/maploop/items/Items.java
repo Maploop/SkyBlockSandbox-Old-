@@ -1,6 +1,8 @@
 package net.maploop.items;
 
+import net.maploop.items.commands.DebugCommand;
 import net.maploop.items.commands.ItemsCommand;
+import net.maploop.items.commands.PetsCommand;
 import net.maploop.items.items.*;
 import net.maploop.items.listeners.*;
 import net.maploop.items.menus.PlayerMenuUtility;
@@ -41,6 +43,8 @@ public final class Items extends JavaPlugin {
 
     private void registerCommands() {
         this.getCommand("items").setExecutor(new ItemsCommand());
+        this.getCommand("pets").setExecutor(new PetsCommand());
+        this.getCommand("debug").setExecutor(new DebugCommand());
     }
 
     private void registerListeners() {
