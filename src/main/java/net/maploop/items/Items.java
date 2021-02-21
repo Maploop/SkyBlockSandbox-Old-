@@ -2,10 +2,7 @@ package net.maploop.items;
 
 import net.maploop.items.commands.ItemsCommand;
 import net.maploop.items.items.*;
-import net.maploop.items.listeners.BlockPlaceListener;
-import net.maploop.items.listeners.InventoryClickListener;
-import net.maploop.items.listeners.PlayerInteractAtEntityListener;
-import net.maploop.items.listeners.PlayerInteractListener;
+import net.maploop.items.listeners.*;
 import net.maploop.items.menus.PlayerMenuUtility;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,6 +35,7 @@ public final class Items extends JavaPlugin {
         RADIANT_POWER_ORB.load();
         MANAFLUX_POWER_ORB.load();
         OVERFLUX_POWER_ORB.load();
+        GRAPPLING_HOOK.load();
     }
 
     private void registerCommands() {
@@ -49,6 +47,7 @@ public final class Items extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
         this.getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerInteractAtEntityListener(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerFishListener(), this);
     }
 
     private static PlayerMenuUtility getPlayerMenuUtility(Player player) {
