@@ -1,0 +1,9 @@
+name: Items
+version: ${project.version}
+main: net.maploop.items.Items
+authors: [ Maploop ]
+description: ITEMS
+website: POG.com
+commands:
+  items:
+
