@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 public class PlayerFishListener implements Listener {
     private HashMap<String, Long> cooldown = new HashMap<>();
+    public static HashMap<String, Boolean> inAir = new HashMap<>();
 
     @EventHandler
     private void onFish(PlayerFishEvent event){
@@ -30,6 +31,7 @@ public class PlayerFishListener implements Listener {
                     }
                 }
                 cooldown.put(player.getName(), System.currentTimeMillis() + (2 * 1000));
+                inAir.put(player.getName(), true);
                 Location loc1 = player.getLocation();
                 Location loc2 = event.getHook().getLocation();
 
