@@ -168,6 +168,7 @@ public class BlockPlaceListener implements Listener {
                 @Override
                 public void run() {
                     Bukkit.getScheduler().cancelTask(animate);
+                    Bukkit.getScheduler().cancelTask(animate1);
                     stand.remove();
                     isPlaced.remove(player.getUniqueId());
                 }
