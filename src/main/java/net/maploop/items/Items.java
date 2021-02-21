@@ -35,6 +35,7 @@ public final class Items extends JavaPlugin {
         RADIANT_POWER_ORB.load();
         MANAFLUX_POWER_ORB.load();
         OVERFLUX_POWER_ORB.load();
+        PLASMAFLUX_POWER_ORB.load();
         GRAPPLING_HOOK.load();
     }
 

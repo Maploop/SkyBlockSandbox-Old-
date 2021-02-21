@@ -4,6 +4,7 @@ import net.maploop.items.Items;
 import net.maploop.items.animations.*;
 import net.maploop.items.items.MANAFLUX_POWER_ORB;
 import net.maploop.items.items.OVERFLUX_POWER_ORB;
+import net.maploop.items.items.PLASMAFLUX_POWER_ORB;
 import net.maploop.items.items.RADIANT_POWER_ORB;
 import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
 import org.bukkit.Bukkit;
@@ -154,6 +155,48 @@ public class BlockPlaceListener implements Listener {
                     if (timer.get(stand) > System.currentTimeMillis()) {
                         long time = (timer.get(stand) - System.currentTimeMillis()) / 1000;
                         stand.setCustomName("§5Overflux Power Orb §e" + time + "s");
+                    }
+                }
+            }.runTaskTimer(Items.getInstance(), 0, 1);
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Bukkit.getScheduler().cancelTask(animate);
+                    stand.remove();
+                    isPlaced.remove(player.getUniqueId());
+                }
+            }.runTaskLater(Items.getInstance(), 1200);
+        }
+
+        if (item.getItemMeta().getDisplayName().contains("§6Plasmaflux Power Orb")) {
+            if (isPlaced.containsKey(player.getUniqueId())) {
+                event.setCancelled(true);
+                player.sendMessage("§cYou already have one placed!");
+                return;
+            }
+
+            event.setCancelled(true);
+            player.sendMessage("§eYou placed your §5Overflux Power Orb§e.");
+            player.playSound(player.getLocation(), Sound.CLICK, 10F, 0);
+
+            ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
+            stand.getEquipment().setHelmet(PLASMAFLUX_POWER_ORB.get());
+            stand.setVisible(false);
+            stand.setGravity(false);
+            stand.setCustomNameVisible(true);
+            stand.setCanPickupItems(false);
+            stand.setCustomName("§aRadiant Power Orb");
+            isPlaced.put(player.getUniqueId(), stand);
+            timer.put(stand, (System.currentTimeMillis()) + 60 * 1000);
+
+            int animate = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Spin(stand), 0L, (long) 0.1);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (timer.get(stand) > System.currentTimeMillis()) {
+                        long time = (timer.get(stand) - System.currentTimeMillis()) / 1000;
+                        stand.setCustomName("§dPlasmaflux Power Orb §e" + time + "s");
                     }
                 }
             }.runTaskTimer(Items.getInstance(), 0, 1);

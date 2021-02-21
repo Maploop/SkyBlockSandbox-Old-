@@ -57,6 +57,10 @@ public class ItemsMenu extends Menu {
                 player.getInventory().addItem(GRAPPLING_HOOK.get());
                 player.playSound(player.getLocation(), Sound.NOTE_PLING, 10F, 2);
                 break;
+            case "§6Plasmaflux Power Orb":
+                player.getInventory().addItem(PLASMAFLUX_POWER_ORB.get());
+                player.playSound(player.getLocation(), Sound.NOTE_PLING, 10F, 2);
+                break;
         }
     }
 
@@ -68,7 +72,7 @@ public class ItemsMenu extends Menu {
         inventory.setItem(49, close);
         inventory.setItem(50, search);
 
-        inventory.addItem(HYPERION.get(), RADIANT_POWER_ORB.get(), MANAFLUX_POWER_ORB.get(), OVERFLUX_POWER_ORB.get(), GRAPPLING_HOOK.get());
+        inventory.addItem(HYPERION.get(), RADIANT_POWER_ORB.get(), MANAFLUX_POWER_ORB.get(), OVERFLUX_POWER_ORB.get(), PLASMAFLUX_POWER_ORB.get(), GRAPPLING_HOOK.get());
     }
 
     private void search(Player player) {
