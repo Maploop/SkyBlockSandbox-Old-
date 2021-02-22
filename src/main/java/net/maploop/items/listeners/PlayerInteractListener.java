@@ -30,14 +30,14 @@ public class PlayerInteractListener implements Listener {
 
                     player.teleport(loc);
                     player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
-                    player.getWorld().playSound(player.getLocation(), Sound.EXPLODE, 10F, 2);
+                    player.playSound(player.getLocation(), Sound.EXPLODE, 2f, 2);
                     Utilities.sendActionbar(player, "§b-200 Mana (§6Hyperion Ability§b)");
                 } else {
                     Location loc = Utilities.getBlockOfSight(player, 8).getLocation();
                     Location finalloc = loc.add(0, 1, 0);
                     player.teleport(new Location(player.getWorld(), finalloc.getX(), finalloc.getY(), finalloc.getZ(), player.getLocation().getYaw(), player.getLocation().getPitch()));
                     player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
-                    player.getWorld().playSound(player.getLocation(), Sound.EXPLODE, 10F, 2);
+                    player.playSound(player.getLocation(), Sound.EXPLODE, 2f, 2);
                     Utilities.sendActionbar(player, "§b-200 Mana (§6Hyperion Ability§b)");
                 }
             } else {

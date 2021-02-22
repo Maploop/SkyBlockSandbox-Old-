@@ -13,6 +13,7 @@ public class UpAndDown extends BukkitRunnable {
 
     double theta = 0;
     Location loc, newloc;
+    int limit = 40;
     @Override
     public void run() {
         theta += Math.PI / 4;
@@ -21,4 +22,17 @@ public class UpAndDown extends BukkitRunnable {
 
         stand.teleport(newloc);
     }
+    /*
+        for (int i = 0; i > limit; i++) {
+            if (i < 20) {
+                stand.teleport(stand.getLocation().clone().add(0, 0.2, 0));
+                return;
+            }
+            stand.teleport(stand.getLocation().clone().add(0, -0.2, 0));
+
+            if (i == 40) {
+                i = 0;
+            }
+        }
+     */
 }

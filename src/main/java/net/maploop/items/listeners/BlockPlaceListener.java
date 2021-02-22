@@ -7,9 +7,7 @@ import net.maploop.items.items.OVERFLUX_POWER_ORB;
 import net.maploop.items.items.PLASMAFLUX_POWER_ORB;
 import net.maploop.items.items.RADIANT_POWER_ORB;
 import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -31,7 +29,7 @@ public class BlockPlaceListener implements Listener {
     public void onPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         ItemStack item = player.getItemInHand();
-        Location loc = event.getBlock().getLocation();
+        Location loc = event.getBlock().getLocation().add(0, 1, 0);
 
         if (!(item.hasItemMeta())) return;
         if (!(item.getItemMeta().hasDisplayName())) return;
@@ -59,7 +57,7 @@ public class BlockPlaceListener implements Listener {
 
                 int animate = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Spin(stand), 0L, (long) 0.3);
                 int particle = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new GreenParticle(stand), 0L, (long) 0.1);
-                int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 4);
+                int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 5);
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -75,11 +73,13 @@ public class BlockPlaceListener implements Listener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
+                        Bukkit.getScheduler().cancelTask(animate);
                         Bukkit.getScheduler().cancelTask(animate1);
                         Bukkit.getScheduler().cancelTask(particle);
-                        Bukkit.getScheduler().cancelTask(animate1);
                         isPlaced.get(player.getUniqueId()).remove();
                         isPlaced.remove(player.getUniqueId());
+                        stand.getWorld().playEffect(stand.getLocation(), Effect.LARGE_SMOKE, Effect.LARGE_SMOKE.getData());
+                        player.sendMessage(ChatColor.RED + "Your previous orb was removed.");
                     }
                 }.runTaskLater(Items.getInstance(), 600);
             }
@@ -108,7 +108,7 @@ public class BlockPlaceListener implements Listener {
 
             int animate = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Spin(stand), 0L, (long) 0.1);
             int particle = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new BlueParticle(stand), 0L, (long) 0.1);
-            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 4);
+            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 5);
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -123,10 +123,12 @@ public class BlockPlaceListener implements Listener {
                 @Override
                 public void run() {
                     Bukkit.getScheduler().cancelTask(animate);
-                    Bukkit.getScheduler().cancelTask(particle);
                     Bukkit.getScheduler().cancelTask(animate1);
+                    Bukkit.getScheduler().cancelTask(particle);
                     isPlaced.get(player.getUniqueId()).remove();
                     isPlaced.remove(player.getUniqueId());
+                    stand.getWorld().playEffect(stand.getLocation(), Effect.LARGE_SMOKE, Effect.LARGE_SMOKE.getData());
+                    player.sendMessage(ChatColor.RED + "Your previous orb was removed.");
                 }
             }.runTaskLater(Items.getInstance(), 600);
         }
@@ -153,7 +155,7 @@ public class BlockPlaceListener implements Listener {
             timer.put(stand, (System.currentTimeMillis()) + 60 * 1000);
 
             int animate = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Spin(stand), 0L, (long) 0.1);
-            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 4);
+            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 5);
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -171,6 +173,8 @@ public class BlockPlaceListener implements Listener {
                     Bukkit.getScheduler().cancelTask(animate1);
                     isPlaced.get(player.getUniqueId()).remove();
                     isPlaced.remove(player.getUniqueId());
+                    stand.getWorld().playEffect(stand.getLocation(), Effect.LARGE_SMOKE, Effect.LARGE_SMOKE.getData());
+                    player.sendMessage(ChatColor.RED + "Your previous orb was removed.");
                 }
             }.runTaskLater(Items.getInstance(), 1200);
         }
@@ -197,7 +201,7 @@ public class BlockPlaceListener implements Listener {
             timer.put(stand, (System.currentTimeMillis()) + 60 * 1000);
 
             int animate = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Spin(stand), 0L, (long) 0.1);
-            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 4);
+            int animate1 = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Items.getInstance(), new UpAndDown(stand), 0L, 5);
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -215,6 +219,8 @@ public class BlockPlaceListener implements Listener {
                     Bukkit.getScheduler().cancelTask(animate1);
                     isPlaced.get(player.getUniqueId()).remove();
                     isPlaced.remove(player.getUniqueId());
+                    stand.getWorld().playEffect(stand.getLocation(), Effect.LARGE_SMOKE, Effect.LARGE_SMOKE.getData());
+                    player.sendMessage(ChatColor.RED + "Your previous orb was removed.");
                 }
             }.runTaskLater(Items.getInstance(), 1200);
         }

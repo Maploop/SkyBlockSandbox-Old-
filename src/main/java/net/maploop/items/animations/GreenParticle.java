@@ -22,8 +22,8 @@ public class GreenParticle extends BukkitRunnable {
     public void run() {
         var += Math.PI / 16;
         loc = stand.getLocation();
-        first = loc.clone().add(Math.cos(var), +2, Math.sin(var));
-        second = loc.clone().add(Math.cos(var + Math.PI), +2, Math.sin(var + Math.PI)); // Math.sin(var)
+        first = loc.clone().add(Math.cos(var), +1, Math.sin(var));
+        second = loc.clone().add(Math.cos(var + Math.PI), +1, Math.sin(var + Math.PI)); // Math.sin(var)
 
         stand.getWorld().spigot().playEffect(first, Effect.HAPPY_VILLAGER, 0, 0, r, g, b, 1, 0, 100);
         stand.getWorld().spigot().playEffect(second, Effect.HAPPY_VILLAGER, 0, 0, r, g, b, 1, 0, 100);
