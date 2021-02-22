@@ -15,16 +15,17 @@ public class GreenParticle extends BukkitRunnable {
 
     Location loc, first, second;
     double var = 0;
+    float r = 1;
+    float g = 10;
+    float b = 1;
     @Override
     public void run() {
-        loc = stand.getLocation();
-
         var += Math.PI / 16;
         loc = stand.getLocation();
-        first = loc.clone().add(Math.cos(var), Math.cos(var) + 2, Math.sin(var));
-        second = loc.clone().add(Math.cos(var + Math.PI), Math.cos(var) + 2, Math.sin(var + Math.PI)); // Math.sin(var)
+        first = loc.clone().add(Math.cos(var), +2, Math.sin(var));
+        second = loc.clone().add(Math.cos(var + Math.PI), +2, Math.sin(var + Math.PI)); // Math.sin(var)
 
-        stand.getWorld().playEffect(first, Effect.HAPPY_VILLAGER, 20);
-        stand.getWorld().playEffect(second, Effect.HAPPY_VILLAGER, 20);
+        stand.getWorld().spigot().playEffect(first, Effect.HAPPY_VILLAGER, 0, 0, r, g, b, 1, 0, 100);
+        stand.getWorld().spigot().playEffect(second, Effect.HAPPY_VILLAGER, 0, 0, r, g, b, 1, 0, 100);
     }
 }

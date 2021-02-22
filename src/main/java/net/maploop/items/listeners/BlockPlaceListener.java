@@ -65,7 +65,7 @@ public class BlockPlaceListener implements Listener {
                     public void run() {
                         if (timer.get(stand) > System.currentTimeMillis()) {
                             long time = (timer.get(stand) - System.currentTimeMillis()) / 1000;
-                            stand.setCustomName("§aRadiant Power Orb §e" + time + "s");
+                            stand.setCustomName("§aRadiant §e" + time + "s");
 
                             // Particle
                         }
@@ -114,7 +114,7 @@ public class BlockPlaceListener implements Listener {
                 public void run() {
                     if (timer.get(stand) > System.currentTimeMillis()) {
                         long time = (timer.get(stand) - System.currentTimeMillis()) / 1000;
-                        stand.setCustomName("§9Mana Flux Power Orb §e" + time + "s");
+                        stand.setCustomName("§9Mana Flux §e" + time + "s");
                     }
                 }
             }.runTaskTimer(Items.getInstance(), 0, 1);
@@ -159,7 +159,7 @@ public class BlockPlaceListener implements Listener {
                 public void run() {
                     if (timer.get(stand) > System.currentTimeMillis()) {
                         long time = (timer.get(stand) - System.currentTimeMillis()) / 1000;
-                        stand.setCustomName("§5Overflux Power Orb §e" + time + "s");
+                        stand.setCustomName("§5Overflux §e" + time + "s");
                     }
                 }
             }.runTaskTimer(Items.getInstance(), 0, 1);
@@ -183,7 +183,7 @@ public class BlockPlaceListener implements Listener {
             }
 
             event.setCancelled(true);
-            player.sendMessage("§eYou placed your §5Overflux Power Orb§e.");
+            player.sendMessage("§eYou placed your §6Plasmaflux Power Orb§e.");
             player.playSound(player.getLocation(), Sound.CLICK, 10F, 0);
 
             ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
@@ -203,7 +203,7 @@ public class BlockPlaceListener implements Listener {
                 public void run() {
                     if (timer.get(stand) > System.currentTimeMillis()) {
                         long time = (timer.get(stand) - System.currentTimeMillis()) / 1000;
-                        stand.setCustomName("§dPlasmaflux Power Orb §e" + time + "s");
+                        stand.setCustomName("§d§lPlasmaflux §e" + time + "s");
                     }
                 }
             }.runTaskTimer(Items.getInstance(), 0, 1);
