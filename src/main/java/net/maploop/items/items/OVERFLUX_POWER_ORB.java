@@ -6,7 +6,7 @@ public class OVERFLUX_POWER_ORB {
     static ItemStack item;
 
     public static void load() {
-        item = Item.makeCustomSkullItem("http://textures.minecraft.net/texture/84859d0adfc93be19bb441e6edfd43f6bfe6912723033f963d009a11c4824510", "§5Overflux Power Orb", 1,
+        item = ItemMaker.makeCustomSkullItem("http://textures.minecraft.net/texture/84859d0adfc93be19bb441e6edfd43f6bfe6912723033f963d009a11c4824510", "§5Overflux Power Orb", 1,
                 "§6Item Ability: Deploy",
                 "§7Place an orb for §a60s §7buffing",
                 "§7up to §b5§7 players within §a18",

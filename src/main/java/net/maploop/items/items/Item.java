@@ -1,52 +1,76 @@
 package net.maploop.items.items;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
+import net.maploop.items.Items;
+import net.maploop.items.helpers.Utilities;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Item {
-    public static ItemStack makeItem(Material material, String displayName, int amount, int durability, String... lore) {
-        ItemStack item = new ItemStack(material, amount, (short) durability);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(displayName);
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+public abstract class Item {
+    private static Items plugin = Items.getInstance();
 
-        meta.setLore(Arrays.asList(lore));
+    private ItemStack item;
+    protected ItemMeta meta;
+
+    private List<String> lore;
+    private String name;
+    private boolean enchantable;
+    private Rarity rarity;
+    private ChatColor enchatmentColor;
+
+    public Item(String displayname, Material type, Rarity rarity) {
+        this.item = new ItemStack(type);
+        this.name = displayname;
+        this.meta = item.getItemMeta();
+        this.lore = new ArrayList<>();
+        this.enchantable = false;
+        this.setName(displayname);
+        this.meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+        this.meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        this.meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        lore.add(rarity.getName());
+        this.applyMetaToStack();
+    }
+
+    public void setName(String name) {
+        meta.setDisplayName(name);
+    }
+
+    public void applyMetaToStack() {
+        meta.setLore(lore);
         item.setItemMeta(meta);
-
-        return item;
     }
 
-    public static ItemStack makeCustomSkullItem(String url, String displayname, int amount, String... lore) {
-        ItemStack item = new ItemStack(Material.SKULL_ITEM, amount, (short) 3);
-        if (url.isEmpty()) return item;
-
-
-        SkullMeta itemMeta = (SkullMeta) item.getItemMeta();
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        byte[] encodedData = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"%s\"}}}", url).getBytes());
-        profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
-        Field profileField = null;
-        try {
-            profileField = itemMeta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(itemMeta, profile);
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        itemMeta.setDisplayName(displayname);
-        itemMeta.setLore(Arrays.asList(lore));
-        item.setItemMeta(itemMeta);
-        return item;
+    public String getName() {
+        return meta.getDisplayName();
     }
+
+    public void enchantable() {
+        this.enchantable = true;
+        lore.remove(rarity.getName());
+        lore.add(enchatmentColor + "No Enchantments");
+        lore.add(rarity.getName());
+    }
+
+    public void addLoreLine(String s) {
+        lore.remove(enchatmentColor + "No Enchantments");
+        lore.remove(rarity.getName());
+        lore.add(Utilities.colorize(s));
+        if (enchantable)
+            lore.add(enchatmentColor + "No Enchantments");
+        lore.add(rarity.getName());
+    }
+
+    public void onBlockInteract(PlayerInteractEvent e) {}
+    public void onItemInteract(PlayerInteractEvent e) {}
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {}
+
 
 }

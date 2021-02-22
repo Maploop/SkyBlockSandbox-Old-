@@ -1,6 +1,6 @@
 package net.maploop.items.items.pets.bee;
 
-import net.maploop.items.items.Item;
+import net.maploop.items.items.ItemMaker;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -8,7 +8,7 @@ public class BEE_PET_COMMON {
     static ItemStack item;
 
     public static void load() {
-        item = Item.makeItem(Material.IRON_SWORD, "§6Hyperion", 1, 0,
+        item = ItemMaker.makeItem(Material.IRON_SWORD, "§6Hyperion", 1, 0,
                 "§7Gear Score: §d673",
                 "§7Damage: §c+293",
                 "§7Strength: §c+150",

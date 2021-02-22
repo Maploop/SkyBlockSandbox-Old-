@@ -7,7 +7,7 @@ public class GRAPPLING_HOOK {
     static ItemStack item;
 
     public static void load(){
-        item = Item.makeItem(Material.FISHING_ROD, "§aGrappling Hook", 1, 0,
+        item = ItemMaker.makeItem(Material.FISHING_ROD, "§aGrappling Hook", 1, 0,
                 "§7Travel around in style using",
                 "§7this Grappling Hook.",
                 "§82 Second Cooldown",

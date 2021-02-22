@@ -6,7 +6,7 @@ public class MANAFLUX_POWER_ORB {
     static ItemStack item;
 
     public static void load() {
-        item = Item.makeCustomSkullItem("http://textures.minecraft.net/texture/82ada1c7fcc8cf35defeb944a4f8ffa9a9d260560fc7f5f5826de8085435967c", "§9Mana Flux Power Orb", 1,
+        item = ItemMaker.makeCustomSkullItem("http://textures.minecraft.net/texture/82ada1c7fcc8cf35defeb944a4f8ffa9a9d260560fc7f5f5826de8085435967c", "§9Mana Flux Power Orb", 1,
                 "§6Item Ability: Deploy",
                 "§7Place an orb for §a30s §7buffing",
                 "§7up to §b5§7 players within §a18",

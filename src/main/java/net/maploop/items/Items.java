@@ -35,7 +35,6 @@ public final class Items extends JavaPlugin {
 
     private void registerItems() {
         HYPERION.load();
-        ASPECT_OF_THE_END.load();
         RADIANT_POWER_ORB.load();
         MANAFLUX_POWER_ORB.load();
         OVERFLUX_POWER_ORB.load();

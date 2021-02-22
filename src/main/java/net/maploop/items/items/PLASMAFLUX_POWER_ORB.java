@@ -6,7 +6,7 @@ public class PLASMAFLUX_POWER_ORB {
     static ItemStack item;
 
     public static void load() {
-        item = Item.makeCustomSkullItem("http://textures.minecraft.net/texture/83ed4ce23933e66e04df16070644f7599eeb55307f7eafe8d92f40fb3520863c", "§6Plasmaflux Power Orb", 1,
+        item = ItemMaker.makeCustomSkullItem("http://textures.minecraft.net/texture/83ed4ce23933e66e04df16070644f7599eeb55307f7eafe8d92f40fb3520863c", "§6Plasmaflux Power Orb", 1,
                 "§6Item Ability: Deploy",
                 "§7Place an orb for §a60s §7buffing",
                 "§7up to §b5§7 players within §a18",
