@@ -78,7 +78,7 @@ public class BlockPlaceListener implements Listener {
                         Bukkit.getScheduler().cancelTask(animate1);
                         Bukkit.getScheduler().cancelTask(particle);
                         Bukkit.getScheduler().cancelTask(animate1);
-                        stand.remove();
+                        isPlaced.get(player.getUniqueId()).remove();
                         isPlaced.remove(player.getUniqueId());
                     }
                 }.runTaskLater(Items.getInstance(), 600);
@@ -125,7 +125,7 @@ public class BlockPlaceListener implements Listener {
                     Bukkit.getScheduler().cancelTask(animate);
                     Bukkit.getScheduler().cancelTask(particle);
                     Bukkit.getScheduler().cancelTask(animate1);
-                    stand.remove();
+                    isPlaced.get(player.getUniqueId()).remove();
                     isPlaced.remove(player.getUniqueId());
                 }
             }.runTaskLater(Items.getInstance(), 600);
@@ -169,7 +169,7 @@ public class BlockPlaceListener implements Listener {
                 public void run() {
                     Bukkit.getScheduler().cancelTask(animate);
                     Bukkit.getScheduler().cancelTask(animate1);
-                    stand.remove();
+                    isPlaced.get(player.getUniqueId()).remove();
                     isPlaced.remove(player.getUniqueId());
                 }
             }.runTaskLater(Items.getInstance(), 1200);
@@ -213,7 +213,7 @@ public class BlockPlaceListener implements Listener {
                 public void run() {
                     Bukkit.getScheduler().cancelTask(animate);
                     Bukkit.getScheduler().cancelTask(animate1);
-                    stand.remove();
+                    isPlaced.get(player.getUniqueId()).remove();
                     isPlaced.remove(player.getUniqueId());
                 }
             }.runTaskLater(Items.getInstance(), 1200);
