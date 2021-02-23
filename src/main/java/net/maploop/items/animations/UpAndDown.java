@@ -1,6 +1,8 @@
 package net.maploop.items.animations;
 
+import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -22,6 +24,8 @@ public class UpAndDown extends BukkitRunnable {
 
         stand.teleport(newloc);
     }
+}
+
     /*
         for (int i = 0; i > limit; i++) {
             if (i < 20) {
@@ -35,4 +39,10 @@ public class UpAndDown extends BukkitRunnable {
             }
         }
      */
-}
+    /*
+            theta += Math.PI / 4;
+        loc = stand.getLocation();
+        newloc = loc.clone().add(0, Math.sin(theta), 0);
+
+        stand.teleport(newloc);
+     */

@@ -10,6 +10,8 @@ public class InventoryClickListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         InventoryHolder holder = event.getInventory().getHolder();
+        if (event.getInventory().getTitle().contains("Profile")) event.setCancelled(true);
+        if (event.getInventory().getTitle().contains("Auction")) event.setCancelled(true);
         if (holder instanceof Menu) {
             event.setCancelled(true);
             Menu menu = (Menu) holder;

@@ -55,6 +55,7 @@ public final class Items extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerInteractAtEntityListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerFishListener(), this);
         this.getServer().getPluginManager().registerEvents(new FallDamageListener(), this);
+        this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
     }
 
     private static PlayerMenuUtility getPlayerMenuUtility(Player player) {
