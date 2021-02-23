@@ -35,7 +35,7 @@ public class ItemsMenu extends Menu {
                 break;
             case "§aSearch items":
                 player.closeInventory();
-                player.sendMessage("§cUnavailable.");
+                search();
                 break;
             case "§6Hyperion":
                 player.getInventory().addItem(HYPERION.get());
@@ -75,14 +75,8 @@ public class ItemsMenu extends Menu {
         inventory.addItem(HYPERION.get(), RADIANT_POWER_ORB.get(), MANAFLUX_POWER_ORB.get(), OVERFLUX_POWER_ORB.get(), PLASMAFLUX_POWER_ORB.get(), GRAPPLING_HOOK.get());
     }
 
-    private void search(Player player) {
-        Search search = new Search(Items.getInstance());
-        search.open(player, new String[] {"", "^^^^^", "Type your search"}, new Search.SignGUIListener() {
-
-            @Override
-            public void onSignDone(Player player, String[] lines) {
-                player.sendMessage(lines[0]);
-            }
-        });
+    private void search() {
+        Search search = new Search(playerMenuUtility.getOwner());
+        search.start();
     }
 }
