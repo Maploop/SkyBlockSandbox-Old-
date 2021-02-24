@@ -2,6 +2,7 @@ package net.maploop.items.items;
 
 import net.maploop.items.Items;
 import net.maploop.items.helpers.Utilities;
+import net.maploop.items.items.pets.bee.BEE_PET_COMMON;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -71,6 +72,19 @@ public abstract class Item {
     public void onBlockInteract(PlayerInteractEvent e) {}
     public void onItemInteract(PlayerInteractEvent e) {}
     public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {}
+
+    public static List<ItemStack> getItems() {
+        List<ItemStack> items = new ArrayList<>();
+        items.add(BEE_PET_COMMON.get());
+        items.add(GRAPPLING_HOOK.get());
+        items.add(HYPERION.get());
+        items.add(MANAFLUX_POWER_ORB.get());
+        items.add(OVERFLUX_POWER_ORB.get());
+        items.add(RADIANT_POWER_ORB.get());
+        items.add(PLASMAFLUX_POWER_ORB.get());
+
+        return items;
+    }
 
 
 }

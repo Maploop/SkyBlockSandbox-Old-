@@ -1,32 +1,14 @@
 package net.maploop.items.items.pets.bee;
 
 import net.maploop.items.items.ItemMaker;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class BEE_PET_COMMON {
     static ItemStack item;
 
     public static void load() {
-        item = ItemMaker.makeItem(Material.IRON_SWORD, "§6Hyperion", 1, 0,
-                "§7Gear Score: §d673",
-                "§7Damage: §c+293",
-                "§7Strength: §c+150",
-                "",
-                "§7Intelligence: §a400",
-                "§7Ferocity: §a+30",
-                "",
-                "§7Deals +§a50% §7damage to",
-                "§7Withers. Grants §c+1 ❁ Damage",
-                "§7and §a+2 §b✎ Intelligence",
-                "§7per §cCatacombs §7level.",
-                "",
-                "§7Your Catacombs level: §4N/A",
-                "",
-                "§eRight-Click to use your class ability!",
-                "",
-                "§8This item can be reforged!",
-                "§6§lLEGENDARY DUNGEON SWORD");
+        item = ItemMaker.makeCustomSkullItem("http://textures.minecraft.net/texture/12724a9a4cdd68ba49415560e5be40b4a1c47cb5be1d66aedb52a30e62ef2d47", "§8[§7Lvl. 1§8] §fBee", 1,
+                "§7this is a bee pet");
     }
 
     public static ItemStack get() {

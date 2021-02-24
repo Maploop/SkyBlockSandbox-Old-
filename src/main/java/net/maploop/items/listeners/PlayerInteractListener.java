@@ -40,8 +40,10 @@ public class PlayerInteractListener implements Listener {
                     player.playSound(player.getLocation(), Sound.EXPLODE, 2f, 2);
                     Utilities.sendActionbar(player, "§b-200 Mana (§6Hyperion Ability§b)");
                 }
-            } else {
-                return;
+            }
+
+            if (item.getItemMeta().getDisplayName().equals("§aSkyblock Menu")) {
+                player.performCommand("sbmenu");
             }
         }
     }
