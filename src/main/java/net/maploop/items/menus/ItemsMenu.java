@@ -82,6 +82,10 @@ public class ItemsMenu extends Menu {
                 player.getInventory().addItem(BONE_BOOMERANG.get());
                 player.playSound(player.getLocation(), Sound.NOTE_PLING, 10F, 2);
                 break;
+            case "§9Bonzo's Staff":
+                player.getInventory().addItem(BONZO_STAFF.get());
+                player.playSound(player.getLocation(), Sound.NOTE_PLING, 10F, 2);
+                break;
             default:
                 break;
         }
@@ -115,7 +119,7 @@ public class ItemsMenu extends Menu {
             return;
         }
 
-        inventory.addItem(GRAPPLING_HOOK.get(), HYPERION.get(), RADIANT_POWER_ORB.get(), MANAFLUX_POWER_ORB.get(), OVERFLUX_POWER_ORB.get(), PLASMAFLUX_POWER_ORB.get(), BEE_PET_COMMON.get(), BONE_BOOMERANG.get());
+        inventory.addItem(GRAPPLING_HOOK.get(), HYPERION.get(), RADIANT_POWER_ORB.get(), MANAFLUX_POWER_ORB.get(), OVERFLUX_POWER_ORB.get(), PLASMAFLUX_POWER_ORB.get(), BEE_PET_COMMON.get(), BONE_BOOMERANG.get(), BONZO_STAFF.get());
     }
 
     private void search() {
