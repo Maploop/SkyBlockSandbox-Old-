@@ -68,29 +68,7 @@ public class ReforgingMenu extends Menu {
                 event.setCancelled(true);
                 player.sendMessage(ChatColor.GREEN + "You reforged your " + inv.getItem(13).getItemMeta().getDisplayName() + ChatColor.GREEN + "!");
                 player.playSound(player.getLocation(), Sound.ANVIL_USE, 1f, 1f);
-
-                int reforgeId = Utilities.getRandomInteger(2);
-                if (reforgeId == 0) {
-                      ItemStack reforged = item;
-                      ItemMeta meta = item.getItemMeta();
-                      meta.setDisplayName(ChatColor.getLastColors(meta.getDisplayName()) + "Sharp " + meta.getDisplayName());
-                      reforged.setItemMeta(meta);
-                      inv.setItem(13, reforged);
-                }
-                if (reforgeId == 1) {
-                    ItemStack reforged = item;
-                    ItemMeta meta = item.getItemMeta();
-                    meta.setDisplayName(ChatColor.getLastColors(meta.getDisplayName()) + "Vivid " + meta.getDisplayName());
-                    reforged.setItemMeta(meta);
-                    inv.setItem(13, reforged);
-                }
-                if (reforgeId == 2) {
-                    ItemStack reforged = item;
-                    ItemMeta meta = item.getItemMeta();
-                    meta.setDisplayName(ChatColor.getLastColors(meta.getDisplayName()) + "Spicy " + meta.getDisplayName());
-                    reforged.setItemMeta(meta);
-                    inv.setItem(13, reforged);
-                }
+                reforge(item, inv);
 
                 break;
             default:
@@ -115,7 +93,7 @@ public class ReforgingMenu extends Menu {
             public void run() {
                 if (!(inventory.getItem(13) == null)) {
                     if (inventory.getItem(13).hasItemMeta() && inventory.getItem(13).getItemMeta().hasDisplayName()) {
-                        if (ChatColor.stripColor(inventory.getItem(13).getType().toString().toLowerCase()).contains("sword") || inventory.getItem(13).getItemMeta().getLore().contains("§8This item can be reforged!")) {
+                        if (inventory.getItem(13).getItemMeta().getLore().contains("§8This item can be reforged!")) {
                             fillSides(successSides);
                             inventory.setItem(22, successReforge);
                         }
@@ -128,5 +106,48 @@ public class ReforgingMenu extends Menu {
                 }
             }
         }.runTaskTimer(Items.getInstance(), 0, 1);
+    }
+
+    private void reforge(ItemStack item, Inventory inv) {
+        int reforgeId = Utilities.getRandomInteger(2);
+        if (reforgeId == 0) {
+            ItemStack reforged = item;
+            ItemMeta meta = item.getItemMeta();
+
+            if (ChatColor.stripColor(item.getItemMeta().getDisplayName().toLowerCase()).contains("legendary")) {
+                meta.setDisplayName(ChatColor.getLastColors(meta.getDisplayName()) + meta.getDisplayName().replace("Legendary", "Sharp"));
+                return;
+            }
+            meta.setDisplayName(ChatColor.getLastColors(meta.getDisplayName()) + "Legendary " + meta.getDisplayName());
+
+            reforged.setItemMeta(meta);
+            inv.setItem(13, reforged);
+        }
+        if (reforgeId == 1) {
+            ItemStack reforged = item;
+            ItemMeta meta = item.getItemMeta();
+
+            if (ChatColor.stripColor(item.getItemMeta().getDisplayName().toLowerCase()).contains("legendary")) {
+                meta.setDisplayName(ChatColor.getLastColors(meta.getDisplayName()) + meta.getDisplayName().replace("Legendary", "Sharp"));
+                return;
+            }
+            meta.setDisplayName(ChatColor.getLastColors(meta.getDisplayName()) + "Legendary " + meta.getDisplayName());
+
+            reforged.setItemMeta(meta);
+            inv.setItem(13, reforged);
+        }
+        if (reforgeId == 2) {
+            ItemStack reforged = item;
+            ItemMeta meta = item.getItemMeta();
+
+            if (ChatColor.stripColor(item.getItemMeta().getDisplayName().toLowerCase()).contains("legendary")) {
+                meta.setDisplayName(ChatColor.getLastColors(meta.getDisplayName()) + meta.getDisplayName().replace("Legendary", "Sharp"));
+                return;
+            }
+            meta.setDisplayName(ChatColor.getLastColors(meta.getDisplayName()) + "Legendary " + meta.getDisplayName());
+
+            reforged.setItemMeta(meta);
+            inv.setItem(13, reforged);
+        }
     }
 }
