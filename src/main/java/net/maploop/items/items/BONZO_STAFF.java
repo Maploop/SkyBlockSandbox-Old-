@@ -1,5 +1,6 @@
 package net.maploop.items.items;
 
+import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,6 +24,10 @@ public class BONZO_STAFF {
                 "§4❣ §cRequires §aCatacombs floor 1",
                 "§aCompeletion",
                 "§9§lRARE DUNGEON SWORD");
+
+        NBTItem nbtItem = new NBTItem(item);
+        nbtItem.setString("ItemData", "bonzo_staff?starred=false");
+
 
     }
 

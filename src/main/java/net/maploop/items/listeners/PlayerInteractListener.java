@@ -1,5 +1,6 @@
 package net.maploop.items.listeners;
 
+import de.tr7zw.nbtapi.NBTItem;
 import net.maploop.items.Items;
 import net.maploop.items.animations.Bonemerang;
 import net.maploop.items.animations.BonemerangReturn;
@@ -8,10 +9,10 @@ import net.maploop.items.helpers.Utilities;
 import net.maploop.items.items.BONE_BOOMERANG;
 import net.maploop.items.items.Item;
 import net.maploop.items.items.ItemMaker;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.*;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -32,7 +33,12 @@ public class PlayerInteractListener implements Listener {
         if (!(item.getItemMeta().hasDisplayName())) return;
         if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if (item.getItemMeta().getDisplayName().contains("§6Hyperion")) {
-                if (Utilities.getBlockOfSight(player, 8).getType() == Material.AIR) {
+                player.sendMessage(ChatColor.RED + "This item is temporarily disabled!");
+                player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 0);
+
+                /*
+
+                    if (Utilities.getBlockOfSight(player, 8).getType() == Material.AIR) {
                     Location loc = player.getLocation();
                     Vector direction = player.getLocation().getDirection();
                     direction.normalize();
@@ -43,14 +49,35 @@ public class PlayerInteractListener implements Listener {
                     player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
                     player.playSound(player.getLocation(), Sound.EXPLODE, 2f, 2);
                     Utilities.sendActionbar(player, "§b-200 Mana (§6Hyperion Ability§b)");
-                } else {
-                    Location loc = Utilities.getBlockOfSight(player, 8).getLocation();
-                    Location finalloc = loc.add(0, 1, 0);
-                    player.teleport(new Location(player.getWorld(), finalloc.getX(), finalloc.getY(), finalloc.getZ(), player.getLocation().getYaw(), player.getLocation().getPitch()));
-                    player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
-                    player.playSound(player.getLocation(), Sound.EXPLODE, 2f, 2);
-                    Utilities.sendActionbar(player, "§b-200 Mana (§6Hyperion Ability§b)");
-                }
+
+
+                    for (Entity entity : player.getNearbyEntities(15, 15, 15)) {
+                        if (entity != null) {
+                            player.sendMessage(ChatColor.GRAY + "Your hyperion ability hit an enemy for §c200,000 §7damage!");
+                            LivingEntity entity1 = (LivingEntity) entity;
+                            entity1.damage(200000);
+                        }
+                    }
+
+            } else {
+                Location loc = Utilities.getBlockOfSight(player, 8).getLocation();
+                Location finalloc = loc.add(0, 1, 0);
+                player.teleport(new Location(player.getWorld(), finalloc.getX(), finalloc.getY(), finalloc.getZ(), player.getLocation().getYaw(), player.getLocation().getPitch()));
+                player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 10);
+                player.playSound(player.getLocation(), Sound.EXPLODE, 2f, 2);
+                Utilities.sendActionbar(player, "§b-200 Mana (§6Hyperion Ability§b)");
+
+
+                    for (Entity entity : player.getNearbyEntities(15, 15, 15)) {
+                        if (entity != null) {
+                            player.sendMessage(ChatColor.GRAY + "Your hyperion ability hit an enemy for §c200,000 §7damage!");
+                            LivingEntity entity1 = (LivingEntity) entity;
+                            entity1.damage(200000);
+                        }
+                    }
+
+            }
+                 */
             }
 
             if (item.getItemMeta().getDisplayName().equals("§aSkyblock Menu")) {
@@ -97,21 +124,26 @@ public class PlayerInteractListener implements Listener {
             }
 
             if (item.getItemMeta().getDisplayName().contains("§9Bonzo's Staff")) {
-                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
-                stand.getEquipment().setHelmet(ItemMaker.makeCustomSkullItem("http://textures.minecraft.net/texture/f868e6a5c4a445d60a3050b5bec1d37af1b25943745d2d479800c8436488065a", "§aBalloon", 1));
-                stand.setArms(true);
-                stand.setGravity(false);
-                stand.setVisible(false);
-                int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonzoStaff(stand, player), 0L, 1);
+                NBTItem nbt = new NBTItem(item);
 
-                new BukkitRunnable() {
+                if (nbt.getString("ItemData").contains("bonzo_staff?starred=false")) {
 
-                    @Override
-                    public void run() {
-                        Bukkit.getScheduler().cancelTask(i);
-                        stand.remove();
-                    }
-                }.runTaskLater(Items.getInstance(), 100);
+                    ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
+                    stand.getEquipment().setHelmet(ItemMaker.makeCustomSkullItem("http://textures.minecraft.net/texture/f868e6a5c4a445d60a3050b5bec1d37af1b25943745d2d479800c8436488065a", "§aBalloon", 1));
+                    stand.setArms(true);
+                    stand.setGravity(false);
+                    stand.setVisible(false);
+                    int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonzoStaff(stand, player), 0L, 1);
+
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+                            Bukkit.getScheduler().cancelTask(i);
+                            stand.remove();
+                        }
+                    }.runTaskLater(Items.getInstance(), 100);
+                }
             }
         }
     }

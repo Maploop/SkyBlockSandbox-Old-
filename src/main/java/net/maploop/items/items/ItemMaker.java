@@ -3,6 +3,7 @@ package net.maploop.items.items;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -22,6 +23,47 @@ public class ItemMaker {
         meta.setDisplayName(displayName);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
+        meta.setLore(Arrays.asList(lore));
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    public static ItemStack makeItem(Material material, String displayName, int amount, int durability, Boolean glowing, String... lore) {
+        ItemStack item = new ItemStack(material, amount, (short) durability);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(displayName);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
+        if (glowing) {
+            meta.addEnchant(Enchantment.LUCK, 1, false);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+        meta.setLore(Arrays.asList(lore));
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    public static ItemStack makeItem(Material material, String displayName, int amount, int durability, Boolean glowing, Boolean stackable, String... lore) {
+        ItemStack item = new ItemStack(material, amount, (short) durability);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(displayName);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
+        if (glowing) {
+            meta.addEnchant(Enchantment.LUCK, 1, false);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+        if (!(stackable)) {
+            try {
+
+                Field field = Item.class.getDeclaredField("maxStackSize");
+                field.setAccessible(true);
+                field.setInt(item, 0);
+
+            } catch (Exception e) {}
+        }
         meta.setLore(Arrays.asList(lore));
         item.setItemMeta(meta);
 
