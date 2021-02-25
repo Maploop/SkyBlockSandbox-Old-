@@ -3,8 +3,10 @@ package net.maploop.items.menus;
 import com.sun.corba.se.spi.orb.ORBVersionFactory;
 import net.maploop.items.Items;
 import net.maploop.items.api.SignGUI;
+import net.maploop.items.commands.DebugCommand;
 import net.maploop.items.helpers.Maps;
 import net.maploop.items.helpers.Search;
+import net.maploop.items.helpers.Utilities;
 import net.maploop.items.items.*;
 import net.maploop.items.items.pets.bee.BEE_PET_COMMON;
 import org.bukkit.ChatColor;
@@ -37,6 +39,11 @@ public class ItemsMenu extends Menu {
     public void hadleMenu(InventoryClickEvent event) {
         event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
+        if (DebugCommand.debug.containsKey(player.getUniqueId())) {
+            player.sendMessage(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName().toLowerCase()));
+            player.sendMessage("The message above is the item you clicked.");
+            Utilities.sendActionbar(player, "§eDisable the message you recived with §c/debug§e.");
+        }
 
         switch (event.getCurrentItem().getItemMeta().getDisplayName()) {
             case "§cClose":
@@ -73,10 +80,13 @@ public class ItemsMenu extends Menu {
             case "§6Plasmaflux Power Orb":
                 player.getInventory().addItem(PLASMAFLUX_POWER_ORB.get());
                 player.playSound(player.getLocation(), Sound.NOTE_PLING, 10F, 2);
-                player.sendMessage(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName().toLowerCase()));
                 break;
             case "§8[§7Lvl. 1§8] §fBee":
                 player.getInventory().addItem(BEE_PET_COMMON.get());
+                player.playSound(player.getLocation(), Sound.NOTE_PLING, 10F, 2);
+                break;
+            case "§6Bonemerang":
+                player.getInventory().addItem(BONE_BOOMERANG.get());
                 player.playSound(player.getLocation(), Sound.NOTE_PLING, 10F, 2);
                 break;
             default:
@@ -112,7 +122,7 @@ public class ItemsMenu extends Menu {
             return;
         }
 
-        inventory.addItem(GRAPPLING_HOOK.get(), HYPERION.get(), RADIANT_POWER_ORB.get(), MANAFLUX_POWER_ORB.get(), OVERFLUX_POWER_ORB.get(), PLASMAFLUX_POWER_ORB.get(), BEE_PET_COMMON.get());
+        inventory.addItem(GRAPPLING_HOOK.get(), HYPERION.get(), RADIANT_POWER_ORB.get(), MANAFLUX_POWER_ORB.get(), OVERFLUX_POWER_ORB.get(), PLASMAFLUX_POWER_ORB.get(), BEE_PET_COMMON.get(), BONE_BOOMERANG.get());
     }
 
     private void search() {

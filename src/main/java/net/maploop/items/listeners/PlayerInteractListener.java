@@ -1,13 +1,22 @@
 package net.maploop.items.listeners;
 
+import net.maploop.items.Items;
+import net.maploop.items.animations.Bonemerang;
+import net.maploop.items.animations.BonzoStaff;
 import net.maploop.items.helpers.Utilities;
+import net.maploop.items.items.BONE_BOOMERANG;
+import net.maploop.items.items.Item;
+import net.maploop.items.items.ItemMaker;
 import org.bukkit.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 
@@ -44,6 +53,41 @@ public class PlayerInteractListener implements Listener {
 
             if (item.getItemMeta().getDisplayName().equals("§aSkyblock Menu")) {
                 player.performCommand("sbmenu");
+            }
+
+            if (item.getItemMeta().getDisplayName().contains("§6Bonemerang")) {
+                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
+                stand.getEquipment().setItemInHand(BONE_BOOMERANG.get());
+                stand.setArms(true);
+                stand.setGravity(false);
+                int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Bonemerang(stand, player), 0L, 1);
+
+                new BukkitRunnable() {
+
+                    @Override
+                    public void run() {
+                        Bukkit.getScheduler().cancelTask(i);
+                        stand.remove();
+                    }
+                }.runTaskLater(Items.getInstance(), 60);
+            }
+
+            if (item.getItemMeta().getDisplayName().contains("§9Bonzo's Staff")) {
+                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
+                stand.getEquipment().setHelmet(ItemMaker.makeCustomSkullItem("http://textures.minecraft.net/texture/f868e6a5c4a445d60a3050b5bec1d37af1b25943745d2d479800c8436488065a", "§aBalloon", 1));
+                stand.setArms(true);
+                stand.setGravity(false);
+                stand.setVisible(false);
+                int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonzoStaff(stand, player), 0L, 1);
+
+                new BukkitRunnable() {
+
+                    @Override
+                    public void run() {
+                        Bukkit.getScheduler().cancelTask(i);
+                        stand.remove();
+                    }
+                }.runTaskLater(Items.getInstance(), 100);
             }
         }
     }

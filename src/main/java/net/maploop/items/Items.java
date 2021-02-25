@@ -1,9 +1,6 @@
 package net.maploop.items;
 
-import net.maploop.items.commands.DebugCommand;
-import net.maploop.items.commands.ItemsCommand;
-import net.maploop.items.commands.MysearchCommand;
-import net.maploop.items.commands.PetsCommand;
+import net.maploop.items.commands.*;
 import net.maploop.items.items.*;
 import net.maploop.items.items.pets.bee.BEE_PET_COMMON;
 import net.maploop.items.listeners.*;
@@ -43,7 +40,8 @@ public final class Items extends JavaPlugin {
         PLASMAFLUX_POWER_ORB.load();
         GRAPPLING_HOOK.load();
         BEE_PET_COMMON.load();
-
+        BONE_BOOMERANG.load();
+        BONZO_STAFF.load();
 
     }
 
@@ -52,6 +50,7 @@ public final class Items extends JavaPlugin {
         this.getCommand("pets").setExecutor(new PetsCommand());
         this.getCommand("debug").setExecutor(new DebugCommand());
         this.getCommand("mysearch").setExecutor(new MysearchCommand());
+        this.getCommand("reforging").setExecutor(new ReforgingCommand());
     }
 
     private void registerListeners() {

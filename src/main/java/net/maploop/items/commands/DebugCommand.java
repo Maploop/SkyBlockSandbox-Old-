@@ -14,7 +14,7 @@ public class DebugCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = (Player) commandSender;
-        if (debug.containsKey(player.getUniqueId())) {
+        if (!(debug.containsKey(player.getUniqueId()))) {
             debug.put(player.getUniqueId(), true);
             player.sendMessage("§aYou are now in debug mode.");
         } else {
