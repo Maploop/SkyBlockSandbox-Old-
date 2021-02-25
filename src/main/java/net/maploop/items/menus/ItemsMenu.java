@@ -1,24 +1,17 @@
 package net.maploop.items.menus;
 
-import com.sun.corba.se.spi.orb.ORBVersionFactory;
-import net.maploop.items.Items;
 import net.maploop.items.api.SignGUI;
 import net.maploop.items.commands.DebugCommand;
 import net.maploop.items.helpers.Maps;
-import net.maploop.items.helpers.Search;
 import net.maploop.items.helpers.Utilities;
 import net.maploop.items.items.*;
 import net.maploop.items.items.pets.bee.BEE_PET_COMMON;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Arrays;
-import java.util.Locale;
 
 public class ItemsMenu extends Menu {
     public ItemsMenu(PlayerMenuUtility playerMenuUtility) {

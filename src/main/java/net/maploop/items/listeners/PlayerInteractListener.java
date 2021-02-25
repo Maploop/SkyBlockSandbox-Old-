@@ -17,6 +17,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 
@@ -56,20 +57,34 @@ public class PlayerInteractListener implements Listener {
             }
 
             if (item.getItemMeta().getDisplayName().contains("§6Bonemerang")) {
-                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
+                if (player.getItemInHand().getType().equals(Material.GHAST_TEAR)) return;
+                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation().add(0, 0.8f, 0), EntityType.ARMOR_STAND);
+                int slot = player.getInventory().getHeldItemSlot();
+                ItemStack bone = player.getItemInHand().clone();
                 stand.getEquipment().setItemInHand(BONE_BOOMERANG.get());
                 stand.setArms(true);
                 stand.setGravity(false);
+                stand.setVisible(false);
+                stand.setRightArmPose(new EulerAngle(270f, 0f, 0f));
+
                 int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Bonemerang(stand, player), 0L, 1);
 
-                new BukkitRunnable() {
+                player.getItemInHand().setType(Material.GHAST_TEAR);
 
+                new BukkitRunnable() {
                     @Override
                     public void run() {
                         Bukkit.getScheduler().cancelTask(i);
                         stand.remove();
                     }
-                }.runTaskLater(Items.getInstance(), 60);
+                }.runTaskLater(Items.getInstance(), 50);
+
+                Bukkit.getScheduler().scheduleSyncDelayedTask(Items.getInstance(), new Runnable() {
+                    @Override
+                    public void run() {
+                        player.getInventory().setItem(slot, bone);
+                    }
+                }, 60);
             }
 
             if (item.getItemMeta().getDisplayName().contains("§9Bonzo's Staff")) {

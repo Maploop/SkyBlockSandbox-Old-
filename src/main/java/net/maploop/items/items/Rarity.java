@@ -1,6 +1,5 @@
 package net.maploop.items.items;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.bukkit.ChatColor;
 
 public enum Rarity {
