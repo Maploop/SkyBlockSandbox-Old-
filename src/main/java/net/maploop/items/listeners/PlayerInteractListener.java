@@ -2,6 +2,7 @@ package net.maploop.items.listeners;
 
 import net.maploop.items.Items;
 import net.maploop.items.animations.Bonemerang;
+import net.maploop.items.animations.BonemerangReturn;
 import net.maploop.items.animations.BonzoStaff;
 import net.maploop.items.helpers.Utilities;
 import net.maploop.items.items.BONE_BOOMERANG;
@@ -75,16 +76,24 @@ public class PlayerInteractListener implements Listener {
                     @Override
                     public void run() {
                         Bukkit.getScheduler().cancelTask(i);
-                        stand.remove();
+                        int i1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonemerangReturn(stand, player), 0L, 1);
+
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                Bukkit.getScheduler().cancelTask(i1);
+                                stand.remove();
+                            }
+                        }.runTaskLater(Items.getInstance(), 45);
                     }
-                }.runTaskLater(Items.getInstance(), 50);
+                }.runTaskLater(Items.getInstance(), 45);
 
                 Bukkit.getScheduler().scheduleSyncDelayedTask(Items.getInstance(), new Runnable() {
                     @Override
                     public void run() {
                         player.getInventory().setItem(slot, bone);
                     }
-                }, 60);
+                }, 90);
             }
 
             if (item.getItemMeta().getDisplayName().contains("§9Bonzo's Staff")) {

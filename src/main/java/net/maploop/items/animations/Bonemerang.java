@@ -29,13 +29,9 @@ public class Bonemerang implements Runnable {
             public void run() {
                 bone.teleport(loc);
 
-                loc.setYaw(bone.getLocation().getYaw() + 180);
-                loc.add(direction);
+                loc.setYaw(bone.getLocation().getYaw() + 60);
+                loc.subtract(direction);
             }
         }, 2L);
-
-        Vector vecTo = player.getLocation().getDirection().normalize().multiply(1);
-
-        bone.teleport(bone.getLocation().clone().add(vecTo));
     }
 }
