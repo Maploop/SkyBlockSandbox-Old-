@@ -9,6 +9,8 @@ import org.bukkit.inventory.InventoryHolder;
 public class InventoryClickListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
+        if (event.getCurrentItem() == null) return;
+
         InventoryHolder holder = event.getInventory().getHolder();
         if (event.getInventory().getTitle().contains("Profile")) event.setCancelled(true);
         if (event.getInventory().getTitle().contains("Auction")) event.setCancelled(true);

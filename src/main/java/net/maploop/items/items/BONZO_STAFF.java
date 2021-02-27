@@ -1,8 +1,12 @@
 package net.maploop.items.items;
 
 import de.tr7zw.nbtapi.NBTItem;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.UUID;
 
 public class BONZO_STAFF {
     static ItemStack item;
@@ -25,8 +29,10 @@ public class BONZO_STAFF {
                 "§aCompeletion",
                 "§9§lRARE DUNGEON SWORD");
 
-        NBTItem nbtItem = new NBTItem(item);
-        nbtItem.setString("ItemData", "bonzo_staff?starred=false");
+        net.minecraft.server.v1_8_R3.ItemStack stack = CraftItemStack.asNMSCopy(item);
+        NBTTagCompound tag = stack.getTag() != null ? stack.getTag() : new NBTTagCompound();
+        tag.setString("ItemData", "bonzo_staff?starred=false");
+        stack.setTag(tag);
 
 
     }

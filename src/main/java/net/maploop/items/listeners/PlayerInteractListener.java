@@ -124,27 +124,27 @@ public class PlayerInteractListener implements Listener {
             }
 
             if (item.getItemMeta().getDisplayName().contains("§9Bonzo's Staff")) {
-                NBTItem nbt = new NBTItem(item);
+                net.minecraft.server.v1_8_R3.ItemStack stack = CraftItemStack.asNMSCopy(item);
+                NBTTagCompound tag = stack.getTag();
 
-                if (nbt.getString("ItemData").contains("bonzo_staff?starred=false")) {
 
-                    ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
-                    stand.getEquipment().setHelmet(ItemMaker.makeCustomSkullItem("http://textures.minecraft.net/texture/f868e6a5c4a445d60a3050b5bec1d37af1b25943745d2d479800c8436488065a", "§aBalloon", 1));
-                    stand.setArms(true);
-                    stand.setGravity(false);
-                    stand.setVisible(false);
-                    int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonzoStaff(stand, player), 0L, 1);
+                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
+                stand.getEquipment().setHelmet(ItemMaker.makeCustomSkullItem("http://textures.minecraft.net/texture/f868e6a5c4a445d60a3050b5bec1d37af1b25943745d2d479800c8436488065a", "§aBalloon", 1));
+                stand.setArms(true);
+                stand.setGravity(false);
+                stand.setVisible(false);
+                int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonzoStaff(stand, player), 0L, 1);
 
-                    new BukkitRunnable() {
+                new BukkitRunnable() {
 
-                        @Override
-                        public void run() {
-                            Bukkit.getScheduler().cancelTask(i);
-                            stand.remove();
-                        }
-                    }.runTaskLater(Items.getInstance(), 100);
-                }
+                    @Override
+                    public void run() {
+                        Bukkit.getScheduler().cancelTask(i);
+                        stand.remove();
+                    }
+                }.runTaskLater(Items.getInstance(), 100);
             }
+
         }
     }
 }
