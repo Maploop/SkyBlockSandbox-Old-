@@ -10,15 +10,16 @@ import org.bukkit.util.Vector;
 public class Bonemerang implements Runnable {
     private ArmorStand bone;
     private Player player;
-    public Bonemerang(ArmorStand bone, Player player) {
+    private Location loca;
+    public Bonemerang(ArmorStand bone, Player player, Location loca) {
         this.bone = bone;
         this.player = player;
+        this.loca = loca;
     }
-    Location loc, newloc;
     @Override
     public void run() {
         Location loc = bone.getLocation();
-        Vector direction = player.getLocation().getDirection();
+        Vector direction = loca.getDirection();
 
         loc.setYaw(bone.getLocation().getYaw() + 60);
         loc.add(direction);
