@@ -11,11 +11,14 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class DUtil {
@@ -31,6 +34,17 @@ public class DUtil {
     public static int getRandomInteger(int max) {
         Random ran = new Random();
         return ran.nextInt(max);
+    }
+
+    public static Boolean isTransparentBlock(Material material) {
+        List<Material> valid = new ArrayList<>();
+        valid.addAll(Arrays.asList(Material.AIR, Material.WATER, Material.SIGN, Material.FENCE_GATE));
+
+        if (valid.contains(material)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static Location getRandomLocation(Location origin, int radius) {

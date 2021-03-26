@@ -2,7 +2,6 @@ package net.maploop.items.data;
 
 import net.maploop.items.Items;
 import net.maploop.items.util.DUtil;
-import net.maploop.items.util.PlayerScoreboard;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -37,7 +36,6 @@ public class DataHandler {
         int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Runnable() {
             @Override
             public void run() {
-                PlayerScoreboard.setPlayerSQLScoreboard(player);
                 if(plugin.getConfig().getBoolean("use-actionbar")) {
                     if (getHealth() > getMaxHealth()) {
                         DUtil.sendActionText(player, "§6" + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + "❤§a    " + Math.round(getDefense()) + "❈§b    " + Math.round(getMana()) + "/" + Math.round(getMaxMana()) + "✎");
