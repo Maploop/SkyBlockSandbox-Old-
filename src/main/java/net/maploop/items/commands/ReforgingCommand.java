@@ -1,7 +1,6 @@
 package net.maploop.items.commands;
 
-import net.maploop.items.menus.PlayerMenuUtility;
-import net.maploop.items.menus.ReforgingMenu;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +12,7 @@ public class ReforgingCommand implements CommandExecutor {
         if (!(commandSender instanceof Player)) return true;
         Player player = (Player) commandSender;
         if (s.equalsIgnoreCase("reforging")) {
-            new ReforgingMenu(new PlayerMenuUtility(player)).open();
+            player.sendMessage(ChatColor.RED + "Work In Progress");
         }
         return false;
     }

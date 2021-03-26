@@ -1,13 +1,12 @@
 name: Items
-version: ${project.version}
+version: 1.0
 main: net.maploop.items.Items
 authors: [ Maploop ]
 description: ITEMS
 website: POG.com
 commands:
+  item:
   items:
-  pets:
-  debug:
-  mysearch:
-  reforging:
+  undolatestzap:
+  undolatestbuild:
 

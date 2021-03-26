@@ -1,15 +1,21 @@
 package net.maploop.items.listeners;
 
-import org.bukkit.entity.Player;
+import net.maploop.items.data.BackpackData;
+import net.maploop.items.item.ItemUtilities;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class InventoryCloseListener implements Listener {
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onClose(InventoryCloseEvent event) {
-        Player player = (Player) event.getPlayer();
-        player.updateInventory();
+        if(event.getInventory().getTitle().contains("Backpack")) {
+            if(BackpackData.inv.containsKey(event.getPlayer().getUniqueId())) {
+                String uuid = ItemUtilities.getStringFromItem(BackpackData.inv.get(event.getPlayer().getUniqueId()), "UUID");
+                BackpackData.getData().put(uuid, event.getInventory().getContents());
+                BackpackData.inv.remove(event.getPlayer().getUniqueId());
+            }
+        }
     }
 }

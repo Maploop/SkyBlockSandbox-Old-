@@ -1,0 +1,9 @@
+mysql:
+  use-mysql: false
+  host: 'your-host'
+  port: 3306
+  database: 'your-database'
+  username: 'your-username'
+  password: 'your-password'
+
+use-actionbar: false
