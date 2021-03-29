@@ -166,7 +166,6 @@ public final class Items extends JavaPlugin {
         SBItems.putItem("aspect_of_the_jerry", new AspectOfTheJerry(27, Rarity.COMMON, "Aspect of the Jerry", Material.WOOD_SWORD, 0, true, false, false, Collections.singletonList(new ItemAbility("Parley", AbilityType.RIGHT_CLICK, DUtil.colorize("&7Channel your inner parley."), 5)), 0, true, ItemType.SWORD, false));
         SBItems.putItem("shadow_fury", new ShadowFury(28, Rarity.LEGENDARY, "Shadow Fury", Material.DIAMOND_SWORD, 0, true, false, false, Collections.singletonList(new ItemAbility("Shadow Fury", AbilityType.RIGHT_CLICK, DUtil.colorize("&7Rapidly teleports you to up to\n&b5 &7enemies within &e12\n&7blocks, rooting each of them\n&7and allowing you to hit them."), 15)), 0, true, ItemType.DUNGEON_SWORD, false));
         SBItems.putItem("scylla", new Scylla(29, Rarity.LEGENDARY, "Scylla", Material.IRON_SWORD, 0, true, false, false, null, 0, true, ItemType.DUNGEON_SWORD, false));
-        SBItems.putItem("hyperion", new Hyperion(30, Rarity.LEGENDARY, "Hyperion", Material.IRON_SWORD, 0, false, false, false, Collections.singletonList(new ItemAbility("Wither Impact", AbilityType.RIGHT_CLICK, DUtil.colorize("&7Teleport &a10 blocks&7 ahead of\n&7you. Then implode dealing\n&c4,306,346 &7damage to nearby\n&7enemies. Also applies the wither\n&7shield scroll ability reducing\n&7damage taken and granting an\n&7absorption shield for &e5\n&7seconds."), 0)), 250, true, ItemType.DUNGEON_SWORD,  false));
         SBItems.putItem("livid_dagger", new LividDagger(31, Rarity.LEGENDARY, "Livid Dagger", Material.IRON_SWORD, 0, false, false, false, Collections.singletonList(new ItemAbility("Throw", AbilityType.RIGHT_CLICK, DUtil.colorize("&7Throw you dagger at your\n&7enemies!"), 5)), 150, true, ItemType.DUNGEON_SWORD, false));
     }
 
@@ -175,6 +174,7 @@ public final class Items extends JavaPlugin {
         this.getCommand("items").setExecutor(new ItemsCommand());
         this.getCommand("undolatestzap").setExecutor(new UndolatestzapCommand());
         this.getCommand("undolatestbuild").setExecutor(new UndolatestbuildCommand());
+        this.getCommand("mcitems").setExecutor(new McitemsCommand());
     }
 
     private static PlayerMenuUtility getPlayerMenuUtility(Player player) {

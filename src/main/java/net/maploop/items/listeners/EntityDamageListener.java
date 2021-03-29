@@ -128,14 +128,14 @@ public class EntityDamageListener implements Listener {
         Indicator.setAirTicks(20);
 
         if (cause == EntityDamageEvent.DamageCause.FIRE_TICK || cause == EntityDamageEvent.DamageCause.FIRE || cause == EntityDamageEvent.DamageCause.LAVA) {
-            Indicator.setCustomName("§6" + damage);
+            Indicator.setCustomName("§6" + Math.round(damage));
         } else if(cause == EntityDamageEvent.DamageCause.DROWNING) {
-            Indicator.setCustomName("§3" + damage);
+            Indicator.setCustomName("§3" + Math.round(damage));
         } else if(cause == EntityDamageEvent.DamageCause.POISON) {
-            Indicator.setCustomName("§2" + damage);
+            Indicator.setCustomName("§2" + Math.round(damage));
         } else {
             if (damage < 600) {
-                Indicator.setCustomName("§7" + damage);
+                Indicator.setCustomName("§7" + Math.round(damage));
             } else if (damage > 600) {
                 Indicator.setCustomName(addCritTexture(formatted));
             }

@@ -41,7 +41,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputDirectory>C:\Non-System Data\Games\1.8 Test Server\plugins</outputDirectory>
+                            <outputDirectory>C:\Users\hundr\Desktop\Plugin\.notbungee\plugins</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
