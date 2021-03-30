@@ -8,7 +8,6 @@ import net.maploop.items.data.DataHandler;
 import net.maploop.items.enums.AbilityType;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
-import net.maploop.items.gui.AnvilGUI;
 import net.maploop.items.gui.PlayerMenuUtility;
 import net.maploop.items.item.ItemAbility;
 import net.maploop.items.item.ItemUtilities;
@@ -17,6 +16,8 @@ import net.maploop.items.item.items.*;
 import net.maploop.items.listeners.*;
 import net.maploop.items.sql.MySQL;
 import net.maploop.items.sql.SQLGetter;
+import net.maploop.items.user.User;
+import net.maploop.items.user.UserInjector;
 import net.maploop.items.util.IReflections;
 import net.maploop.items.util.IUtil;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -94,6 +95,14 @@ public final class Items extends JavaPlugin {
                 }
             }
         }.runTaskTimer(this, 0, 1);
+
+        if(!Bukkit.getServer().getOnlinePlayers().isEmpty()) {
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                User user = new User(player);
+                UserInjector injector = new UserInjector(user);
+                injector.inject();
+            }
+        }
 
         new BukkitRunnable() {
             @Override
@@ -174,15 +183,16 @@ public final class Items extends JavaPlugin {
         SBItems.putItem("aspect_of_the_end", new AspectOfTheEnd(30, Rarity.RARE, "Aspect of the End", Material.DIAMOND_SWORD, 0, true, false, false, Collections.singletonList(new ItemAbility("Instant Transmission", AbilityType.RIGHT_CLICK, IUtil.colorize("&7Teleport &a8 blocks &7ahead of\n&7you and gain &a+50 &f✦ Speed\n&7for &a3 seconds&7."))), 50, true, ItemType.SWORD, false));
         SBItems.putItem("bonzo_staff", new BonzoStaff(34, Rarity.RARE, "Bonzo's Staff", Material.BLAZE_ROD, 0, false, false, false, Collections.singletonList(new ItemAbility("Showtime!", AbilityType.RIGHT_CLICK, IUtil.colorize("Shoot balloons that create a\nlarge explosion on impact,\ndealing up to &c1,000 &7damage."))), 60, true, ItemType.DUNGEON_SWORD, false, 160, 0, 0, 0, 0));
         SBItems.putItem("bonzos_balloon", new BonzosBalloon(35, Rarity.UNOBTAINABLE, "Bonzo's Balloon", Material.SKULL_ITEM, 3, true, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/76387fc246893d92a6dd9ea1b52dcd581e991eeee2e263b27fff1bcf1b154eb7", false));
+        SBItems.putItem("helmet_of_growth", new HelmetOfGrowth(36, Rarity.EPIC, "Helmet of Growth", Material.GOLD_HELMET, 0, true, false, false ,null, 0, false, ItemType.HELMET, true, 0, 0, 0, 20, 120));
     }
 
     private void registerCommands() {
-        this.getCommand("item").setExecutor(new ItemCommand());
-        this.getCommand("items").setExecutor(new ItemsCommand());
-        this.getCommand("e").setExecutor(new ItemsCommand());
-        this.getCommand("undozap").setExecutor(new UndozapCommand());
-        this.getCommand("undograndarchitect").setExecutor(new UndograndarchitectCommand());
-        this.getCommand("mcitems").setExecutor(new McitemsCommand());
+        this.getCommand("item").setExecutor(new Command_item());
+        this.getCommand("items").setExecutor(new Command_items());
+        this.getCommand("e").setExecutor(new Command_items());
+        this.getCommand("undozap").setExecutor(new Command_undozap());
+        this.getCommand("undograndarchitect").setExecutor(new Command_undograndarchitect());
+        this.getCommand("mcitems").setExecutor(new Command_mcitems());
         this.getCommand("gm").setExecutor(new Command_gamemode());
         this.getCommand("gamemode").setExecutor(new Command_gamemode());
         this.getCommand("sbclear").setExecutor(new Command_sbclear());

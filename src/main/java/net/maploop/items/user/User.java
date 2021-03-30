@@ -2,11 +2,13 @@ package net.maploop.items.user;
 
 import jdk.nashorn.internal.ir.Block;
 import net.maploop.items.Items;
+import net.maploop.items.item.ItemUtilities;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,8 +31,9 @@ public class User {
     private double crit_damage;
     private double crit_chance;
     private double defense;
+    private int speed;
 
-    public Player getUser() {
+    public Player getBukkitPlayer() {
         return user;
     }
 
@@ -166,5 +169,45 @@ public class User {
         }
 
         return fc;
+    }
+
+    public double getTotalHealth() {
+        File playerData = new File("plugins/Items/playerData/" + user.getUniqueId().toString() + "/data.yml");
+        FileConfiguration pD = YamlConfiguration.loadConfiguration(playerData);
+
+        try {
+            pD.load(playerData);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        double health = pD.getDouble("stats.extra_health")+100;
+        ItemStack[] armor = user.getEquipment().getArmorContents();
+        for(ItemStack a : armor) {
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
+                health = health + ItemUtilities.getIntFromItem(a, "HEALTH");
+            }
+        }
+        return health;
+    }
+
+    public double getTotalIntelligence() {
+        File playerData = new File("plugins/Items/playerData/" + user.getUniqueId().toString() + "/data.yml");
+        FileConfiguration pD = YamlConfiguration.loadConfiguration(playerData);
+
+        try {
+            pD.load(playerData);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        double intelligence = pD.getDouble("stats.extra_mana")+100;
+        ItemStack[] armor = user.getEquipment().getArmorContents();
+        for(ItemStack a : armor) {
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
+                intelligence = intelligence + ItemUtilities.getIntFromItem(a, "INTELLIGENCE");
+            }
+        }
+        return intelligence;
     }
 }

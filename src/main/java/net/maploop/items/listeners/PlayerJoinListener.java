@@ -5,6 +5,7 @@ import net.maploop.items.data.DataHandler;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.sql.SQLGetter;
 import net.maploop.items.user.User;
+import net.maploop.items.user.UserInjector;
 import net.maploop.items.util.IUtil;
 import net.minecraft.server.v1_8_R3.EntityWither;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
@@ -44,6 +45,11 @@ public class PlayerJoinListener implements Listener {
             data.saveData();
             data.inject();
         }
+        User user = new User(player);
+        UserInjector injector = new UserInjector(user);
+        user.setHealth(user.getTotalHealth());
+        user.setIntelligence(user.getTotalIntelligence());
+        injector.inject();
 
         ItemStack skyblock_menu = CustomItem.fromString(Items.getInstance(), "skyblock_menu", 1);
         player.getInventory().setItem(8, skyblock_menu);

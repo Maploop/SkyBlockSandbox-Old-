@@ -330,12 +330,12 @@ public abstract class CustomItem {
         ItemStack step7 = ItemUtilities.storeIntInItem(step6,  item.getIntelligence(), Attribute.INTELLIGENCE.toString());
         ItemStack step8 = ItemUtilities.storeIntInItem(step7,  item.getHealth(), Attribute.HEALTH.toString());
 
-        item.enforceStackability(step4);
-        item.onItemStackCreate(step4);
-        ItemUtilities.loreItem(step4, item.getLore(step4));
+        item.enforceStackability(step8);
+        item.onItemStackCreate(step8);
+        ItemUtilities.loreItem(step8, item.getLore(step8));
 
         if(!item.isStackable()) {
-            ItemStack optionalStep = ItemUtilities.storeStringInItem(step4, UUID.randomUUID().toString(), "UUID");
+            ItemStack optionalStep = ItemUtilities.storeStringInItem(step8, UUID.randomUUID().toString(), "UUID");
 
             ItemMeta meta = optionalStep.getItemMeta();
             if(item.glowing) {
@@ -351,7 +351,7 @@ public abstract class CustomItem {
             return optionalStep;
         }
 
-        ItemMeta meta = step4.getItemMeta();
+        ItemMeta meta = step8.getItemMeta();
         if(item.glowing) {
             meta.addEnchant(Enchantment.LUCK, 1, false);
         }
@@ -359,9 +359,9 @@ public abstract class CustomItem {
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-        step4.setDurability(item.getDurability());
-        step4.setItemMeta(meta);
-        return step4;
+        step8.setDurability(item.getDurability());
+        step8.setItemMeta(meta);
+        return step8;
     }
 
     public static void destroy(ItemStack item, int quantity) {
