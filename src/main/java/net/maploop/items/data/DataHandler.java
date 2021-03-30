@@ -1,7 +1,7 @@
 package net.maploop.items.data;
 
 import net.maploop.items.Items;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -38,9 +38,9 @@ public class DataHandler {
             public void run() {
                 if(plugin.getConfig().getBoolean("use-actionbar")) {
                     if (getHealth() > getMaxHealth()) {
-                        DUtil.sendActionText(player, "§6" + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + "❤§a    " + Math.round(getDefense()) + "❈§b    " + Math.round(getMana()) + "/" + Math.round(getMaxMana()) + "✎");
+                        IUtil.sendActionText(player, "§6" + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + "❤§a    " + Math.round(getDefense()) + "❈§b    " + Math.round(getMana()) + "/" + Math.round(getMaxMana()) + "✎");
                     } else {
-                        DUtil.sendActionText(player, "§c" + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + "❤§a    " + Math.round(getDefense()) + "❈§b    " + Math.round(getMana()) + "/" + Math.round(getMaxMana()) + "✎");
+                        IUtil.sendActionText(player, "§c" + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + "❤§a    " + Math.round(getDefense()) + "❈§b    " + Math.round(getMana()) + "/" + Math.round(getMaxMana()) + "✎");
                     }
                 }
 
@@ -62,11 +62,11 @@ public class DataHandler {
             component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to type the UUID in your chatbox!").color(ChatColor.AQUA).create()));
             component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, getUniqueId().toString()));
 
-            player.sendMessage(DUtil.colorize("&eWelcome back &a" + player.getName() + "&e!"));
+            player.sendMessage(IUtil.colorize("&eWelcome back &a" + player.getName() + "&e!"));
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    player.sendMessage(DUtil.colorize("&7You are playing on profile:"));
+                    player.sendMessage(IUtil.colorize("&7You are playing on profile:"));
                     player.spigot().sendMessage(component);
                     player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1.5f);
                 }
@@ -106,12 +106,12 @@ public class DataHandler {
         component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to type the UUID in your chatbox!").color(ChatColor.AQUA).create()));
         component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, getUniqueId().toString()));
 
-        player.sendMessage(DUtil.colorize("&eWelcome &a" + player.getName() + "&e!"));
-        player.sendMessage(DUtil.colorize("&7A new profile was created for you!"));
+        player.sendMessage(IUtil.colorize("&eWelcome &a" + player.getName() + "&e!"));
+        player.sendMessage(IUtil.colorize("&7A new profile was created for you!"));
         new BukkitRunnable() {
             @Override
             public void run() {
-                player.sendMessage(DUtil.colorize("&7You are playing on profile:"));
+                player.sendMessage(IUtil.colorize("&7You are playing on profile:"));
                 player.spigot().sendMessage(component);
                 player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1.5f);
             }

@@ -1,7 +1,7 @@
 package net.maploop.items.gui;
 
 import net.maploop.items.data.DataHandler;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -61,11 +61,11 @@ public class SettingsGUI extends GUI {
         inventory.setItem(48, makeItem(Material.ARROW, "§aGo Back", 1, 0, "§7To Skyblock Menu"));
         inventory.setItem(49, makeItem(Material.BARRIER, "§cClose", 1, 0));
 
-        inventory.setItem(10, makeItem(Material.SKULL_ITEM, "§aProfile Viewer", 1, 0, DUtil.colorize("&7Player player's profiles on\n&7right-click.")));
+        inventory.setItem(10, makeItem(Material.SKULL_ITEM, "§aProfile Viewer", 1, 0, IUtil.colorize("&7Player player's profiles on\n&7right-click.")));
         if(handler.getProfileViewer()) {
-            inventory.setItem(19, makeItem(Material.INK_SACK, "§aProfile Viewer", 1, 10, DUtil.colorize("&7Click to disable!")));
+            inventory.setItem(19, makeItem(Material.INK_SACK, "§aProfile Viewer", 1, 10, IUtil.colorize("&7Click to disable!")));
         } else {
-            inventory.setItem(19, makeItem(Material.INK_SACK, "§aProfile Viewer", 1, 8, DUtil.colorize("&7Click to enable!")));
+            inventory.setItem(19, makeItem(Material.INK_SACK, "§aProfile Viewer", 1, 8, IUtil.colorize("&7Click to enable!")));
         }
     }
 }

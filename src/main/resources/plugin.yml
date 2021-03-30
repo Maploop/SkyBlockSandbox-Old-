@@ -7,7 +7,15 @@ website: POG.com
 commands:
   item:
   items:
-  undolatestzap:
-  undolatestbuild:
+    aliases:
+      - e
+  undozap:
+  undograndarchitect:
   mcitems:
-
+  gamemode:
+    aliases:
+      - gm
+  sbclear:
+    aliases:
+      - cl
+      - clear

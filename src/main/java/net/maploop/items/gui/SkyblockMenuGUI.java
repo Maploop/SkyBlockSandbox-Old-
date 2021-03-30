@@ -3,7 +3,7 @@ package net.maploop.items.gui;
 import net.maploop.items.Items;
 import net.maploop.items.data.DataHandler;
 import net.maploop.items.sql.SQLGetter;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -105,9 +105,9 @@ public class SkyblockMenuGUI extends GUI {
         ItemStack QuestLog = makeItem(Material.BOOK_AND_QUILL, "§cQuest Log", 1, 0, "§cThis feature is disabled\n§cin the Dungeon simulator\n§cserver!");
         ItemStack crafting = makeItem(Material.WORKBENCH, "§cCrafting Table", 1, 0, "§cThis feature is disabled\n§cin the Dungeon simulator\n§cserver!");
 
-        ItemStack enderChest = makeItem(Material.ENDER_CHEST, DUtil.colorize("&aEnderchest"), 1, 0, DUtil.colorize("&7A special container where you\n&7can store any item you want!\n&7even backpacks!\n \n&eClick to open!"));
+        ItemStack enderChest = makeItem(Material.ENDER_CHEST, IUtil.colorize("&aEnderchest"), 1, 0, IUtil.colorize("&7A special container where you\n&7can store any item you want!\n&7even backpacks!\n \n&eClick to open!"));
 
-        inventory.setItem(50, makeItem(Material.REDSTONE_TORCH_ON, "§aSettings", 1, 0, DUtil.colorize("&7View and edit your Skyblock\n&7settings.\n\n&eClick to view!")));
+        inventory.setItem(50, makeItem(Material.REDSTONE_TORCH_ON, "§aSettings", 1, 0, IUtil.colorize("&7View and edit your Skyblock\n&7settings.\n\n&eClick to view!")));
         inventory.setItem(21, recipeBook);
         inventory.setItem(20, Collection);
         inventory.setItem(23, QuestLog);

@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class DUtil {
+public class IUtil {
     public static String colorize(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
@@ -105,5 +105,13 @@ public class DUtil {
         component.setClickEvent(new ClickEvent(actiom, actionText));
 
         return component;
+    }
+
+    public static List<String> getPlayerList() {
+        List<String> list = new ArrayList<>();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            list.add(player.getName());
+        }
+        return list;
     }
 }

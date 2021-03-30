@@ -1,4 +1,4 @@
-package net.maploop.items.commands;
+package net.maploop.items.command.commands;
 
 import net.maploop.items.gui.MinecraftItemsGUI;
 import net.maploop.items.gui.PlayerMenuUtility;

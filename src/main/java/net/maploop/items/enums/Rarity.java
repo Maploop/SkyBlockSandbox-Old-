@@ -12,7 +12,8 @@ public enum Rarity {
     SPECIAL(ChatColor.RED),
     VERY_SPECIAL(ChatColor.RED),
     UNFINISHED(ChatColor.DARK_RED),
-    SKYBLOCK_MENU(ChatColor.YELLOW);
+    SKYBLOCK_MENU(ChatColor.YELLOW),
+    UNOBTAINABLE(ChatColor.DARK_AQUA);
 
     private ChatColor color;
 

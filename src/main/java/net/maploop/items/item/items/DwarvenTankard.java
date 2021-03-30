@@ -1,16 +1,10 @@
 package net.maploop.items.item.items;
 
-import net.maploop.items.Items;
-import net.maploop.items.data.DataHandler;
-import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
-import net.maploop.items.item.ItemUtilities;
-import net.maploop.items.listeners.EntityDamageListener;
-import net.maploop.items.sql.SQLGetter;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -36,7 +30,7 @@ public class DwarvenTankard extends CustomItem {
 
     @Override
     public void getSpecificLorePrefix(List<String> paramList, ItemStack paramItemStack) {
-        String lore = DUtil.colorize("&8Decoration item\n\n&7The most stylish Dwarven\n&7drinking implement to built to hold\n&7as much ale as possible.");
+        String lore = IUtil.colorize("&8Decoration item\n\n&7The most stylish Dwarven\n&7drinking implement to built to hold\n&7as much ale as possible.");
         String[] lore1 = lore.split("\n");
         paramList.addAll(Arrays.asList(lore1));
     }

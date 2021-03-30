@@ -1,16 +1,10 @@
 package net.maploop.items.item.items;
 
-import net.maploop.items.Items;
-import net.maploop.items.data.DataHandler;
-import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
-import net.maploop.items.item.ItemUtilities;
-import net.maploop.items.listeners.EntityDamageListener;
-import net.maploop.items.sql.SQLGetter;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -36,7 +30,7 @@ public class HoeOfGreaterTilling extends CustomItem {
 
     @Override
     public void getSpecificLorePrefix(List<String> lore, ItemStack paramItemStack) {
-        lore.add(DUtil.colorize("&7Tills a &95x5 &7area of farmland at a time."));
+        lore.add(IUtil.colorize("&7Tills a &95x5 &7area of farmland at a time."));
     }
 
     @Override
@@ -62,7 +56,7 @@ public class HoeOfGreaterTilling extends CustomItem {
     @Override
     public void rightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
         if(event.getClickedBlock().getType().equals(Material.DIRT)) {
-            for(Block block : DUtil.getBlocks(event.getClickedBlock(), 2)) {
+            for(Block block : IUtil.getBlocks(event.getClickedBlock(), 2)) {
                 if(block.getType() == Material.DIRT) {
                     block.setType(Material.SOIL);
                     player.playSound(player.getLocation(), Sound.FALL_BIG, 1f, 2f);

@@ -61,13 +61,35 @@ public class ItemsGUI extends PaginatedGUI {
                 break;
             }
             case SIGN: {
-                player.sendMessage("§aPlease enter your search in chat.");
-                searching.add(player);
-                player.closeInventory();
+                AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
+                    @Override
+                    public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
+                        if(event.getSlot() == AnvilGUI.AnvilSlot.OUTPUT) {
+                            event.setWillClose(true);
+                            event.setWillDestroy(true);
+
+                            search.put(player, event.getName());
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    new ItemsGUI(new PlayerMenuUtility(player)).open();
+                                }
+                            }.runTaskLater(Items.getInstance(), 3);
+                        }else {
+                            event.setWillClose(false);
+                            event.setWillDestroy(false);
+                        }
+                    }
+                });
+
+                ItemStack i = makeItem(Material.PAPER, "Enter your search", 1, 0);
+                gui.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, i);
+                gui.open();
                 break;
             }
             case ANVIL: {
                 search.remove(player);
+                player.playSound(player.getLocation(), Sound.CAT_MEOW, 1f, 1.5f);
 
                 new BukkitRunnable() {
                     @Override
@@ -149,7 +171,7 @@ public class ItemsGUI extends PaginatedGUI {
         ItemStack clearInv = makeItem(Material.HOPPER, "§aClear Inventory", 1, 0, "§7Click you clear your\n§7inventory off of all the\n§7junk in there!\n \n§eClick to clear!");
         inventory.setItem(4, clearInv);
 
-        ItemStack resetSearch = makeItem(Material.ANVIL, "§eReset Search", 1, 0,
+        ItemStack resetSearch = makeItem(Material.ANVIL, "§eReset Configurations", 1, 0,
                 "§7You are currently searching",
                 "§7for an item, click to reset your search",
                 "",

@@ -2,7 +2,7 @@ package net.maploop.items.animations;
 
 import net.maploop.items.Items;
 import net.maploop.items.listeners.EntityDamageListener;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
@@ -35,14 +35,14 @@ public class BonemrangForward implements Runnable {
                         if (!(e instanceof Item)) e1 = (LivingEntity) e;
 
                         if (!(e instanceof Player)) {
-                            double dmg = DUtil.calculateDamage(player, 320, 130);
+                            double dmg = IUtil.calculateDamage(player, 320, 130);
                             if (e1 != null) {
                                 e1.damage(dmg);
 
                                 EntityDamageListener listener = new EntityDamageListener();
                                 if(!alreadyDone) {
                                     alreadyDone = true;
-                                    listener.addIndicator(dmg, DUtil.getRandomLocation(e1.getLocation(), 2), EntityDamageEvent.DamageCause.ENTITY_ATTACK);
+                                    listener.addIndicator(dmg, IUtil.getRandomLocation(e1.getLocation(), 2), EntityDamageEvent.DamageCause.ENTITY_ATTACK);
                                 }
                             };
                         }

@@ -1,7 +1,7 @@
 package net.maploop.items.sql;
 
 import net.maploop.items.Items;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -28,7 +28,7 @@ public class SQLGetter {
         createPlayer();
         player.sendMessage("§eWelcome §a" + player.getName() + "§e to Dungeons Simulator!");
         player.sendMessage("§7You are playing on profile:");
-        TextComponent uuid = DUtil.makeClickableText(ChatColor.DARK_GRAY + getUniqueId(), "§eClick to type the UUID in your chatbox!", ClickEvent.Action.SUGGEST_COMMAND, getUniqueId());
+        TextComponent uuid = IUtil.makeClickableText(ChatColor.DARK_GRAY + getUniqueId(), "§eClick to type the UUID in your chatbox!", ClickEvent.Action.SUGGEST_COMMAND, getUniqueId());
         player.spigot().sendMessage(uuid);
         player.playSound(player.getLocation(), Sound.LEVEL_UP, 1f, 1.5f);
         int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Runnable() {
@@ -36,9 +36,9 @@ public class SQLGetter {
             public void run() {
                 if(plugin.getConfig().getBoolean("use-actionbar")) {
                     if (getHealth() > getMaxHealth()) {
-                        DUtil.sendActionText(player, "§6" + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + "❤§a    " + Math.round(getDefense()) + "❈§b    " + Math.round(getMana()) + "/" + Math.round(getMaxMana()) + "✎");
+                        IUtil.sendActionText(player, "§6" + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + "❤§a    " + Math.round(getDefense()) + "❈§b    " + Math.round(getMana()) + "/" + Math.round(getMaxMana()) + "✎");
                     } else {
-                        DUtil.sendActionText(player, "§c" + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + "❤§a    " + Math.round(getDefense()) + "❈§b    " + Math.round(getMana()) + "/" + Math.round(getMaxMana()) + "✎");
+                        IUtil.sendActionText(player, "§c" + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + "❤§a    " + Math.round(getDefense()) + "❈§b    " + Math.round(getMana()) + "/" + Math.round(getMaxMana()) + "✎");
                     }
                 }
 

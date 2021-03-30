@@ -3,7 +3,7 @@ package net.maploop.items.listeners;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.maploop.items.Items;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
@@ -87,9 +87,9 @@ public class EntityDamageListener implements Listener {
             @Override
             public void run() {
                 if (damage > 0) {
-                    addIndicator(damage, DUtil.getRandomLocation(event.getEntity().getLocation(), 2), event.getCause());
+                    addIndicator(damage, IUtil.getRandomLocation(event.getEntity().getLocation(), 2), event.getCause());
                 } else {
-                    addIndicator(event.getDamage(), DUtil.getRandomLocation(event.getEntity().getLocation(), 2), event.getCause());
+                    addIndicator(event.getDamage(), IUtil.getRandomLocation(event.getEntity().getLocation(), 2), event.getCause());
                 }
             }
         }.runTaskLater(Items.getInstance(), 1L);

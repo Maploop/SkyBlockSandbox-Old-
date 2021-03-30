@@ -1,16 +1,9 @@
 package net.maploop.items.item.items;
 
-import net.maploop.items.Items;
-import net.maploop.items.data.DataHandler;
-import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
-import net.maploop.items.item.ItemUtilities;
-import net.maploop.items.listeners.EntityDamageListener;
-import net.maploop.items.sql.SQLGetter;
-import net.maploop.items.util.DUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -59,6 +52,12 @@ public class InfiniDirtWand extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player player, PlayerInteractEvent event, ItemStack paramItemStack) {
+        if(!player.hasPermission("items.blockzapper.use")) {
+            player.sendMessage("§cYou are not allowed to use this item!");
+            player.playSound(player.getLocation(), Sound.WOOD_CLICK, 1f, 1f);
+            return;
+        }
+
         Block block = player.getTargetBlock((Set<Material>) null, 30);
         if(block.getType() == Material.AIR) return;
         Location loc = null;
@@ -91,6 +90,12 @@ public class InfiniDirtWand extends CustomItem {
 
     @Override
     public void rightClickBlockAction(Player player, PlayerInteractEvent paramPlayerInteractEvent, Block paramBlock, ItemStack paramItemStack) {
+        if(!player.hasPermission("items.blockzapper.use")) {
+            player.sendMessage("§cYou are not allowed to use this item!");
+            player.playSound(player.getLocation(), Sound.WOOD_CLICK, 1f, 1f);
+            return;
+        }
+
         Block block = player.getTargetBlock((Set<Material>) null, 30);
         if(block.getType() == Material.AIR) return;
         Location loc = null;

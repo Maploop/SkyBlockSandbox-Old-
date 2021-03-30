@@ -4,7 +4,6 @@ import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
-import net.maploop.items.util.IUtil;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -15,25 +14,21 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class Scylla extends CustomItem {
-    public Scylla(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, ItemType itemType, boolean glowing) {
-        super(id, rarity, name, material, durability, stackable, oneTimeUse, hasActive, abilities, manaCost, reforgeable, itemType, glowing);
+public class BonzosBalloon extends CustomItem {
+    public BonzosBalloon(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, ItemType itemType, String url, boolean glowing) {
+        super(id, rarity, name, material, durability, stackable, oneTimeUse, hasActive, abilities, manaCost, reforgeable, itemType, url, glowing);
     }
 
     @Override
     public void onItemStackCreate(ItemStack paramItemStack) {
-
+        applyTexture(paramItemStack);
     }
 
     @Override
     public void getSpecificLorePrefix(List<String> paramList, ItemStack paramItemStack) {
-        String lore = IUtil.colorize("&7Gear Score: &d∞\n&7Damage: &c+260\n&7Strength: &c+150\n&7Crit Chance: &c+12%\n&7Crit Damage: &c+35%\n\n&7Intelligence: &a+50\n&7Ferocity: &a+30\n\n" +
-                "&7Deals +&c50% &7damage to\n&7Withers. Grants &c+1 ❁ Damage\n&7and &a+1 &9☠ Crit Damage &7per\n&cCatacombs &7level.\n\n&7Your Catacombs level: &c0\n\n&eRight-click to use your class ability!");
-        String[] lore1 = lore.split("\n");
-        paramList.addAll(Arrays.asList(lore1));
+        paramList.remove("");
     }
 
     @Override
@@ -58,7 +53,7 @@ public class Scylla extends CustomItem {
 
     @Override
     public void rightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
-
+        event.setCancelled(true);
     }
 
     @Override
@@ -78,7 +73,7 @@ public class Scylla extends CustomItem {
 
     @Override
     public void shiftRightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
-
+        event.setCancelled(true);
     }
 
     @Override

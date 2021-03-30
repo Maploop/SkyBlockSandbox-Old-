@@ -13,16 +13,6 @@ public class PlayerChatListener implements Listener {
     @EventHandler
     public void onChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
-
-        if(ItemsGUI.searching.contains(player)) {
-            event.setCancelled(true);
-            ItemsGUI.search.put(player, event.getMessage());
-
-            player.sendMessage(ChatColor.GREEN + "You're search is: " + ChatColor.YELLOW + ItemsGUI.search.get(player));
-            ItemsGUI.searching.remove(player);
-            new ItemsGUI(new PlayerMenuUtility(player)).open();
-        }
-
         if(MinecraftItemsGUI.mcSearching.contains(player)) {
             event.setCancelled(true);
             MinecraftItemsGUI.mcSearch.put(player, event.getMessage());

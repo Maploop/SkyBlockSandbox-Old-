@@ -1,4 +1,4 @@
-package net.maploop.items.commands;
+package net.maploop.items.command.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

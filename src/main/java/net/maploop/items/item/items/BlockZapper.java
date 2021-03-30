@@ -1,16 +1,10 @@
 package net.maploop.items.item.items;
 
-import net.maploop.items.Items;
-import net.maploop.items.data.DataHandler;
-import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
-import net.maploop.items.item.ItemUtilities;
-import net.maploop.items.listeners.EntityDamageListener;
-import net.maploop.items.sql.SQLGetter;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
@@ -64,11 +58,17 @@ public class BlockZapper extends CustomItem {
 
     @Override
     public void rightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
+        if(!player.hasPermission("items.blockzapper.use")) {
+            player.sendMessage("§cYou are not allowed to use this item!");
+            player.playSound(player.getLocation(), Sound.WOOD_CLICK, 1f, 1f);
+            return;
+        }
+
         event.setCancelled(true);
         doBlockEater(event.getClickedBlock().getType(), event.getClickedBlock(), 30, player);
 
         TextComponent component = new TextComponent("§eZapped §a" + blockAmount.get(player) + "§e blocks! ");
-        TextComponent comp = DUtil.makeClickableText("§a§lUNDO", "§eClick to undo the latest zap!", ClickEvent.Action.RUN_COMMAND, "/undolatestzap");
+        TextComponent comp = IUtil.makeClickableText("§a§lUNDO", "§eClick to undo the latest zap!", ClickEvent.Action.RUN_COMMAND, "/undozap");
 
         player.spigot().sendMessage(component, comp);
         for(int i = 0; i < i1; ++i) {

@@ -1,12 +1,10 @@
 package net.maploop.items.gui;
 
 import net.maploop.items.Items;
-import net.maploop.items.util.DUtil;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.maploop.items.util.IUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -174,7 +172,7 @@ public class MinecraftItemsGUI extends PaginatedGUI {
         inventory.setItem(50, searchItem);
 
         inventory.setItem(4, makeItem(Material.HOPPER, "§aClear Inventory", 1, 0,
-                DUtil.colorize("&7Clear your inventory off all\n&7annoying and useless items!\n\n&eClick to clear!")));
+                IUtil.colorize("&7Clear your inventory off all\n&7annoying and useless items!\n\n&eClick to clear!")));
 
         ItemStack resetSearch = makeItem(Material.ANVIL, "§eReset Search", 1, 0,
                 "§7You are currently searching",

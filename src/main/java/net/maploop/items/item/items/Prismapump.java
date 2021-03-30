@@ -1,19 +1,14 @@
 package net.maploop.items.item.items;
 
 import net.maploop.items.Items;
-import net.maploop.items.data.DataHandler;
-import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
-import net.maploop.items.item.ItemUtilities;
-import net.maploop.items.listeners.EntityDamageListener;
-import net.maploop.items.sql.SQLGetter;
-import net.maploop.items.util.DUtil;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -66,6 +61,12 @@ public class Prismapump extends CustomItem {
 
     @Override
     public void rightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack paramItemStack) {
+        if(!player.hasPermission("items.blockzapper.use")) {
+            player.sendMessage("§cYou are not allowed to use this item!");
+            player.playSound(player.getLocation(), Sound.WOOD_CLICK, 1f, 1f);
+            return;
+        }
+
         event.setCancelled(true);
         player.sendMessage("§aPlaced!");
         Block block = event.getClickedBlock();

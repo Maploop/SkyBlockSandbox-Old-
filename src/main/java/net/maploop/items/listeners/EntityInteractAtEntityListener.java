@@ -1,7 +1,6 @@
 package net.maploop.items.listeners;
 
 import net.maploop.items.item.ItemUtilities;
-import net.maploop.items.util.DUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;

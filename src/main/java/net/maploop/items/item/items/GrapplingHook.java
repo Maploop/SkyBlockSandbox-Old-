@@ -1,16 +1,12 @@
 package net.maploop.items.item.items;
 
 import net.maploop.items.Items;
-import net.maploop.items.data.DataHandler;
-import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
 import net.maploop.items.item.ItemUtilities;
-import net.maploop.items.listeners.EntityDamageListener;
-import net.maploop.items.sql.SQLGetter;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -39,7 +35,7 @@ public class GrapplingHook extends CustomItem {
 
     @Override
     public void getSpecificLorePrefix(List<String> paramList, ItemStack paramItemStack) {
-        String lore = DUtil.colorize("&7Travel around in style using\n&7this Grappling Hook.\n&82 Second Cooldown");
+        String lore = IUtil.colorize("&7Travel around in style using\n&7this Grappling Hook.\n&82 Second Cooldown");
         String[] lore1 = lore.split("\n");
         paramList.addAll(Arrays.asList(lore1));
     }

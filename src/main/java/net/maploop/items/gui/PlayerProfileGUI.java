@@ -3,7 +3,7 @@ package net.maploop.items.gui;
 import net.maploop.items.Items;
 import net.maploop.items.data.DataHandler;
 import net.maploop.items.sql.SQLGetter;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -52,14 +52,14 @@ public class PlayerProfileGUI extends GUI {
         if(Items.getInstance().getConfig().getBoolean("mysql.use-mysql")) {
             SQLGetter getter = new SQLGetter(player, Items.getInstance());
             inventory.setItem(22, makeSkullItem(player.getDisplayName(), player.getName(), 1,
-                    DUtil.colorize("&c ❤ Health &f" + Math.round(Float.parseFloat(format.format(getter.getMaxHealth()))) +
+                    IUtil.colorize("&c ❤ Health &f" + Math.round(Float.parseFloat(format.format(getter.getMaxHealth()))) +
                             " HP\n&c ❁ Strength &f" + Math.round(Float.parseFloat(format.format(getter.getStrength()))) +
                             "\n&a ❈ Defense &f" + Math.round(Float.parseFloat(format.format(getter.getDefense()))) +
                             "\n&9 ☣ Crit Chance &f100%\n&9 ☠ Crit Damage &f" + Math.round(Float.parseFloat(format.format(getter.getCritDamage()))) +
                             "\n&b ✎ Intelligence &f" + Math.round(Float.parseFloat(format.format(getter.getMaxMana()))))));
         } else {
             inventory.setItem(22, makeSkullItem(player.getDisplayName(), player.getName(), 1,
-                    DUtil.colorize("&c ❤ Health &f" + Math.round(Float.parseFloat(format.format(handler.getMaxHealth()))) +
+                    IUtil.colorize("&c ❤ Health &f" + Math.round(Float.parseFloat(format.format(handler.getMaxHealth()))) +
                             " HP\n&c ❁ Strength &f" + Math.round(Float.parseFloat(format.format(handler.getStrength()))) +
                             "\n&a ❈ Defense &f" + Math.round(Float.parseFloat(format.format(handler.getDefense()))) +
                             "\n&9 ☣ Crit Chance &f100%\n&9 ☠ Crit Damage &f" + Math.round(Float.parseFloat(format.format(handler.getCritDamage()))) +

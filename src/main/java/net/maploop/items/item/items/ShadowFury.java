@@ -1,7 +1,6 @@
 package net.maploop.items.item.items;
 
 import net.maploop.items.Items;
-import net.maploop.items.data.DataHandler;
 import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
@@ -10,7 +9,7 @@ import net.maploop.items.item.ItemAbility;
 import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.listeners.EntityDamageListener;
 import net.maploop.items.sql.SQLGetter;
-import net.maploop.items.util.DUtil;
+import net.maploop.items.util.IUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -101,7 +100,7 @@ public class ShadowFury extends CustomItem {
     @Override
     public void hitEntityAction(Player player, EntityDamageByEntityEvent event, Entity paramEntity, ItemStack item) {
         SQLGetter handler = new SQLGetter(player, Items.getInstance());
-        double d = DUtil.calculateDamage(player, 300, (int) (handler.getStrength() + 125));
+        double d = IUtil.calculateDamage(player, 300, (int) (handler.getStrength() + 125));
         event.setDamage(d);
 
         EntityDamageListener listener = new EntityDamageListener();
@@ -129,7 +128,7 @@ public class ShadowFury extends CustomItem {
                 @Override
                 public void run() {
                     List<Entity> entityList = player.getNearbyEntities(6, 6, 6);
-                    int i = DUtil.getRandomInteger(entityList.size());
+                    int i = IUtil.getRandomInteger(entityList.size());
                     player.teleport(entityList.get(i).getLocation());
                 }
             },  i * 15);

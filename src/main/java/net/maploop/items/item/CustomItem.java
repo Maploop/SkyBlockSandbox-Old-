@@ -5,6 +5,7 @@ import com.mojang.authlib.properties.Property;
 import net.maploop.items.Items;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
+import net.maploop.items.util.Attribute;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -49,6 +50,12 @@ public abstract class CustomItem {
     private final int durability;
     private final boolean glowing;
 
+    private int damage = 0;
+    private int strength = 0;
+    private int crit = 0;
+    private int intelligence = 0;
+    private int health = 0;
+
 
     public CustomItem(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, ItemType itemType, boolean glowing) {
         this.id = id;
@@ -83,6 +90,27 @@ public abstract class CustomItem {
         this.glowing = glowing;
     }
 
+    public CustomItem(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, ItemType itemType, boolean glowing, int damage, int strength, int crit_damage, int intelligence, int health) {
+        this.id = id;
+        this.rarity = rarity;
+        this.name = name;
+        this.material = material;
+        this.stackable = stackable;
+        this.oneTimeUse = oneTimeUse;
+        this.hasActive = hasActive;
+        this.abilities = abilities;
+        this.manaCost = manaCost;
+        this.reforgeable = reforgeable;
+        this.itemType = itemType;
+        this.durability = durability;
+        this.glowing = glowing;
+        this.health = health;
+        this.strength = strength;
+        this.damage = damage;
+        this.crit = crit_damage;
+        this.intelligence = intelligence;
+    }
+
     public ItemType getType() {
         return this.itemType;
     }
@@ -94,6 +122,22 @@ public abstract class CustomItem {
             lore.add(ChatColor.RED + "It has not been completed");
             lore.add(ChatColor.RED + "and might be broken");
         }
+        if(damage != 0) {
+            lore.add("§7Damage: §c+" + damage);
+        }
+        if(strength != 0) {
+            lore.add("§7Strength: §c+" + strength);
+        }
+        if(crit != 0) {
+            lore.add("§7Crit Damage: §c+" + crit);
+        }
+        if(health != 0) {
+            lore.add("§7Health: §a+" + health);
+        }
+        if(intelligence != 0) {
+            lore.add("§7Intelligence: §a+" + intelligence);
+        }
+
         getSpecificLorePrefix(lore, item);
         if (abilities != null) {
             for (ItemAbility ability : this.abilities) {
@@ -108,8 +152,6 @@ public abstract class CustomItem {
             lore.add(ChatColor.DARK_GRAY + "This item can be reforged!");
         }
         getSpecificLoreSuffix(lore, item);
-        if (this.oneTimeUse)
-            lore.add(ChatColor.DARK_GRAY + "(consumed on use)");
         if (!this.reforgeable) {
             lore.add("");
         }
@@ -242,6 +284,23 @@ public abstract class CustomItem {
         return (short) this.durability;
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public int getStrength() {
+        return this.strength;
+    }
+
+
+    public int getCrit() {
+        return crit;
+    }
+
     public static ItemStack fromString(Items main, String name, int stackSize) {
 
         CustomItem item;
@@ -265,6 +324,11 @@ public abstract class CustomItem {
         ItemStack step3 = ItemUtilities.storeIntInItem(step2, item.getID(), "SB-ID");
 
         ItemStack step4 = ItemUtilities.storeStringInItem(step3, item.getRarity().toString(), "Rarity");
+
+        ItemStack step5 = ItemUtilities.storeIntInItem(step4,  item.getStrength(), Attribute.STRENGTH.toString());
+        ItemStack step6 = ItemUtilities.storeIntInItem(step5,  item.getCrit(), Attribute.CRIT_DAMAGE.toString());
+        ItemStack step7 = ItemUtilities.storeIntInItem(step6,  item.getIntelligence(), Attribute.INTELLIGENCE.toString());
+        ItemStack step8 = ItemUtilities.storeIntInItem(step7,  item.getHealth(), Attribute.HEALTH.toString());
 
         item.enforceStackability(step4);
         item.onItemStackCreate(step4);
