@@ -208,6 +208,30 @@ public class User {
                 intelligence = intelligence + ItemUtilities.getIntFromItem(a, "INTELLIGENCE");
             }
         }
+        ItemStack iih = user.getItemInHand();
+        if(iih != null && iih.hasItemMeta() && iih.getItemMeta().hasLore()) {
+            intelligence = intelligence + ItemUtilities.getIntFromItem(iih, "INTELLIGENCE");
+        }
         return intelligence;
+    }
+
+    public double getTotalDefense() {
+        File playerData = new File("plugins/Items/playerData/" + user.getUniqueId().toString() + "/data.yml");
+        FileConfiguration pD = YamlConfiguration.loadConfiguration(playerData);
+
+        try {
+            pD.load(playerData);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        double def = pD.getDouble("stats.extra_defense")+100;
+        ItemStack[] armor = user.getEquipment().getArmorContents();
+        for(ItemStack a : armor) {
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
+                def = def + ItemUtilities.getIntFromItem(a, "DEFENSE");
+            }
+        }
+        return def;
     }
 }

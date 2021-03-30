@@ -25,9 +25,9 @@ public class UserInjector extends ItemsService {
             @Override
             public void run() {
                 if (user.getHealth() > user.getTotalHealth()) {
-                    IUtil.sendActionText(player, "§6" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
+                    IUtil.sendActionText(player, "§6" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getTotalDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
                 } else {
-                    IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
+                    IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getTotalDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
                 }
 
                 if (user.getIntelligence() < user.getTotalIntelligence()) {

@@ -55,6 +55,7 @@ public abstract class CustomItem {
     private int crit = 0;
     private int intelligence = 0;
     private int health = 0;
+    private int defense = 0;
 
 
     public CustomItem(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, ItemType itemType, boolean glowing) {
@@ -90,7 +91,7 @@ public abstract class CustomItem {
         this.glowing = glowing;
     }
 
-    public CustomItem(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, ItemType itemType, boolean glowing, int damage, int strength, int crit_damage, int intelligence, int health) {
+    public CustomItem(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, ItemType itemType, boolean glowing, int damage, int strength, int crit_damage, int intelligence, int health, int defense) {
         this.id = id;
         this.rarity = rarity;
         this.name = name;
@@ -109,6 +110,7 @@ public abstract class CustomItem {
         this.damage = damage;
         this.crit = crit_damage;
         this.intelligence = intelligence;
+        this.defense = defense;
     }
 
     public ItemType getType() {
@@ -137,6 +139,8 @@ public abstract class CustomItem {
         if(intelligence != 0) {
             lore.add("§7Intelligence: §a+" + intelligence);
         }
+        if(defense != 0)
+            lore.add("§7Defense: §a+" + defense);
 
         getSpecificLorePrefix(lore, item);
         if (abilities != null) {
@@ -296,6 +300,7 @@ public abstract class CustomItem {
         return this.strength;
     }
 
+    public int getDefense() { return this.defense; }
 
     public int getCrit() {
         return crit;
@@ -329,13 +334,14 @@ public abstract class CustomItem {
         ItemStack step6 = ItemUtilities.storeIntInItem(step5,  item.getCrit(), Attribute.CRIT_DAMAGE.toString());
         ItemStack step7 = ItemUtilities.storeIntInItem(step6,  item.getIntelligence(), Attribute.INTELLIGENCE.toString());
         ItemStack step8 = ItemUtilities.storeIntInItem(step7,  item.getHealth(), Attribute.HEALTH.toString());
+        ItemStack step9 = ItemUtilities.storeIntInItem(step8,  item.getDefense(), Attribute.DEFENSE.toString());
 
-        item.enforceStackability(step8);
-        item.onItemStackCreate(step8);
-        ItemUtilities.loreItem(step8, item.getLore(step8));
+        item.enforceStackability(step9);
+        item.onItemStackCreate(step9);
+        ItemUtilities.loreItem(step9, item.getLore(step9));
 
         if(!item.isStackable()) {
-            ItemStack optionalStep = ItemUtilities.storeStringInItem(step8, UUID.randomUUID().toString(), "UUID");
+            ItemStack optionalStep = ItemUtilities.storeStringInItem(step9, UUID.randomUUID().toString(), "UUID");
 
             ItemMeta meta = optionalStep.getItemMeta();
             if(item.glowing) {
@@ -351,7 +357,7 @@ public abstract class CustomItem {
             return optionalStep;
         }
 
-        ItemMeta meta = step8.getItemMeta();
+        ItemMeta meta = step9.getItemMeta();
         if(item.glowing) {
             meta.addEnchant(Enchantment.LUCK, 1, false);
         }
@@ -359,9 +365,9 @@ public abstract class CustomItem {
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-        step8.setDurability(item.getDurability());
-        step8.setItemMeta(meta);
-        return step8;
+        step9.setDurability(item.getDurability());
+        step9.setItemMeta(meta);
+        return step9;
     }
 
     public static void destroy(ItemStack item, int quantity) {
