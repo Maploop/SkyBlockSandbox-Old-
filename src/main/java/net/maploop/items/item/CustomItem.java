@@ -157,7 +157,7 @@ public abstract class CustomItem {
         }
         getSpecificLoreSuffix(lore, item);
         if (!this.reforgeable) {
-            lore.add("");
+            lore.add("§0");
         }
         if(this.rarity == Rarity.SKYBLOCK_MENU) {
             lore.add("§eClick to open!");

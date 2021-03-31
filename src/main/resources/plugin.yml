@@ -19,3 +19,4 @@ commands:
     aliases:
       - cl
       - clear
+  loop:

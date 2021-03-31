@@ -184,6 +184,7 @@ public final class Items extends JavaPlugin {
         SBItems.putItem("bonzo_staff", new BonzoStaff(34, Rarity.RARE, "Bonzo's Staff", Material.BLAZE_ROD, 0, false, false, false, Collections.singletonList(new ItemAbility("Showtime!", AbilityType.RIGHT_CLICK, IUtil.colorize("Shoot balloons that create a\nlarge explosion on impact,\ndealing up to &c1,000 &7damage."))), 60, true, ItemType.DUNGEON_SWORD, false, 160, 0, 0, 0, 0, 0));
         SBItems.putItem("bonzos_balloon", new BonzosBalloon(35, Rarity.UNOBTAINABLE, "Bonzo's Balloon", Material.SKULL_ITEM, 3, true, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/76387fc246893d92a6dd9ea1b52dcd581e991eeee2e263b27fff1bcf1b154eb7", false));
         SBItems.putItem("helmet_of_growth", new HelmetOfGrowth(36, Rarity.EPIC, "Helmet of Growth", Material.GOLD_HELMET, 0, true, false, false ,null, 0, false, ItemType.HELMET, true, 0, 0, 0, 20, 120, 500));
+        SBItems.putItem("guided_missile", new GuidedMissile(37, Rarity.LEGENDARY, "Guided Missile", Material.SKULL_ITEM, 3, true, false, false, Collections.singletonList(new ItemAbility("Guided Missile", AbilityType.RIGHT_CLICK, IUtil.colorize("Shoots a guided missile. Upon shooting,\nyour game camera will\nlatch onto the missile, allowing\nyou to control it. The\nmissile explodes for &c10,000 &7damage."), 30)), 250, false, ItemType.ITEM, "http://textures.minecraft.net/texture/315bbda12e1b832a6a6af85d8439152d9157ce104e6a7f7b36aeaccc863544", false));
     }
 
     private void registerCommands() {
@@ -198,6 +199,7 @@ public final class Items extends JavaPlugin {
         this.getCommand("sbclear").setExecutor(new Command_sbclear());
         this.getCommand("clear").setExecutor(new Command_sbclear());
         this.getCommand("cl").setExecutor(new Command_sbclear());
+        this.getCommand("loop").setExecutor(new Command_loop());
     }
 
     private void loadCommands() {

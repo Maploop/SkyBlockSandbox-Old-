@@ -21,6 +21,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -75,8 +76,8 @@ public class BonzoStaff extends CustomItem {
                 loc = stand.getLocation().add(stand.getLocation().getDirection().multiply(0.5));
                 stand.teleport(loc);
 
-                for(Entity e : stand.getWorld().getNearbyEntities(stand.getLocation(), 0.3, 0.3, 0.3)) {
-                    if(e instanceof LivingEntity && e.getType() != EntityType.DROPPED_ITEM && e.getType() != EntityType.ARMOR_STAND) {
+                for(Entity e : stand.getWorld().getNearbyEntities(stand.getLocation(), 0.5, 0.5, 0.5)) {
+                    if(e instanceof LivingEntity && e.getType() != EntityType.DROPPED_ITEM && e.getType() != EntityType.ARMOR_STAND && e.getType() != EntityType.PLAYER) {
                         LivingEntity f = (LivingEntity) e;
                         f.damage(1000.0);
                         stand.remove();
@@ -88,6 +89,12 @@ public class BonzoStaff extends CustomItem {
                             f.getWorld().playSound(f.getLocation(), Sound.FIREWORK_BLAST, 1f, 1f);
                             listener.addIndicator(dmg, IUtil.getRandomLocation(f.getLocation(), 2), EntityDamageEvent.DamageCause.ENTITY_ATTACK);
                         }
+                    }
+                    if(e instanceof Player) {
+                        Player player = (Player) e;
+                        Location l1 = stand.getLocation();
+                        Location l2 = player.getLocation();
+                        player.setVelocity(new Vector(l1.getX() - l2.getX(), l1.getY() - l2.getY(), l1.getZ() - l2.getZ()));
                     }
                 }
                 for(Block b : getBlocks(stand.getLocation().getBlock(), 1)) {
@@ -107,54 +114,34 @@ public class BonzoStaff extends CustomItem {
     }
 
     @Override
-    public void rightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
-
-    }
+    public void rightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) { }
 
     @Override
-    public void shiftLeftClickAirAction(Player player, ItemStack item) {
-
-    }
+    public void shiftLeftClickAirAction(Player player, ItemStack item) { }
 
     @Override
-    public void shiftLeftClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
-
-    }
+    public void shiftLeftClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) { }
 
     @Override
-    public void shiftRightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) {
-
-    }
+    public void shiftRightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) { }
 
     @Override
-    public void shiftRightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
-
-    }
+    public void shiftRightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) { }
 
     @Override
-    public void middleClickAction(Player player, ItemStack item) {
-
-    }
+    public void middleClickAction(Player player, ItemStack item) { }
 
     @Override
-    public void hitEntityAction(Player player, EntityDamageByEntityEvent event, Entity paramEntity, ItemStack item) {
-
-    }
+    public void hitEntityAction(Player player, EntityDamageByEntityEvent event, Entity paramEntity, ItemStack item) { }
 
     @Override
-    public void breakBlockAction(Player player, BlockBreakEvent event, Block paramBlock, ItemStack item) {
-
-    }
+    public void breakBlockAction(Player player, BlockBreakEvent event, Block paramBlock, ItemStack item) { }
 
     @Override
-    public void clickedInInventoryAction(Player player, InventoryClickEvent event) {
-
-    }
+    public void clickedInInventoryAction(Player player, InventoryClickEvent event) { }
 
     @Override
-    public void activeEffect(Player player, ItemStack item) {
-
-    }
+    public void activeEffect(Player player, ItemStack item) { }
 
     public ArrayList<Block> getBlocks(Block start, int radius){
         ArrayList<Block> blocks = new ArrayList<Block>();

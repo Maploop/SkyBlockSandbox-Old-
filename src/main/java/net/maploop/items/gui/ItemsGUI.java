@@ -171,7 +171,10 @@ public class ItemsGUI extends PaginatedGUI {
         ItemStack clearInv = makeItem(Material.HOPPER, "§aClear Inventory", 1, 0, "§7Click you clear your\n§7inventory off of all the\n§7junk in there!\n \n§eClick to clear!");
         inventory.setItem(4, clearInv);
 
-        ItemStack resetSearch = makeItem(Material.ANVIL, "§eReset Configurations", 1, 0,
+        ItemStack rarityFilter = makeItem(Material.PAINTING, "§aRarity Filter", 1, 0, "§c§lCOMING SOON");
+        inventory.setItem(51, rarityFilter);
+
+        ItemStack resetSearch = makeItem(Material.ANVIL,  "§eReset Configurations", 1, 0,
                 "§7You are currently searching",
                 "§7for an item, click to reset your search",
                 "",

@@ -16,8 +16,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class BonzosBalloon extends CustomItem {
-    public BonzosBalloon(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, ItemType itemType, String url, boolean glowing) {
+public class GuidedMissile extends CustomItem {
+    public GuidedMissile(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, ItemType itemType, String url, boolean glowing) {
         super(id, rarity, name, material, durability, stackable, oneTimeUse, hasActive, abilities, manaCost, reforgeable, itemType, url, glowing);
     }
 
@@ -28,12 +28,13 @@ public class BonzosBalloon extends CustomItem {
 
     @Override
     public void getSpecificLorePrefix(List<String> paramList, ItemStack paramItemStack) {
-        paramList.remove("§0");
+
     }
 
     @Override
     public void getSpecificLoreSuffix(List<String> paramList, ItemStack paramItemStack) {
-
+        paramList.add("§0");
+        paramList.add("§8Hold sneak to launch freely!");
     }
 
     @Override
@@ -53,7 +54,7 @@ public class BonzosBalloon extends CustomItem {
 
     @Override
     public void rightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
-        event.setCancelled(true);
+
     }
 
     @Override
@@ -73,7 +74,7 @@ public class BonzosBalloon extends CustomItem {
 
     @Override
     public void shiftRightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
-        event.setCancelled(true);
+
     }
 
     @Override
