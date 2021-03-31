@@ -78,9 +78,30 @@ public class MinecraftItemsGUI extends PaginatedGUI {
             }
             case SIGN: {
                 if(event.getCurrentItem().hasItemMeta()) {
-                    player.sendMessage("§aPlease enter your search in chat.");
-                    mcSearching.add(player);
-                    player.closeInventory();
+                    AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
+                        @Override
+                        public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
+                            if(event.getSlot() == AnvilGUI.AnvilSlot.OUTPUT) {
+                                event.setWillClose(true);
+                                event.setWillDestroy(true);
+
+                                mcSearch.put(player, event.getName());
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        new MinecraftItemsGUI(new PlayerMenuUtility(player)).open();
+                                    }
+                                }.runTaskLater(Items.getInstance(), 3);
+                            }else {
+                                event.setWillClose(false);
+                                event.setWillDestroy(false);
+                            }
+                        }
+                    });
+
+                    ItemStack i = makeItem(Material.PAPER, "Enter your search", 1, 0);
+                    gui.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, i);
+                    gui.open();
                 } else {
                     player.getInventory().addItem(event.getCurrentItem());
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1f, 2f);

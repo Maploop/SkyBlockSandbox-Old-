@@ -200,6 +200,7 @@ public final class Items extends JavaPlugin {
         this.getCommand("clear").setExecutor(new Command_sbclear());
         this.getCommand("cl").setExecutor(new Command_sbclear());
         this.getCommand("loop").setExecutor(new Command_loop());
+        this.getCommand("createitem").setExecutor(new Command_createitem());
     }
 
     private void loadCommands() {
