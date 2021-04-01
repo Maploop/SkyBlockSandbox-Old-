@@ -149,6 +149,7 @@ public final class Items extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerQuitEvent(), this);
         this.getServer().getPluginManager().registerEvents(new EntityInteractAtEntityListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerCustomDeathListener(), this);
+        this.getServer().getPluginManager().registerEvents(new SignGUIUpdateListener(), this);
     }
 
     private void registerItems() {
