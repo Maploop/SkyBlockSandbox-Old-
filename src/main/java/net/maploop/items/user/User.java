@@ -1,20 +1,21 @@
 package net.maploop.items.user;
 
 import jdk.nashorn.internal.ir.Block;
-import net.maploop.items.Items;
 import net.maploop.items.item.ItemUtilities;
+import net.minecraft.server.v1_8_R3.PacketPlayOutNamedSoundEffect;
+import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class User {
     private final Player user;
@@ -26,12 +27,14 @@ public class User {
     private Map<Enchantment, Integer> ench_opt_1;
     private Map<Enchantment, Integer> ench_opt_2;
     private Map<Enchantment, Integer> ench_opt_3;
+    public static final Map<Player, Double> currHealth = new HashMap<>();
+    public static final Map<Player, Double> currDefense = new HashMap<>();
 
-    private double strength;
-    private double crit_damage;
-    private double crit_chance;
-    private double defense;
-    private int speed;
+    private static double strength;
+    private static double crit_damage;
+    private static double crit_chance;
+    private static double defense;
+    private static int speed;
 
     public Player getBukkitPlayer() {
         return user;
@@ -40,12 +43,12 @@ public class User {
     private double max_intelligence;
     private double max_health;
 
-    private String lastSkill;
-    private double gainedXP;
-    private Block block;
+    private static String lastSkill;
+    private static double gainedXP;
+    private static Block block;
 
-    private double intelligence;
-    private double health;
+    private static double intelligence;
+    private static double health;
 
     public Map<Enchantment, Integer> getEnch_opt_1() {
         return ench_opt_1;
@@ -75,88 +78,89 @@ public class User {
         return strength;
     }
 
-    public void setStrength(double strength) {
-        this.strength = strength;
+    public void setStrength(double d) {
+        strength = d;
     }
 
     public double getCrit_damage() {
         return crit_damage;
     }
 
-    public void setCrit_damage(double crit_damage) {
-        this.crit_damage = crit_damage;
+    public void setCrit_damage(double d) {
+        crit_damage = d;
     }
 
     public double getCrit_chance() {
         return crit_chance;
     }
 
-    public void setCrit_chance(double crit_chance) {
-        this.crit_chance = crit_chance;
+    public void setCrit_chance(double d) {
+        crit_chance = d;
     }
 
     public double getDefense() {
         return defense;
     }
 
-    public void setDefense(double defense) {
-        this.defense = defense;
+    public void setDefense(double d) {
+        defense = d;
     }
 
     public double getMax_intelligence() {
         return max_intelligence;
     }
 
-    public void setMax_intelligence(double max_intelligence) {
-        this.max_intelligence = max_intelligence;
+    public void setMax_intelligence(double d) {
+        max_intelligence = d;
     }
 
     public double getMax_health() {
         return max_health;
     }
 
-    public void setMax_health(double max_health) {
-        this.max_health = max_health;
+    public void setMax_health(double d) {
+        max_health = d;
     }
 
     public String getLastSkill() {
         return lastSkill;
     }
 
-    public void setLastSkill(String lastSkill) {
-        this.lastSkill = lastSkill;
+    public void setLastSkill(String d) {
+        lastSkill = d;
     }
 
     public double getGainedXP() {
         return gainedXP;
     }
 
-    public void setGainedXP(double gainedXP) {
-        this.gainedXP = gainedXP;
+    public void setGainedXP(double d) {
+        gainedXP = d;
     }
 
     public Block getBlock() {
         return block;
     }
 
-    public void setBlock(Block block) {
-        this.block = block;
+    public void setBlock(Block b) {
+        block = b;
     }
 
     public double getIntelligence() {
         return intelligence;
     }
 
-    public void setIntelligence(double intelligence) {
-        this.intelligence = intelligence;
+    public void setIntelligence(double d) {
+        intelligence = d;
     }
 
     public double getHealth() {
-        return health;
+        return currHealth.get(user);
     }
 
-    public void setHealth(double health) {
-        this.health = health;
+    public void setHealth(double d) {
+        health = d;
+        currHealth.put(user, health);
     }
 
     public FileConfiguration getPlayerData() {
@@ -233,5 +237,12 @@ public class User {
             }
         }
         return def;
+    }
+
+    public void playSound(String s, int vol, int pitch) {
+        CraftPlayer player = (CraftPlayer) user;
+        Location l = user.getLocation();
+        player.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(s, l.getX(), l.getY(), l.getZ(), vol, pitch));
+
     }
 }
