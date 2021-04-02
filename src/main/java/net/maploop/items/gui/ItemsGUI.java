@@ -1,6 +1,7 @@
 package net.maploop.items.gui;
 
 import net.maploop.items.Items;
+import net.maploop.items.api.SignGUI;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.item.SBItems;
@@ -61,6 +62,7 @@ public class ItemsGUI extends PaginatedGUI {
                 break;
             }
             case SIGN: {
+                /*
                 AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
                     @Override
                     public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
@@ -85,6 +87,10 @@ public class ItemsGUI extends PaginatedGUI {
                 ItemStack i = makeItem(Material.PAPER, "Enter your search", 1, 0);
                 gui.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, i);
                 gui.open();
+                 */
+                String[] text = new String[] {"", "^^^^^^", "Enter your", "search!"};
+                SignGUI.openSignEditor(player, text);
+                searching.add(player);
                 break;
             }
             case ANVIL: {

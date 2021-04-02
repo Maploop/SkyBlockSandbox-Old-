@@ -21,6 +21,7 @@ public class UserInjector extends ItemsService {
 
     public void inject() {
         Player player = user.getBukkitPlayer();
+        user.setHealth(user.getTotalHealth());
         int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Runnable() {
             @Override
             public void run() {
@@ -37,7 +38,6 @@ public class UserInjector extends ItemsService {
                 if (user.getHealth() < user.getTotalHealth()) {
                     user.setHealth(user.getHealth() + user.getTotalHealth() / 50);
                 }
-
             }
         }, 0, 20L);
     }

@@ -1,4 +1,4 @@
-package net.maploop.items.packet;
+package net.maploop.items.protocol;
 
 import java.lang.reflect.InvocationTargetException;
 

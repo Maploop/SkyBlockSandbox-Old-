@@ -3,6 +3,8 @@ package net.maploop.items.listeners;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.maploop.items.Items;
+import net.maploop.items.event.PlayerCustomDeathEvent;
+import net.maploop.items.user.User;
 import net.maploop.items.util.IUtil;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
@@ -16,6 +18,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,7 +28,7 @@ import java.text.DecimalFormat;
 public class EntityDamageListener implements Listener {
     public double damage = 0;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity().hasMetadata("NPC")) {
             NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getEntity());
@@ -81,6 +84,24 @@ public class EntityDamageListener implements Listener {
             }
             return;
         }
+        if(event.getEntity() instanceof Player) {
+            if(event.getEntity().hasMetadata("NPC")) return;
+            Player player = (Player) event.getEntity();
+            User user = new User(player);
+            double reduction = user.getTotalDefense() / (user.getTotalDefense() + 100);
+            double realDmg = event.getDamage() - (event.getDamage() * reduction);
+            user.setHealth(user.getHealth() - realDmg);
+            System.out.println(realDmg);
+            if(user.getHealth() <= 0) {
+                Bukkit.getPluginManager().callEvent(new PlayerCustomDeathEvent(player, user, event.getCause()));
+            }
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    player.setHealth(player.getMaxHealth());
+                }
+            }.runTaskLater(Items.getInstance(), 1);
+        }
         if (event.getEntity().getType() == EntityType.ARMOR_STAND) return;
 
         new BukkitRunnable() {
@@ -101,17 +122,17 @@ public class EntityDamageListener implements Listener {
         if (str.length() == 1)
             new_string = "§f✧§f" + str + "§f✧";
         if (str.length() == 2)
-            new_string = "§f✧" + String.valueOf(str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§c✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+            new_string = "§f✧" + (str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§c✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
         if (str.length() == 3)
-            new_string = "§f✧" + String.valueOf(str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+            new_string = "§f✧" + (str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
         if (str.length() == 4)
-            new_string = "§f✧" + String.valueOf(str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + "§c✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+            new_string = "§f✧" + (str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + "§c✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
         if (str.length() == 5)
-            new_string = "§f✧" + String.valueOf(str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+            new_string = "§f✧" +(str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
         if (str.length() == 6)
-            new_string = "§f✧" + String.valueOf(str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + str.charAt(5) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+            new_string = "§f✧" + (str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + str.charAt(5) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
         if (str.length() == 7)
-            new_string = "§f✧" + String.valueOf(str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + str.charAt(5) + str.charAt(6) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+            new_string = "§f✧" + (str.charAt(0)) + "§e" + (str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + str.charAt(5) + str.charAt(6) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
         return new_string;
     }
 
