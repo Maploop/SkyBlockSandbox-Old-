@@ -1,5 +1,6 @@
 package net.maploop.items.item.items;
 
+import net.citizensnpcs.api.CitizensAPI;
 import net.maploop.items.Items;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
@@ -18,6 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.mcmonkey.sentinel.SentinelTrait;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,13 +61,14 @@ public class FlowerOfTruth extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player paramPlayer, PlayerInteractEvent event, ItemStack paramItemStack) {
-        if(!(ItemUtilities.enforceCooldown(paramPlayer, "flower_of_truth", 1d, paramItemStack, false))) {  // 1d = (cooldown time in seconds)      item = (item cooldown must be on)     boolean false = if throw error in console (KEEP ON FALSE)
+        if (!(ItemUtilities.enforceCooldown(paramPlayer, "flower_of_truth", 1d, paramItemStack, false))) {  // 1d = (cooldown time in seconds)      item = (item cooldown must be on)     boolean false = if throw error in console (KEEP ON FALSE)
             ItemUtilities.warnPlayer(paramPlayer, Collections.singletonList(ChatColor.RED + "This ability is currently on cooldown for 1 more second."));
             return;
         }
 
         ArmorStand stand = (ArmorStand) paramPlayer.getWorld().spawnEntity(paramPlayer.getEyeLocation(), EntityType.ARMOR_STAND);
         Vector direction = paramPlayer.getLocation().getDirection();
+        Vector facing = stand.getLocation().getDirection();
 
         stand.setVisible(false);
         stand.setGravity(false);
@@ -74,120 +77,76 @@ public class FlowerOfTruth extends CustomItem {
 
         paramPlayer.playSound(paramPlayer.getLocation(), Sound.EAT, 1, 1);
 
+        int target = 0;
+        Entity targetE = paramPlayer.getWorld().getEntities().get(target);
+
+        Location l = stand.getLocation();
+        l.setDirection(targetE.getLocation().getDirection().multiply(-1));
+
+        targetE.teleport(l);
+
+        for (Entity e : stand.getNearbyEntities(15, 15, 15)) {
+            if (validEntity(e)) {
+                target = e.getEntityId();
+            }
+        }
+
+        int target1 = 0;
+        Entity targetE1 = paramPlayer.getWorld().getEntities().get(target1);
+
+        Location l1 = stand.getLocation();
+        l1.setDirection(targetE.getLocation().getDirection().multiply(-1));
+
+        targetE1.teleport(l1);
+
+        for (Entity e : stand.getNearbyEntities(15, 15, 15)) {
+            if (validEntity(e)) {
+                target1 = e.getEntityId();
+            }
+        }
+
+        int target2 = 0;
+        Entity targetE2 = paramPlayer.getWorld().getEntities().get(target2);
+
+        Location l2 = stand.getLocation();
+        l2.setDirection(targetE2.getLocation().getDirection().multiply(-1));
+
+        targetE1.teleport(l2);
+
+        for (Entity e : stand.getNearbyEntities(15, 15, 15)) {
+            if (validEntity(e)) {
+                target2 = e.getEntityId();
+            }
+        }
+
         int taskid = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Runnable() {
             @Override
             public void run() {
                 Location loc = stand.getLocation();
 
-                loc.add(direction.multiply(1.2));
+                loc.add(direction);
 
                 stand.teleport(loc);
 
-                for (Entity entity : stand.getNearbyEntities(1, 1, 1)) {
-                    if (entity instanceof LivingEntity) {
-                        if (entity instanceof Player) {
-                            if (!entity.getName().equalsIgnoreCase(paramPlayer.getName())) {
-                                if (entity.hasMetadata("NPC")) {
-                                    hitOne = true;
-                                    targetEntity.add(entity);
-                                    for (Entity e2 : stand.getNearbyEntities(15, 15, 15)) {
-                                        if (e2 instanceof LivingEntity) {
-                                            loc.subtract(e2.getLocation().getDirection());
-
-                                            ((LivingEntity) e2).damage(130349);
-                                            targetEntity.add(e2);
-
-                                            for (Entity e3 : stand.getNearbyEntities(15, 15, 15)) {
-                                                if (e3 instanceof LivingEntity) {
-                                                    loc.subtract(e3.getLocation().getDirection());
-
-                                                    ((LivingEntity) e3).damage(140063);
-                                                    targetEntity.add(e3);
-                                                    targetEntity.clear();
-
-                                                    EntityDamageListener listener = new EntityDamageListener();
-                                                    if(!alreadyDone) {
-                                                        alreadyDone = true;
-                                                        listener.addIndicator(140063.0, IUtil.getRandomLocation(e3.getLocation(), 2), EntityDamageEvent.DamageCause.ENTITY_ATTACK);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    if (event.getPlayer().hasMetadata("NPC")) {
-                                        hitOne = true;
-                                        targetEntity.add(entity);
-                                        for (Entity e2 : stand.getNearbyEntities(15, 15, 15)) {
-                                            if (e2 instanceof LivingEntity) {
-                                                loc.subtract(e2.getLocation().getDirection());
-
-                                                ((LivingEntity) e2).damage(130349);
-                                                targetEntity.add(e2);
-
-                                                for (Entity e3 : stand.getNearbyEntities(15, 15, 15)) {
-                                                    if (e3 instanceof LivingEntity) {
-                                                        loc.subtract(e3.getLocation().getDirection());
-
-                                                        ((LivingEntity) e3).damage(140063);
-                                                        targetEntity.add(e3);
-                                                        targetEntity.clear();
-
-                                                        EntityDamageListener listener = new EntityDamageListener();
-                                                        if(!alreadyDone) {
-                                                            alreadyDone = true;
-                                                            listener.addIndicator(140063.0, IUtil.getRandomLocation(e3.getLocation(), 2), EntityDamageEvent.DamageCause.ENTITY_ATTACK);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            hitOne = true;
-                            targetEntity.add(entity);
-                            for (Entity e2 : stand.getNearbyEntities(15, 15, 15)) {
-                                if (e2 instanceof LivingEntity) {
-                                    loc.subtract(e2.getLocation().getDirection());
-
-                                    ((LivingEntity) e2).damage(130349);
-                                    targetEntity.add(e2);
-
-                                    for (Entity e3 : stand.getNearbyEntities(15, 15, 15)) {
-                                        if (e3 instanceof LivingEntity) {
-                                            loc.subtract(e3.getLocation().getDirection());
-
-                                            ((LivingEntity) e3).damage(140063);
-                                            targetEntity.add(e3);
-                                            targetEntity.clear();
-
-                                            EntityDamageListener listener = new EntityDamageListener();
-                                            if(!alreadyDone) {
-                                                alreadyDone = true;
-                                                listener.addIndicator(140063.0, IUtil.getRandomLocation(e3.getLocation(), 2), EntityDamageEvent.DamageCause.ENTITY_ATTACK);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                for (Entity e : stand.getNearbyEntities(2, 1, 2)) {
+                    if (validEntity(e)) {
+                        ((LivingEntity) e).damage(40129);
+                        EntityDamageListener listener = new EntityDamageListener();
+                        if(!alreadyDone) {
+                            alreadyDone = true;
+                            listener.addIndicator(40129, IUtil.getRandomLocation(e.getLocation(), 2), EntityDamageEvent.DamageCause.ENTITY_ATTACK);
                         }
                     }
                 }
             }
-        }, 0, 1);
+        }, 0L, 1L);
+    }
 
-        Bukkit.getScheduler().runTaskLater(Items.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.getScheduler().cancelTask(taskid);
-                if (!hitOne && targetEntity.isEmpty()) {
-                    stand.remove();
-                    paramPlayer.getWorld().playEffect(stand.getLocation(), Effect.SNOWBALL_BREAK, null);
-                }
-            }
-        }, 10);
+    private boolean validEntity(Entity entity) {
+        if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER && entity.getType() != EntityType.VILLAGER) {
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -21,3 +21,4 @@ commands:
       - clear
   loop:
   createitem:
+  placespecialanvil:

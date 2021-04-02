@@ -201,6 +201,7 @@ public final class Items extends JavaPlugin {
         this.getCommand("cl").setExecutor(new Command_sbclear());
         this.getCommand("loop").setExecutor(new Command_loop());
         this.getCommand("createitem").setExecutor(new Command_createitem());
+        this.getCommand("placespecialanvil").setExecutor(new Command_placespecialanvil());
     }
 
     private void loadCommands() {

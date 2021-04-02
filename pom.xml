@@ -25,8 +25,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>9</source>
+                    <target>9</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -41,7 +41,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputDirectory>C:\Users\hundr\Desktop\Plugin\.notbungee\plugins</outputDirectory>
+                            <outputDirectory>C:\Non-System Data\Games\1.8 Test Server\plugins</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -89,9 +89,17 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.mcmonkey</groupId>
+            <artifactId>sentinel</artifactId>
+            <version>2.2.5-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>net.wesjd</groupId>
             <artifactId>anvilgui</artifactId>

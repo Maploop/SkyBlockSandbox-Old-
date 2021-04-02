@@ -23,6 +23,7 @@ public class PlayerInteractListener implements Listener {
                 if(event.getClickedBlock().hasMetadata("reforge_anvil")) {
                     // Do something else
                 } else {
+                    event.setCancelled(true);
                     new BukkitRunnable() {
                         @Override
                         public void run() {
