@@ -5,6 +5,7 @@ import com.mojang.authlib.properties.Property;
 import net.maploop.items.Items;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
+import net.maploop.items.enums.Reforge;
 import net.maploop.items.util.Attribute;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -43,12 +44,15 @@ public abstract class CustomItem {
     private boolean oneTimeUse = false;
     private boolean hasActive = false;
     private boolean reforgeable = false;
+    private boolean enchantable;
     private final ItemType itemType;
     private int manaCost = 0;
     private List<ItemAbility> abilities = new ArrayList<>();
+    private List<net.maploop.items.extras.Enchantment> enchantments = new ArrayList<>();
     private String url;
     private final int durability;
     private final boolean glowing;
+    private Reforge reforge;
 
     private int damage = 0;
     private int strength = 0;
@@ -111,6 +115,29 @@ public abstract class CustomItem {
         this.crit = crit_damage;
         this.intelligence = intelligence;
         this.defense = defense;
+    }
+
+    public CustomItem(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, boolean enchantable, ItemType itemType, boolean glowing, int damage, int strength, int crit_damage, int intelligence, int health, int defense) {
+        this.id = id;
+        this.rarity = rarity;
+        this.name = name;
+        this.material = material;
+        this.stackable = stackable;
+        this.oneTimeUse = oneTimeUse;
+        this.hasActive = hasActive;
+        this.abilities = abilities;
+        this.manaCost = manaCost;
+        this.reforgeable = reforgeable;
+        this.itemType = itemType;
+        this.durability = durability;
+        this.glowing = glowing;
+        this.health = health;
+        this.strength = strength;
+        this.damage = damage;
+        this.crit = crit_damage;
+        this.intelligence = intelligence;
+        this.defense = defense;
+        this.enchantable = enchantable;
     }
 
     public ItemType getType() {
@@ -221,6 +248,20 @@ public abstract class CustomItem {
         if (this.oneTimeUse && player.getGameMode() != GameMode.CREATIVE)
             destroy(item, 1);
     }
+
+    public List<net.maploop.items.extras.Enchantment> getEnchantments() {
+        return enchantments;
+    }
+
+    public void addEnchant(net.maploop.items.extras.Enchantment enchantment) {
+        if (!enchantments.contains(enchantment)) {
+            enchantments.add(enchantment);
+        }
+    }
+
+    public List<ItemAbility> getAbilities() {
+        return abilities;
+    }
     
     public void onSwapAction(Player player, PlayerItemHeldEvent event, ItemStack item) {}
     
@@ -280,6 +321,14 @@ public abstract class CustomItem {
         return this.stackable;
     }
 
+    public boolean isReforgeable() {
+        return this.reforgeable;
+    }
+
+    public boolean isEnchantable() {
+        return this.enchantable;
+    }
+
     public boolean hasActiveEffect() {
         return this.hasActive;
     }
@@ -304,6 +353,14 @@ public abstract class CustomItem {
 
     public int getCrit() {
         return crit;
+    }
+
+    public Reforge getReforge() {
+        return reforge;
+    }
+
+    public void setReforge(Reforge reforge) {
+        this.reforge = reforge;
     }
 
     public static ItemStack fromString(Items main, String name, int stackSize) {
@@ -336,9 +393,12 @@ public abstract class CustomItem {
         ItemStack step8 = ItemUtilities.storeIntInItem(step7,  item.getHealth(), Attribute.HEALTH.toString());
         ItemStack step9 = ItemUtilities.storeIntInItem(step8,  item.getDefense(), Attribute.DEFENSE.toString());
 
-        item.enforceStackability(step9);
-        item.onItemStackCreate(step9);
-        ItemUtilities.loreItem(step9, item.getLore(step9));
+        ItemStack step10 = ItemUtilities.storeStringInItem(step9, Boolean.toString(item.isReforgeable()), "reforgable");
+        ItemStack step11 = ItemUtilities.storeStringInItem(step10, Boolean.toString(item.isEnchantable()), "enchantable");
+
+        item.enforceStackability(step11);
+        item.onItemStackCreate(step11);
+        ItemUtilities.loreItem(step11, item.getLore(step11));
 
         if(!item.isStackable()) {
             ItemStack optionalStep = ItemUtilities.storeStringInItem(step9, UUID.randomUUID().toString(), "UUID");
@@ -357,7 +417,7 @@ public abstract class CustomItem {
             return optionalStep;
         }
 
-        ItemMeta meta = step9.getItemMeta();
+        ItemMeta meta = step11.getItemMeta();
         if(item.glowing) {
             meta.addEnchant(Enchantment.LUCK, 1, false);
         }
@@ -365,9 +425,9 @@ public abstract class CustomItem {
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-        step9.setDurability(item.getDurability());
-        step9.setItemMeta(meta);
-        return step9;
+        step11.setDurability(item.getDurability());
+        step11.setItemMeta(meta);
+        return step11;
     }
 
     public static void destroy(ItemStack item, int quantity) {

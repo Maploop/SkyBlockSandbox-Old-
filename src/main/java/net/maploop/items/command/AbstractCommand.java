@@ -32,12 +32,12 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
     protected final Items plugin = Items.getInstance();
     protected final Server server = plugin.getServer();
 
-    protected final String NO_PERMISSION = "§cYou must be admin or higher to use this command.";
-    protected final String ONLY_IN_GAME = "§cConsole senders are not allowed to execute this command!";
-    protected final String ONLY_CONSOLE = "§cOnly console senders are allowed to execute this command!";
-    protected final String PLAYER_NOT_FOUND = "§cPlayer not found.";
-    protected final String CONFIG_ERROR = "There is an issue with a configuration entry. Please contact the server's administrator.";
-    protected final String MISSING_ARGUMENTS = "§cMissing arguments.";
+    public static final String NO_PERMISSION = "§cYou must be admin or higher to use this command!";
+    public static final String ONLY_IN_GAME = "§cConsole senders are not allowed to execute this command!";
+    public static final String ONLY_CONSOLE = "§cOnly console senders are allowed to execute this command!";
+    public static final String PLAYER_NOT_FOUND = "§cPlayer not found.";
+    public static final String CONFIG_ERROR = "There is an issue with a configuration entry. Please contact the server's administrator.";
+    public static final String MISSING_ARGUMENTS = "§cMissing arguments.";
 
     AbstractCommand() {
         params = getClass().getAnnotation(CommandParameters.class);

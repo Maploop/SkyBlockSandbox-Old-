@@ -148,8 +148,6 @@ public final class Items extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerArmorStandManipulateListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerQuitEvent(), this);
         this.getServer().getPluginManager().registerEvents(new EntityInteractAtEntityListener(), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerCustomDeathListener(), this);
-        this.getServer().getPluginManager().registerEvents(new SignGUIUpdateListener(), this);
     }
 
     private void registerItems() {
@@ -203,7 +201,7 @@ public final class Items extends JavaPlugin {
         this.getCommand("cl").setExecutor(new Command_sbclear());
         this.getCommand("loop").setExecutor(new Command_loop());
         this.getCommand("createitem").setExecutor(new Command_createitem());
-        this.getCommand("itemslobbyset").setExecutor(new Command_setlobby());
+        this.getCommand("placespecialanvil").setExecutor(new Command_placespecialanvil());
     }
 
     private void loadCommands() {

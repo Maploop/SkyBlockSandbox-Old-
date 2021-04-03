@@ -21,4 +21,4 @@ commands:
       - clear
   loop:
   createitem:
-  itemslobbyset:
+  placespecialanvil:
