@@ -1,11 +1,13 @@
 package net.maploop.items.gui;
 
 import net.maploop.items.Items;
+import net.maploop.items.api.SignGUI;
 import net.maploop.items.util.IUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -24,6 +26,7 @@ public class MinecraftItemsGUI extends PaginatedGUI {
     @Override
     public String getTitle() {
         int i = page + 1;
+        int a = index / i;
         return "Select an item (" + i + "/14" + ")";
     }
 
@@ -77,31 +80,27 @@ public class MinecraftItemsGUI extends PaginatedGUI {
                 break;
             }
             case SIGN: {
-                if(event.getCurrentItem().hasItemMeta()) {
-                    AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
-                        @Override
-                        public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
-                            if(event.getSlot() == AnvilGUI.AnvilSlot.OUTPUT) {
-                                event.setWillClose(true);
-                                event.setWillDestroy(true);
-
-                                mcSearch.put(player, event.getName());
-                                new BukkitRunnable() {
-                                    @Override
-                                    public void run() {
-                                        new MinecraftItemsGUI(new PlayerMenuUtility(player)).open();
-                                    }
-                                }.runTaskLater(Items.getInstance(), 3);
-                            }else {
-                                event.setWillClose(false);
-                                event.setWillDestroy(false);
+                if(event.getClick().equals(ClickType.RIGHT)) {
+                    if(mcSearch.containsKey(player)) {
+                        mcSearch.remove(player);
+                        mcSearch.remove(player);
+                        player.playSound(player.getLocation(), Sound.CAT_MEOW, 1f, 1.5f);
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                new MinecraftItemsGUI(new PlayerMenuUtility(player)).open();
                             }
-                        }
-                    });
+                        }.runTaskLater(Items.getInstance(), 3);
+                        return;
+                    }
+                    event.setCancelled(true);
+                    return;
+                }
 
-                    ItemStack i = makeItem(Material.PAPER, "Enter your search", 1, 0);
-                    gui.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, i);
-                    gui.open();
+                if(event.getCurrentItem().hasItemMeta()) {
+                    mcSearching.add(player);
+                    String[] text = new String[] {"", "^^^^^^", "Enter your", "query!"};
+                    SignGUI.openSignEditor(player, text);
                 } else {
                     player.getInventory().addItem(event.getCurrentItem());
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1f, 2f);
@@ -162,6 +161,12 @@ public class MinecraftItemsGUI extends PaginatedGUI {
             }
             default: {
                 if(event.getSlot() < 45) {
+                    if(event.getCurrentItem().getType().equals(Material.MONSTER_EGG) || event.getCurrentItem().getType().equals(Material.MOB_SPAWNER)) {
+                        player.sendMessage("§cThis item is unobtainable!");
+                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 0f);
+                        return;
+                    }
+
                     player.getInventory().addItem(event.getCurrentItem());
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1f, 2f);
                 }
@@ -185,12 +190,11 @@ public class MinecraftItemsGUI extends PaginatedGUI {
             inventory.setItem(45, prev);
         }
 
-        ItemStack searchItem = makeItem(Material.SIGN, "§aSearch", 1, 0,
-                "§7Click to search for",
-                "§7an Item in this menu!",
-                "",
-                "§eClick to search!");
-        inventory.setItem(50, searchItem);
+        ItemStack searchItem = makeItem(Material.SIGN, "§aSearch Items", 1, 0,
+                "§7Search through all items.\n\n§eClick to search!");
+
+        ItemStack searchItemsReset = makeItem(Material.SIGN, "§aSearch Items", 1, 0,
+                IUtil.colorize("&7Search through all items.\n&7Filtered: &e" + mcSearch.get(playerMenuUtility.getOwner()) + "\n\n&eClick to search!\n&eRight-Click to reset!"));
 
         inventory.setItem(4, makeItem(Material.HOPPER, "§aClear Inventory", 1, 0,
                 IUtil.colorize("&7Clear your inventory off all\n&7annoying and useless items!\n\n&eClick to clear!")));
@@ -207,7 +211,7 @@ public class MinecraftItemsGUI extends PaginatedGUI {
         inventory.setItem(49, close);
 
         if (mcSearch.containsKey(playerMenuUtility.getOwner())) {
-            inventory.setItem(48, resetSearch);
+            inventory.setItem(50, searchItemsReset);
 
             List<ItemStack> matches = searchFor(mcSearch.get(playerMenuUtility.getOwner()), inventory, playerMenuUtility.getOwner());
 
@@ -220,6 +224,7 @@ public class MinecraftItemsGUI extends PaginatedGUI {
             }
             return;
         }
+        inventory.setItem(50, searchItem);
 
         if(!items.isEmpty()) {
             for(int i = 0; i < getMaxItemsPerPage(); i++) {

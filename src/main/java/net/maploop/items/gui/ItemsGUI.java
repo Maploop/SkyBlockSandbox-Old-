@@ -5,12 +5,14 @@ import net.maploop.items.api.SignGUI;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.item.SBItems;
+import net.maploop.items.util.IUtil;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -62,32 +64,23 @@ public class ItemsGUI extends PaginatedGUI {
                 break;
             }
             case SIGN: {
-                /*
-                AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
-                    @Override
-                    public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
-                        if(event.getSlot() == AnvilGUI.AnvilSlot.OUTPUT) {
-                            event.setWillClose(true);
-                            event.setWillDestroy(true);
+               if(event.getClick().equals(ClickType.RIGHT)) {
+                   if(search.containsKey(player)) {
+                       search.remove(player);
+                       searching.remove(player);
+                       player.playSound(player.getLocation(), Sound.CAT_MEOW, 1f, 1.5f);
+                       new BukkitRunnable() {
+                           @Override
+                           public void run() {
+                               new ItemsGUI(new PlayerMenuUtility(player)).open();
+                           }
+                       }.runTaskLater(Items.getInstance(), 3);
+                       return;
+                   }
+                   event.setCancelled(true);
+                   return;
+               }
 
-                            search.put(player, event.getName());
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    new ItemsGUI(new PlayerMenuUtility(player)).open();
-                                }
-                            }.runTaskLater(Items.getInstance(), 3);
-                        }else {
-                            event.setWillClose(false);
-                            event.setWillDestroy(false);
-                        }
-                    }
-                });
-
-                ItemStack i = makeItem(Material.PAPER, "Enter your search", 1, 0);
-                gui.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, i);
-                gui.open();
-                 */
                 String[] text = new String[] {"", "^^^^^^", "Enter your", "search!"};
                 SignGUI.openSignEditor(player, text);
                 searching.add(player);
@@ -167,12 +160,11 @@ public class ItemsGUI extends PaginatedGUI {
             inventory.setItem(45, prev);
         }
 
-        ItemStack searchItem = makeItem(Material.SIGN, "§aSearch", 1, 0,
-                "§7Click to search for",
-                "§7an Item in this menu!",
-                "",
-                "§eClick to search!");
-        inventory.setItem(50, searchItem);
+        ItemStack searchItem = makeItem(Material.SIGN, "§aSearch Items", 1, 0,
+                "§7Search through all items.\n\n§eClick to search!");
+
+        ItemStack searchItemsReset = makeItem(Material.SIGN, "§aSearch Items", 1, 0,
+                IUtil.colorize("&7Search through all items.\n&7Filtered: &e" + search.get(playerMenuUtility.getOwner()) + "\n\n&eClick to search!\n&eRight-Click to reset!"));
 
         ItemStack clearInv = makeItem(Material.HOPPER, "§aClear Inventory", 1, 0, "§7Click you clear your\n§7inventory off of all the\n§7junk in there!\n \n§eClick to clear!");
         inventory.setItem(4, clearInv);
@@ -192,7 +184,7 @@ public class ItemsGUI extends PaginatedGUI {
         inventory.setItem(49, close);
 
         if (search.containsKey(playerMenuUtility.getOwner())) {
-            inventory.setItem(48, resetSearch);
+            inventory.setItem(50, searchItemsReset);
 
             List<ItemStack> matches = searchFor(search.get(playerMenuUtility.getOwner()), inventory, playerMenuUtility.getOwner());
 
@@ -206,6 +198,7 @@ public class ItemsGUI extends PaginatedGUI {
             return;
         }
 
+        inventory.setItem(50, searchItem);
         if(items != null && !items.isEmpty()) {
             for(int i = 0; i < getMaxItemsPerPage(); i++) {
                 index = getMaxItemsPerPage() * page + i;
