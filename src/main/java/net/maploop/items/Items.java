@@ -148,6 +148,7 @@ public final class Items extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerArmorStandManipulateListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerQuitEvent(), this);
         this.getServer().getPluginManager().registerEvents(new EntityInteractAtEntityListener(), this);
+        this.getServer().getPluginManager().registerEvents(new SignGUIUpdateListener(), this);
     }
 
     private void registerItems() {
@@ -185,6 +186,7 @@ public final class Items extends JavaPlugin {
         SBItems.putItem("bonzos_balloon", new BonzosBalloon(35, Rarity.UNOBTAINABLE, "Bonzo's Balloon", Material.SKULL_ITEM, 3, true, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/76387fc246893d92a6dd9ea1b52dcd581e991eeee2e263b27fff1bcf1b154eb7", false));
         SBItems.putItem("helmet_of_growth", new HelmetOfGrowth(36, Rarity.EPIC, "Helmet of Growth", Material.GOLD_HELMET, 0, true, false, false ,null, 0, false, ItemType.HELMET, true, 0, 0, 0, 20, 120, 500));
         SBItems.putItem("guided_missile", new GuidedMissile(37, Rarity.LEGENDARY, "Guided Missile", Material.SKULL_ITEM, 3, true, false, false, Collections.singletonList(new ItemAbility("Guided Missile", AbilityType.RIGHT_CLICK, IUtil.colorize("Shoots a guided missile. Upon shooting,\nyour game camera will\nlatch onto the missile, allowing\nyou to control it. The\nmissile explodes for &c10,000 &7damage."), 30)), 250, false, ItemType.ITEM, "http://textures.minecraft.net/texture/315bbda12e1b832a6a6af85d8439152d9157ce104e6a7f7b36aeaccc863544", false));
+        SBItems.putItem("ember_rod", new EmberRod(38, Rarity.EPIC, "Ember Rod", Material.BLAZE_ROD, 0, false, false, false, Collections.singletonList(new ItemAbility("Fire Blast", AbilityType.RIGHT_CLICK, IUtil.colorize("&7Shoot 3 Fireballs in rapid\nsuccession in front of you!"), 30)), 150, true, true, ItemType.ITEM, true, 80, 35, 0, 0, 0 ,0));
     }
 
     private void registerCommands() {

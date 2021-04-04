@@ -7,7 +7,6 @@ import net.maploop.items.enums.Rarity;
 import net.maploop.items.enums.Reforge;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemUtilities;
-import net.maploop.items.item.items.Hyperion;
 import net.maploop.items.item.items.Scylla;
 import net.maploop.items.util.IUtil;
 import net.minecraft.server.v1_8_R3.NBTTagByte;
@@ -80,7 +79,7 @@ public class ExtraApplier {
     public void applyScroll(AbilityScroll scroll) {
         CustomItem item = ItemUtilities.getSBItem(stack);
 
-        if (item instanceof Hyperion || item instanceof Scylla) {
+        if (item instanceof Scylla) {
             net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(stack);
             NBTTagCompound tag = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
             NBTTagList list = (NBTTagList) tag.get("ability_scroll");

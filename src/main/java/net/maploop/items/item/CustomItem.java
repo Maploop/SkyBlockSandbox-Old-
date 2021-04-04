@@ -401,7 +401,7 @@ public abstract class CustomItem {
         ItemUtilities.loreItem(step11, item.getLore(step11));
 
         if(!item.isStackable()) {
-            ItemStack optionalStep = ItemUtilities.storeStringInItem(step9, UUID.randomUUID().toString(), "UUID");
+            ItemStack optionalStep = ItemUtilities.storeStringInItem(step11, UUID.randomUUID().toString(), "UUID");
 
             ItemMeta meta = optionalStep.getItemMeta();
             if(item.glowing) {

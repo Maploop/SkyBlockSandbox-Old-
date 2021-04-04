@@ -12,6 +12,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class StatsEditorGUI extends GUI {
+    /*
+    TODO
+      - Add mana, defense, damage, and strength editing to the GUI.
+     */
+
     public StatsEditorGUI(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
     }
