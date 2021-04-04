@@ -8,7 +8,10 @@ import net.maploop.items.gui.PlayerMenuUtility;
 import net.maploop.items.gui.itemCreator.StatsEditorGUI;
 import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.util.Attribute;
+import net.minecraft.server.v1_8_R3.IChatBaseComponent;
+import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -69,7 +72,10 @@ public class SignGUIUpdateListener implements Listener {
 
                 player.setItemInHand(h);
             } else {
-                player.sendMessage("§cThat's not a valid number!");
+                IChatBaseComponent comp = IChatBaseComponent.ChatSerializer.a("{\"text\":\"§cThat's not a valid number!\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§fYour input: §e" + event.getSignText()[0] + "\"}}");
+                PacketPlayOutChat c = new PacketPlayOutChat(comp);
+                ((CraftPlayer)event.getPlayer()).getHandle().playerConnection.sendPacket(c);
+
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 0f);
                 player.closeInventory();
             }
