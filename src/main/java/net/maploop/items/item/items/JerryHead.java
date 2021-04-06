@@ -1,16 +1,9 @@
 package net.maploop.items.item.items;
 
-import net.maploop.items.Items;
-import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
-import net.maploop.items.item.ItemUtilities;
-import net.maploop.items.listeners.EntityDamageListener;
-import net.maploop.items.sql.SQLGetter;
-import net.maploop.items.util.IUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -21,21 +14,21 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collections;
 import java.util.List;
 
-public class ShadowFury extends CustomItem {
-    public ShadowFury(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, boolean enchantable, ItemType itemType, boolean glowing, int damage, int strength, int crit_damage, int intelligence, int health, int defense) {
-        super(id, rarity, name, material, durability, stackable, oneTimeUse, hasActive, abilities, manaCost, reforgeable, enchantable, itemType, glowing, damage, strength, crit_damage, intelligence, health, defense);
+public class JerryHead extends CustomItem {
+    public JerryHead(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, ItemType itemType, String url, boolean glowing) {
+        super(id, rarity, name, material, durability, stackable, oneTimeUse, hasActive, abilities, manaCost, reforgeable, itemType, url, glowing);
     }
 
     @Override
     public void onItemStackCreate(ItemStack paramItemStack) {
-
+        applyTexture(paramItemStack);
     }
 
     @Override
-    public void getSpecificLorePrefix(List<String> lore, ItemStack paramItemStack) {
+    public void getSpecificLorePrefix(List<String> paramList, ItemStack paramItemStack) {
+
     }
 
     @Override
@@ -55,16 +48,12 @@ public class ShadowFury extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) {
-        if(!(ItemUtilities.enforceCooldown(player, "shadow_fury", 15, item, false))) {
-            ItemUtilities.warnPlayer(player, Collections.singletonList("§cYou are on cooldown!"));
-            return;
-        }
-        doShadowFuryAbility(player);
+
     }
 
     @Override
     public void rightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
-        rightClickAirAction(player, event, item);
+
     }
 
     @Override
@@ -79,12 +68,12 @@ public class ShadowFury extends CustomItem {
 
     @Override
     public void shiftRightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) {
-        rightClickAirAction(player, event, item);
+
     }
 
     @Override
     public void shiftRightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
-        rightClickAirAction(player, event, item);
+
     }
 
     @Override
@@ -94,6 +83,7 @@ public class ShadowFury extends CustomItem {
 
     @Override
     public void hitEntityAction(Player player, EntityDamageByEntityEvent event, Entity paramEntity, ItemStack item) {
+
     }
 
     @Override
@@ -109,18 +99,5 @@ public class ShadowFury extends CustomItem {
     @Override
     public void activeEffect(Player player, ItemStack item) {
 
-    }
-
-    private void doShadowFuryAbility(Player player) {
-        for(int i = 0; i < 5; ++i) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Items.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    List<Entity> entityList = player.getNearbyEntities(6, 6, 6);
-                    int i = IUtil.getRandomInteger(entityList.size());
-                    player.teleport(entityList.get(i).getLocation());
-                }
-            },  i * 15);
-        }
     }
 }

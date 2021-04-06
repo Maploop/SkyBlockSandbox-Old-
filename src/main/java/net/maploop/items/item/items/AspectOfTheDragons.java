@@ -100,14 +100,7 @@ public class AspectOfTheDragons extends CustomItem {
 
     @Override
     public void hitEntityAction(Player paramPlayer, EntityDamageByEntityEvent event, Entity paramEntity, ItemStack paramItemStack) {
-        SQLGetter handler = new SQLGetter((Player) event.getDamager(), Items.getInstance());
-        double damage1 = (5 + 290 + (Math.round(250) / 5)) * (1 + 250/100);
-        double damage2 = (damage1 + (damage1 * 0.25) + (damage1 * 0.56));
-        double finalDmg = damage2 * (1 + handler.getCritDamage()/100);
 
-        event.setDamage(finalDmg);
-        EntityDamageListener listener = new EntityDamageListener();
-        listener.damage = finalDmg;
     }
 
     @Override

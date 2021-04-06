@@ -22,6 +22,9 @@ public class StatsEditorGUI extends GUI {
     }
 
     public static Set<Player> healthChange = new HashSet<>();
+    public static Set<Player> intelligenceChange = new HashSet<>();
+    public static Set<Player> defenseChange = new HashSet<>();
+    public static Set<Player> strengthChange = new HashSet<>();
 
     @Override
     public String getTitle() {
@@ -30,7 +33,7 @@ public class StatsEditorGUI extends GUI {
 
     @Override
     public int getSize() {
-        return 45;
+        return 9 * 6;
     }
 
     @Override
@@ -47,6 +50,25 @@ public class StatsEditorGUI extends GUI {
                 String[] t = new String[] {"", "^^^^^^", "Set health", "amount."};
                 SignGUI.openSignEditor(player, t);
                 healthChange.add(player);
+                break;
+            }
+            case EYE_OF_ENDER: {
+                String[] t = new String[] {"", "^^^^^^", "Enter intelligence", "amount."};
+                SignGUI.openSignEditor(player, t);
+                intelligenceChange.add(player);
+                break;
+            }
+            case IRON_CHESTPLATE: {
+                String[] t = new String[] {"", "^^^^^^", "Enter defense", "amount."};
+                SignGUI.openSignEditor(player, t);
+                defenseChange.add(player);
+                break;
+            }
+            case IRON_SWORD: {
+                String[] t = new String[] {"", "^^^^^^", "Enter strength", "amount."};
+                SignGUI.openSignEditor(player, t);
+                strengthChange.add(player);
+                break;
             }
         }
     }
@@ -54,8 +76,11 @@ public class StatsEditorGUI extends GUI {
     @Override
     public void setItems() {
         setFilter();
-        inventory.setItem(31, makeItem(Material.ARROW, "§aGo Back", 1, 0, "§7To Create an Item"));
+        inventory.setItem(49, makeItem(Material.ARROW, "§aGo Back", 1, 0, "§7To Create an Item"));
 
-        inventory.setItem(11, makeItem(Material.GOLDEN_APPLE, "§aEdit Health Attribute", 1, 0, IUtil.colorize("&7Edit the amount of &c❤ Health\n&7the item in your hand\n&7will give players when worn\n&7or held!\n\n&eClick to set!")));
+        inventory.setItem(13, makeItem(Material.EYE_OF_ENDER, "§aSet Intelligence", 1, 0, IUtil.colorize("&7Edit the amount of &b✎ Intelligence\n&7your item has!\n\n&eClick to set!")));
+        inventory.setItem(15, makeItem(Material.IRON_CHESTPLATE, "§aSet Defense", 1, 0, IUtil.colorize("&7Edit the amount of &a❈ Defense\n&7your item has!\n\n&eClick to set!")));
+        inventory.setItem(31, makeItem(Material.IRON_SWORD, "§aSet Strength", 1, 0, IUtil.colorize("&7Edit the amount of &c❁ Strength\n&7your item has!\n\n&eClick to set!")));
+        inventory.setItem(11, makeItem(Material.GOLDEN_APPLE, "§aSet Health", 1, 0, IUtil.colorize("&7Edit the amount of &c❤ Health\n&7your item has!\n\n&eClick to set!")));
     }
 }

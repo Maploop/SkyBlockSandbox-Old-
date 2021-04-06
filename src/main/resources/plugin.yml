@@ -22,3 +22,5 @@ commands:
   loop:
   createitem:
   placespecialanvil:
+  recombobulate:
+  itemssetlobby:

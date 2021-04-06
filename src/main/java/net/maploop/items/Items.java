@@ -54,16 +54,7 @@ public final class Items extends JavaPlugin {
         registerListeners();
         registerCommands();
         registerItems();
-        sql = new MySQL(this);
         loadCommands();
-
-        try {
-            sql.connect();
-            SQLGetter.createTable();
-            System.out.println("SQL Successfully connected.");
-        } catch (SQLException e) {
-            System.out.println("SQL Connection failed.");
-        }
 
         new BukkitRunnable() {
             @Override
@@ -179,7 +170,7 @@ public final class Items extends JavaPlugin {
         SBItems.putItem("block_zapper", new BlockZapper(25, Rarity.EPIC, "Block Zapper", Material.FLINT, 0, false, false, false, Collections.singletonList(new ItemAbility("Grand... Zapper?", AbilityType.RIGHT_CLICK, IUtil.colorize("&7Right-Click a block to zap all\n&7connected blocks of same\n&7type."))), 0, false, ItemType.ITEM, true));
         SBItems.putItem("dwarven_tankard", new DwarvenTankard(26, Rarity.EPIC, "Dwarven Tankard", Material.SKULL_ITEM, 3, true, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/8f7dc8c91f7a24ecd9c5e9d4d8c39f0ac8333ae4853559acb8b03866f9d", false));
         SBItems.putItem("aspect_of_the_jerry", new AspectOfTheJerry(27, Rarity.COMMON, "Aspect of the Jerry", Material.WOOD_SWORD, 0, true, false, false, Collections.singletonList(new ItemAbility("Parley", AbilityType.RIGHT_CLICK, IUtil.colorize("&7Channel your inner parley."), 5)), 0, true, ItemType.SWORD, false, 1, 0, 0, 0, 0, 0));
-        SBItems.putItem("shadow_fury", new ShadowFury(28, Rarity.LEGENDARY, "Shadow Fury", Material.DIAMOND_SWORD, 0, true, false, false, Collections.singletonList(new ItemAbility("Shadow Fury", AbilityType.RIGHT_CLICK, IUtil.colorize("&7Rapidly teleports you to up to\n&b5 &7enemies within &e12\n&7blocks, rooting each of them\n&7and allowing you to hit them."), 15)), 0, true, ItemType.DUNGEON_SWORD, false));
+        SBItems.putItem("shadow_fury", new ShadowFury(28, Rarity.LEGENDARY, "Shadow Fury", Material.DIAMOND_SWORD, 0, true, false, false, Collections.singletonList(new ItemAbility("Shadow Fury", AbilityType.RIGHT_CLICK, IUtil.colorize("&7Rapidly teleports you to up to\n&b5 &7enemies within &e12\n&7blocks, rooting each of them\n&7and allowing you to hit them."), 15)), 0, true, true,ItemType.DUNGEON_SWORD, false, 300, 125, 0, 0, 0, 0));
         SBItems.putItem("scylla", new Scylla(29, Rarity.LEGENDARY, "Scylla", Material.IRON_SWORD, 0, true, false, false, null, 0, true, ItemType.DUNGEON_SWORD, false));
         SBItems.putItem("aspect_of_the_end", new AspectOfTheEnd(30, Rarity.RARE, "Aspect of the End", Material.DIAMOND_SWORD, 0, true, false, false, Collections.singletonList(new ItemAbility("Instant Transmission", AbilityType.RIGHT_CLICK, IUtil.colorize("&7Teleport &a8 blocks &7ahead of\n&7you and gain &a+50 &f✦ Speed\n&7for &a3 seconds&7."))), 50, true, ItemType.SWORD, false));
         SBItems.putItem("bonzo_staff", new BonzoStaff(34, Rarity.RARE, "Bonzo's Staff", Material.BLAZE_ROD, 0, false, false, false, Collections.singletonList(new ItemAbility("Showtime!", AbilityType.RIGHT_CLICK, IUtil.colorize("Shoot balloons that create a\nlarge explosion on impact,\ndealing up to &c1,000 &7damage."))), 60, true, ItemType.DUNGEON_SWORD, false, 160, 0, 0, 0, 0, 0));
@@ -187,6 +178,8 @@ public final class Items extends JavaPlugin {
         SBItems.putItem("helmet_of_growth", new HelmetOfGrowth(36, Rarity.EPIC, "Helmet of Growth", Material.GOLD_HELMET, 0, true, false, false ,null, 0, false, ItemType.HELMET, true, 0, 0, 0, 20, 120, 500));
         SBItems.putItem("guided_missile", new GuidedMissile(37, Rarity.LEGENDARY, "Guided Missile", Material.SKULL_ITEM, 3, true, false, false, Collections.singletonList(new ItemAbility("Guided Missile", AbilityType.RIGHT_CLICK, IUtil.colorize("Shoots a guided missile. Upon shooting,\nyour game camera will\nlatch onto the missile, allowing\nyou to control it. The\nmissile explodes for &c10,000 &7damage."), 30)), 250, false, ItemType.ITEM, "http://textures.minecraft.net/texture/315bbda12e1b832a6a6af85d8439152d9157ce104e6a7f7b36aeaccc863544", false));
         SBItems.putItem("ember_rod", new EmberRod(38, Rarity.EPIC, "Ember Rod", Material.BLAZE_ROD, 0, false, false, false, Collections.singletonList(new ItemAbility("Fire Blast", AbilityType.RIGHT_CLICK, IUtil.colorize("&7Shoot 3 Fireballs in rapid\nsuccession in front of you!"), 30)), 150, true, true, ItemType.ITEM, true, 80, 35, 0, 0, 0 ,0));
+        SBItems.putItem("jerrychine_gun", new JerrychineGun(39, Rarity.EPIC, "Jerry-chine Gun", Material.GOLD_BARDING, 0, true, false, false, Collections.singletonList(new ItemAbility("Rapid-fire", AbilityType.RIGHT_CLICK, "Fire off multiple jerry bombs\nthat create an explosion on\nimpact, dealing up to §c5,000§7\ndamage.")), 10, true, true, ItemType.DUNGEON_SWORD, false, 80, 0, 0, 200, 0, 0));
+        SBItems.putItem("jerry_head", new JerryHead(40, Rarity.UNOBTAINABLE, "Beheaded Jerry", Material.SKULL_ITEM, 3, true, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/41b830eb4082acec836bc835e40a11282bb51193315f91184337e8d3555583", false));
     }
 
     private void registerCommands() {
@@ -204,6 +197,8 @@ public final class Items extends JavaPlugin {
         this.getCommand("loop").setExecutor(new Command_loop());
         this.getCommand("createitem").setExecutor(new Command_createitem());
         this.getCommand("placespecialanvil").setExecutor(new Command_placespecialanvil());
+        this.getCommand("recombobulate").setExecutor(new Command_recombobulate());
+        this.getCommand("itemssetlobby").setExecutor(new Command_setlobby());
     }
 
     private void loadCommands() {

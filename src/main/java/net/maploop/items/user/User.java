@@ -2,6 +2,7 @@ package net.maploop.items.user;
 
 import jdk.nashorn.internal.ir.Block;
 import net.maploop.items.item.ItemUtilities;
+import net.maploop.items.util.Attribute;
 import net.minecraft.server.v1_8_R3.PacketPlayOutNamedSoundEffect;
 import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -237,6 +238,30 @@ public class User {
             }
         }
         return def;
+    }
+
+    public double getTotalStrength() {
+        File playerData = new File("plugins/Items/playerData/" + user.getUniqueId().toString() + "/data.yml");
+        FileConfiguration pD = YamlConfiguration.loadConfiguration(playerData);
+
+        try {
+            pD.load(playerData);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        double x = pD.getDouble("stats.extra_strength")+100;
+        ItemStack[] armor = user.getEquipment().getArmorContents();
+        for(ItemStack a : armor) {
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
+                x = x + ItemUtilities.getIntFromItem(a, Attribute.STRENGTH.toString());
+            }
+        }
+        ItemStack iih = user.getItemInHand();
+        if(iih != null && iih.hasItemMeta() && iih.getItemMeta().hasLore()) {
+            x = x + ItemUtilities.getIntFromItem(iih, Attribute.STRENGTH.toString());
+        }
+        return x;
     }
 
     public void playSound(String s, int vol, int pitch) {

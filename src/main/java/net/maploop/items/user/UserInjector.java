@@ -32,11 +32,11 @@ public class UserInjector extends ItemsService {
                 }
 
                 if (user.getIntelligence() < user.getTotalIntelligence()) {
-                    user.setIntelligence(user.getIntelligence() + user.getTotalIntelligence() / 10);
+                    user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
                 }
 
                 if (user.getHealth() < user.getTotalHealth()) {
-                    user.setHealth(user.getHealth() + user.getTotalHealth() / 50);
+                    user.setHealth(user.getHealth() + (user.getTotalHealth() * 0.06));
                 }
             }
         }, 0, 20L);

@@ -3,6 +3,7 @@ package net.maploop.items.gui;
 import net.maploop.items.Items;
 import net.maploop.items.data.DataHandler;
 import net.maploop.items.sql.SQLGetter;
+import net.maploop.items.user.User;
 import net.maploop.items.util.IUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -68,6 +69,7 @@ public class SkyblockMenuGUI extends GUI {
     public void setItems() {
         Player pLayer = playerMenuUtility.getOwner();
         DataHandler handler = new DataHandler(pLayer);
+        User user = new User(pLayer);
 
         setFilter();
         ItemStack close = makeItem(Material.BARRIER, "§cClose", 1, 0);
@@ -75,27 +77,15 @@ public class SkyblockMenuGUI extends GUI {
 
         ItemStack admin = makeItem(Material.COMMAND, "§aItems", 1, 0, "§7Only admins are able to\n§7see this item in their\n§7Skyblock GUI!\n§7You can access all the items\n§7available in this menu.\n \n§eClick to view!");
 
-        if(Items.getInstance().getConfig().getBoolean("mysql.use-mysql")) {
-            SQLGetter getter = new SQLGetter(pLayer, Items.getInstance());
-            ItemStack profile = makeSkullItem("§aYour Skyblock Profile", pLayer.getName(), 1,
-                    "§c❤ Health §f" +
-                            getter.getMaxHealth() + " HP\n§a❈ Defense §f" +
-                            getter.getDefense() + "\n§c❁ Strength §f" +
-                            getter.getStrength() +"\n§9☣ Crit Chance §f" +
-                            getter.getCritChance() + "%\n§9☠ Crit Damage §f" +
-                            getter.getCritDamage() + "%\n§b✎ Intelligence §f" +
-                            getter.getMaxMana() + "\n \n§eClick to view your profile!");
-            inventory.setItem(13, profile);
-        } else {
-            ItemStack profile = makeSkullItem("§aYour Skyblock Profile", pLayer.getName(), 1,
-                    "§c❤ Health §f" +
-                            handler.getMaxHealth() + " HP\n§a❈ Defense §f" + handler.getDefense() +
-                            "\n§c❁ Strength §f" + handler.getStrength() +"\n§9☣ Crit Chance §f" + handler.getCritChance() +
-                            "%\n§9☠ Crit Damage §f" + handler.getCritDamage() +
-                            "%\n§b✎ Intelligence §f" + handler.getMaxMana() +
-                            "\n \n§eClick to view your profile!");
-            inventory.setItem(13, profile);
-        }
+        ItemStack profile = makeSkullItem("§aYour Skyblock Profile", pLayer.getName(), 1,
+                "§c❤ Health §f" +
+                        user.getTotalHealth() + " HP\n§a❈ Defense §f" +
+                        user.getTotalDefense() + "\n§c❁ Strength §f" +
+                        user.getTotalStrength() + "\n§9☣ Crit Chance §f" +
+                        user.getCrit_chance() + "%\n§9☠ Crit Damage §f" +
+                        user.getCrit_damage() + "%\n§b✎ Intelligence §f" +
+                        user.getTotalIntelligence() + "\n \n§eClick to view your profile!");
+        inventory.setItem(13, profile);
 
         ItemStack trades = makeItem(Material.EMERALD, "§cTrades", 1, 0, "§cThis feature is disabled\n§cin the Dungeon simulator\n§cserver!");
         inventory.setItem(22, trades);
