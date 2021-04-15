@@ -190,10 +190,7 @@ public class ItemUtilities {
     }
 
     public static boolean hasRarity(ItemStack stack) {
-        if(getStringFromItem(stack, "Rarity") == null)
-            return false;
-        else
-            return true;
+        return getStringFromItem(stack, "Rarity") != null;
     }
 
     public static CustomItem getItem(String name) {

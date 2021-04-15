@@ -66,6 +66,11 @@ public class PlumbersSponge extends CustomItem {
 
     @Override
     public void rightClickBlockAction(Player paramPlayer, PlayerInteractEvent event, Block paramBlock, ItemStack paramItemStack) {
+        if(!paramPlayer.hasPermission("items.plumberssponge.use")) {
+            paramPlayer.sendMessage("§cYou are not allowed to use this item.");
+            return;
+        }
+
         event.setCancelled(true);
         eatBlocks(event.getClickedBlock(), 30);
         onItemUse(paramPlayer, paramItemStack);

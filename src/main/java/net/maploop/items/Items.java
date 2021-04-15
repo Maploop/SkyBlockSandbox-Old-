@@ -55,22 +55,12 @@ public final class Items extends JavaPlugin {
         registerCommands();
         registerItems();
         loadCommands();
+        x();
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-                    for(ItemStack item : player.getInventory().getContents()) {
-                        if(item == null) return;
-                        if(item.getType() == Material.AIR) return;
-                        if(ItemUtilities.getStringFromItem(item, "Rarity") == null) {
-                            item.getItemMeta().getLore().add("§f§lCOMMON");
-                            ItemStack newitem = ItemUtilities.storeStringInItem(item, "COMMON", "Rarity");
-                            player.getInventory().remove(item);
-                            player.getInventory().addItem(newitem);
-                        }
-                    }
-
                     ItemStack item = player.getItemInHand();
                     if(item == null) return;
                     if(!(item.hasItemMeta())) return;
@@ -102,27 +92,31 @@ public final class Items extends JavaPlugin {
             }
         }.runTaskLater(this, 3);
 
-        if(!(Bukkit.getServer().getOnlinePlayers().isEmpty())) {
-            for(Player player : Bukkit.getOnlinePlayers()) {
-                if(this.getConfig().getBoolean("mysql.use-mysql")) {
-                    SQLGetter getter = new SQLGetter(player, this);
-                    getter.inject();
-                    getLogger().info("Enabled with MySQL.");
-                    return;
-                }
-                getLogger().info("Enabled with custom DataFile.");
-                DataHandler handler = new DataHandler(player);
-                handler.inject();
-            }
-        }
+        getServer().getConsoleSender().sendMessage("§aItems was enabled successfully with no fatal errors.");
     }
 
     @Override
     public void onDisable() {
-        sql.disconnect();
-
         BackpackData.save();
-        getLogger().info("dis abled");
+        getServer().getConsoleSender().sendMessage("§cItems was disabled.");
+    }
+
+    private void x() {
+        IUtil.scheduleRepeatingTask(() -> {
+            if(Bukkit.getOnlinePlayers().size() == 0) return;
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                User user = new User(player);
+                IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getTotalDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
+
+                if (user.getIntelligence() < user.getTotalIntelligence()) {
+                    user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
+                }
+
+                if (user.getHealth() < user.getTotalHealth()) {
+                    user.setHealth(user.getHealth() + (user.getTotalHealth() * 0.06));
+                }
+            }
+        }, 1, 20);
     }
 
     private void registerListeners() {
@@ -140,25 +134,17 @@ public final class Items extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerQuitEvent(), this);
         this.getServer().getPluginManager().registerEvents(new EntityInteractAtEntityListener(), this);
         this.getServer().getPluginManager().registerEvents(new SignGUIUpdateListener(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerCustomDeathListener(), this);
     }
 
     private void registerItems() {
         SBItems.putItem("aspect_of_the_dragons", new AspectOfTheDragons(1, Rarity.LEGENDARY, "Aspect of the Dragons", Material.DIAMOND_SWORD, 0, false, false, false, Collections.singletonList(new ItemAbility("Dragon Rage", AbilityType.RIGHT_CLICK, "§7All Monsters in front of you\n§7take §aint §7damage. Hit\n§7monsters take large knockback.")), 100, true, ItemType.SWORD, false));
         SBItems.putItem("flower_of_truth", new FlowerOfTruth(2, Rarity.LEGENDARY, "Flower of Truth", Material.RED_ROSE, 0, false, false, false, Collections.singletonList(new ItemAbility("Heat-Seeking Rose", AbilityType.RIGHT_CLICK, "§7Shoots a rose that ricochets\n§7between enemies, damaging up to\n§a3 §7of your foes! Damage\n§7multiplies as more enemies are\n§7hit.", 1)), 120000000, true, ItemType.DUNGEON_SWORD, true));
-        SBItems.putItem("dungeon_orb", new DungeonOrb(3, Rarity.LEGENDARY, "Dungeon Orb", Material.SKULL_ITEM, 3, false, false, false, null, 0, false, ItemType.DUNGEON_ITEM, "http://textures.minecraft.net/texture/1e5924798a487f99ba08e54a5b130692cc586902a87e1dee213813ef8c66", false));
-        SBItems.putItem("decoy", new Decoy(4, Rarity.UNCOMMON, "Decoy", Material.MONSTER_EGG, 0, true, true, false, null, 0, false, ItemType.DUNGEON_ITEM, false));
         SBItems.putItem("skyblock_menu", new SkyblockMenu(5, Rarity.SKYBLOCK_MENU, "§aSkyblock GUI §7(Right Click)", Material.NETHER_STAR, 0, true, false, false, null, 0, false, ItemType.ITEM, true));
         SBItems.putItem("skyblock", new Skyblock(6, Rarity.VERY_SPECIAL, "Skyblock", Material.SKULL_ITEM, 3, false, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/2e2cc42015e6678f8fd49ccc01fbf787f1ba2c32bcf559a015332fc5db50", true));
-        SBItems.putItem("voodoo_doll", new VoodooDoll(7, Rarity.RARE, "Voodoo Doll", Material.RAW_FISH, 3, false, false, false, Collections.singletonList(new ItemAbility("Acupuncture", AbilityType.RIGHT_CLICK, "§7Shoots arrows from every\n§7direction around the targeted\n§7monster.\n\n§7Monsters hit by at least one\n§7arrow are slowed and receive\n§c1,500 §7damage/s for §a10§7s.", 5)), 200, false, ItemType.ITEM, true));
         SBItems.putItem("bone_boomerang", new Bonemerang(8, Rarity.LEGENDARY, "Bonemerang", Material.BONE, 0, false, false, false, Collections.singletonList(new ItemAbility("Swing", AbilityType.RIGHT_CLICK, "§7Throw the bone for a short distance,\n§7dealing the damage an arrow\n§7would.\n\n§7Deals §cdouble damage §7when\n§7coming back. Pierces up to §e10\n§7foes.", 0)), 0, true, ItemType.DUNGEON_BOW, true));
         SBItems.putItem("builders_wand", new BuildersWand(9, Rarity.LEGENDARY, "Builder's Wand", Material.BLAZE_ROD, 0, false, false, false, Arrays.asList(new ItemAbility("Grand Architect", AbilityType.RIGHT_CLICK, "§7Right-Click the face of a block\n§7to extend all connected block\n§7faces.\n§8Consumes blocks from your inventory!"), new ItemAbility("Built-in Storage", AbilityType.LEFT_CLICK, IUtil.colorize("&7Opens the wand storage. Blocks\n&7will be placed from your\n&7inventory or the wand storage.\n&cTHIS ABILITY IS DISABLED!"))), 0, false, ItemType.ITEM, true));
         SBItems.putItem("infinidirt_wand", new InfiniDirtWand(10, Rarity.UNCOMMON, "InfiniDirt™ Wand", Material.STICK, 0, false, false, false, Collections.singletonList(new ItemAbility("Place Dirt", AbilityType.RIGHT_CLICK, "§7Place a dirt block.\n§7Costs §61 coins§7.\n \n§7Can be used within the Builders\n§7Wand!")), 0, false, ItemType.ITEM, true));
-        SBItems.putItem("prismapump", new Prismapump(11, Rarity.RARE, "Prismapump", Material.PRISMARINE, 2, true, false, false, null, 0, false, ItemType.ITEM, true));
-        SBItems.putItem("magical_water_bucket", new MagicalWaterBucket(12, Rarity.COMMON, "Magical Water Bucket", Material.WATER_BUCKET, 0, false, false, false, null, 0, false, ItemType.ITEM, true));
-        SBItems.putItem("plumbers_sponge", new PlumbersSponge(13, Rarity.UNCOMMON, "Plumber's Sponge", Material.SPONGE, 0, true, true, false, null, 0, false, ItemType.ITEM, false));
-        SBItems.putItem("treecapitator", new Treecapitator(14, Rarity.EPIC, "Treecapitator", Material.GOLD_AXE, 0, true, false, false, null, 0, true,  ItemType.AXE, false));
-        SBItems.putItem("fireball", new Fireball(15, Rarity.MYTHIC, "Fireball", Material.FIREBALL, 0, false, false, false, Collections.singletonList(new ItemAbility("Shoot!", AbilityType.RIGHT_CLICK, "§7Shoots a fireball to\n§7where ever you're aiming\n§7with each fireball shoot\n§7costing §6100,000 coins§7.", (int) 0.5)), 150, false, ItemType.ITEM, true));
-        SBItems.putItem("hoe_of_greater_tilling", new HoeOfGreaterTilling(16, Rarity.RARE, "Hoe of Greater Tilling", Material.DIAMOND_HOE, 0, true, false, false,  null, 0, true, ItemType.HOE, false));
         SBItems.putItem("basket_of_seeds", new BasketOfSeeds(17, Rarity.UNFINISHED, "Basket of Seeds", Material.SKULL_ITEM, 3, true, false, false, Collections.singletonList(new ItemAbility("Farmer's Delight", AbilityType.RIGHT_CLICK, IUtil.colorize("&7Automatically seed a row of\n&7farmland."))), 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/7a6bf916e28ccb80b4ebfacf98686ad6af7c4fb257e57a8cb78c71d19dccb2", false));
         SBItems.putItem("small_backpack", new SmallBackpack(18, Rarity.UNCOMMON, "Small Backpack", Material.SKULL_ITEM, 3, false, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/d5c6dc2bbf51c36cfc7714585a6a5683ef2b14d47d8ff714654a893f5da622", false));
         SBItems.putItem("medium_backpack", new MediumBackpack(19, Rarity.RARE, "Medium Backpack", Material.SKULL_ITEM, 3, false, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/d5c6dc2bbf51c36cfc7714585a6a5683ef2b14d47d8ff714654a893f5da622", false));

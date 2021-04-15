@@ -8,12 +8,5 @@ import org.bukkit.event.Listener;
 
 public class PlayerQuitEvent implements Listener {
     @EventHandler
-    public void onQuit(org.bukkit.event.player.PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-
-        PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(PlayerJoinListener.bossBar.get(player).getId());
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
-
-        PlayerJoinListener.bossBar.remove(player);
-    }
+    public void onQuit(org.bukkit.event.player.PlayerQuitEvent event) { }
 }

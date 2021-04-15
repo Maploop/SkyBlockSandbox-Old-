@@ -29,22 +29,9 @@ public class PlayerJoinListener implements Listener {
     public static Map<Player, EntityWither> bossBar = new HashMap<>();
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) throws IOException {
+    public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(bossBar(player));
-        bossBar.put(player, bossBar(player));
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
-
-        if(Items.getInstance().getConfig().getBoolean("mysql.use-mysql")) {
-            SQLGetter getter = new SQLGetter(player, Items.getInstance());
-            getter.inject();
-            System.out.println("Data sync for " + player.getName() + "complete!");
-        } else {
-            DataHandler data = new DataHandler(player);
-            data.saveData();
-            data.inject();
-        }
         User user = new User(player);
         UserInjector injector = new UserInjector(user);
         user.setHealth(user.getTotalHealth());
@@ -79,13 +66,5 @@ public class PlayerJoinListener implements Listener {
                 e.printStackTrace();
             }
         }
-    }
-
-    private EntityWither bossBar(Player player) {
-        EntityWither wither = new EntityWither(((CraftWorld)player.getWorld()).getHandle());
-        wither.setInvisible(true);
-        wither.setCustomName(IUtil.colorize("&e&lYOU ARE PLAYING ON &aMC.SKYBLOCKSANDBOX.NET"));
-
-        return wither;
     }
 }

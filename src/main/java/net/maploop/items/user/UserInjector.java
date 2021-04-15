@@ -22,23 +22,5 @@ public class UserInjector extends ItemsService {
     public void inject() {
         Player player = user.getBukkitPlayer();
         user.setHealth(user.getTotalHealth());
-        int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                if (user.getHealth() > user.getTotalHealth()) {
-                    IUtil.sendActionText(player, "§6" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getTotalDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
-                } else {
-                    IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getTotalDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
-                }
-
-                if (user.getIntelligence() < user.getTotalIntelligence()) {
-                    user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
-                }
-
-                if (user.getHealth() < user.getTotalHealth()) {
-                    user.setHealth(user.getHealth() + (user.getTotalHealth() * 0.06));
-                }
-            }
-        }, 0, 20L);
     }
 }

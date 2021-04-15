@@ -6,6 +6,7 @@ import net.maploop.items.gui.GUI;
 import net.maploop.items.gui.PlayerMenuUtility;
 import net.maploop.items.util.IUtil;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -72,6 +73,21 @@ public class ItemCreatorGUI extends GUI {
                 new StatsEditorGUI(playerMenuUtility).open();
                 break;
             }
+            case 12: {
+                if(player.getItemInHand().getItemMeta().hasDisplayName() && player.getItemInHand().getItemMeta().hasLore()) {
+                    new RaritiesGUI(playerMenuUtility).open();
+                    break;
+                } else {
+                    player.sendMessage("§cYour item must have a displayname and lore first in order to set it's rarity!");
+                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 0f);
+                    break;
+                }
+            }
+            case 15: {
+                player.sendMessage("§cThis feature is coming soon!");
+                player.closeInventory();
+                player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 0f);
+            }
         }
     }
 
@@ -86,5 +102,7 @@ public class ItemCreatorGUI extends GUI {
 
         inventory.setItem(13, makeItem(Material.PAPER, "§aEdit Item Lore", 1, 0, IUtil.colorize("&7Edit the lore of the item you\n&7have in your hand!\n\n&eClick to edit!")));
         inventory.setItem(14, makeItem(Material.GOLDEN_APPLE, "§aEdit Item Stats", 1, 0, IUtil.colorize("&7Edit the stats the item has!\n&7Including Defense, Health, and Intelligence!\n\n&eClick to edit!")));
+        inventory.setItem(12, makeItem(Material.PAINTING, "§aSet item Rarity", 1, 0, IUtil.colorize("&7Set the rarity of your item\n&7you can choose anything\n&7between: &fCommon&7, &aUncommon\n&9Rare&7, &5Epic&7, &6Legendary&7,\n&dMythic&7, &cSpecial&7.\n\n§cNote: The last line of\n§clore in your item will\n§cturn into the rarity name.\n\n&eClick to set!")));
+        inventory.setItem(15, makeItem(Material.GLOWSTONE_DUST, "§aSet item ability", 1, 0, "§c§lCOMING SOON"));
     }
 }

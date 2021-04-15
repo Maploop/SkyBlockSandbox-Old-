@@ -1,6 +1,9 @@
 package net.maploop.items.command;
 
 import net.maploop.items.Items;
+import net.maploop.items.command.exception.CommandArgumentException;
+import net.maploop.items.command.exception.CommandFailException;
+import net.maploop.items.command.exception.PlayerNotFoundException;
 import net.maploop.items.user.User;
 import net.maploop.items.util.IUtil;
 import org.bukkit.Bukkit;
@@ -39,7 +42,7 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
     public static final String CONFIG_ERROR = "There is an issue with a configuration entry. Please contact the server's administrator.";
     public static final String MISSING_ARGUMENTS = "§cMissing arguments.";
 
-    AbstractCommand() {
+    public AbstractCommand() {
         params = getClass().getAnnotation(CommandParameters.class);
         this.name = getClass().getSimpleName().replace(COMMAND_PREFIX, "");
         this.description = params.description();
@@ -56,9 +59,8 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
             cmd.setDescription(this.description);
         if(this.usage != null)
             cmd.setUsage(this.usage);
-        getCommandMap().register("", cmd);
+        getCommandMap().register(this.name, cmd);
         cmd.setExecutor(this);
-
     }
 
     final CommandMap getCommandMap() {
@@ -108,8 +110,7 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
         @Override
         public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
-            if (cmd != null)
-            {
+            if (cmd != null) {
                 return cmd.onTabComplete(sender, this, alias, args);
             }
             return null;
@@ -140,9 +141,13 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
             run(cu, cu.getUser(), args);
         }
         catch (CommandFailException ex) {
-            if(ex.getMessage().contains("Argument")) {
-                sender.sendMessage(ChatColor.WHITE + cmd.getUsage().replace("<command>", cmd.getLabel()));
-            }
+            sender.sendMessage("§cCommand failed.");
+            return true;
+        }catch (CommandArgumentException ex) {
+            sender.sendMessage(ChatColor.WHITE + cmd.getUsage().replace("<command>", cmd.getLabel()));
+            return true;
+        }catch (PlayerNotFoundException ex) {
+            sender.sendMessage(PLAYER_NOT_FOUND);
             return true;
         }
         return true;

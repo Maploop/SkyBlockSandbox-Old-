@@ -102,6 +102,10 @@ public class IUtil {
         Bukkit.getScheduler().scheduleSyncDelayedTask(Items.getInstance(), run, i);
     }
 
+    public static void scheduleRepeatingTask(Runnable run, int i, int i1) {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), run, i, i1);
+    }
+
     public static ArrayList<Block> getBlocks(Block start, int radius){
         ArrayList<Block> blocks = new ArrayList<>();
         for(double x = start.getLocation().getX() - radius; x <= start.getLocation().getX() + radius; x++){

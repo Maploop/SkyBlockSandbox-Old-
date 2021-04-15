@@ -5,6 +5,7 @@ import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
 import net.maploop.items.item.ItemUtilities;
+import net.maploop.items.user.User;
 import net.maploop.items.util.IUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -54,9 +55,16 @@ public class AspectOfTheEnd extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) {
+        if(new User(player).getIntelligence() < 50) {
+            player.sendMessage("§cYou do not have enough mana to do that.");
+            return;
+        }
+        new User(player).setIntelligence(new User(player).getIntelligence() - 50);
+
         Location l = player.getLocation().clone();
         Set<Material> TRANSPARENT = new HashSet<Material>();
         TRANSPARENT.add(Material.AIR);
+        TRANSPARENT.add(Material.STATIONARY_WATER);
         Location looking = player.getTargetBlock(TRANSPARENT, 120).getLocation();
         if (looking.distance(l) < 8) {
             switch ((int) looking.distance(l)) {
@@ -101,7 +109,6 @@ public class AspectOfTheEnd extends CustomItem {
         player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
         if (l.getPitch() < 0) {
             player.teleport(new Location(l.getWorld(), l.getX(), l.getY() - 1, l.getZ(), l.getYaw(), l.getPitch()));
-            System.out.println("Winkel1");
         } else {
             player.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1.5F, l.getZ(), l.getYaw(), l.getPitch()));
         }

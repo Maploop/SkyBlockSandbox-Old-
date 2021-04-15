@@ -33,7 +33,9 @@ public class PlayerUseCustomItem implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerUse(PlayerInteractEvent event) {
         if (event.getItem() != null) {
-            ItemStack item = event.getItem();
+            ItemStack item = event.getPlayer().getItemInHand();
+            if(event.getPlayer().getItemInHand() == null) return;
+            if(event.getPlayer().getItemInHand().getType() == Material.AIR) return;
 
             net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
             NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
