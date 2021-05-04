@@ -64,45 +64,7 @@ public class Decoy extends CustomItem {
 
     @Override
     public void rightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
-        event.setCancelled(true);
-        if(player.getGameMode() != GameMode.CREATIVE) {
-            ItemStack stack = CustomItem.fromString(Items.getInstance(), "decoy", 1);
-            player.getInventory().removeItem(stack);
-        }
-
-        Zombie decoy = (Zombie) event.getClickedBlock().getLocation().getWorld().spawnEntity(event.getClickedBlock().getLocation().add(0, 1, 0), EntityType.ZOMBIE);
-        decoy.setMaxHealth(100);
-        decoy.setHealth(100);
-        decoy.setBaby(false);
-        decoy.setVillager(false);
-
-        ArmorStand name = (ArmorStand) decoy.getWorld().spawnEntity(decoy.getLocation(), EntityType.ARMOR_STAND);
-        name.setVisible(false);
-        name.setGravity(false);
-        name.setCustomNameVisible(true);
-        name.setSmall(true);
-
-        tag.put(decoy, name);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if(tag.containsKey(decoy)) {
-                    if(decoy.isDead()) {
-                        name.remove();
-
-                        tag.remove(decoy);
-                        return;
-                    }
-                    name.teleport(decoy.getLocation().add(0, 1, 0));
-                    if(decoy.getHealth() < 50) {
-                        name.setCustomName("§8[§7Lv25§8] §aDecoy §e" + Math.round(decoy.getHealth()) + "§f/§a" + Math.round(decoy.getMaxHealth()) + "§c❤");
-                        return;
-                    }
-                    name.setCustomName("§8[§7Lv25§8] §aDecoy §a" + Math.round(decoy.getHealth()) + "§f/§a" + Math.round(decoy.getMaxHealth()) + "§c❤");
-                }
-            }
-        }.runTaskTimer(Items.getInstance(), 0, 1);
+        player.sendMessage("§cThis item is disabled!");
     }
 
     @Override

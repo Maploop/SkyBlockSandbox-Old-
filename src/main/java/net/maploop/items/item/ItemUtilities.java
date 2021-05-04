@@ -117,7 +117,9 @@ public class ItemUtilities {
     public static ItemStack storeStringInItem(ItemStack host, String string, String key) {
         net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(host);
         NBTTagCompound tag = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
-        tag.setString(key,string);
+        NBTTagCompound data = tag.getCompound("ExtraAttributes");
+        data.setString(key, string);
+        tag.set("ExtraAttributes", data);
         nmsItem.setTag(tag);
 
         return CraftItemStack.asBukkitCopy(nmsItem);
@@ -127,9 +129,10 @@ public class ItemUtilities {
         if(host != null) {
             net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(host);
             NBTTagCompound tag = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
-            if(tag == null) return  null;
+            NBTTagCompound data = tag.getCompound("ExtraAttributes");
+            if(data == null) return  null;
 
-            return tag.getString(key);
+            return data.getString(key);
         }
         return null;
     }
@@ -137,7 +140,9 @@ public class ItemUtilities {
     public static ItemStack storeIntInItem(ItemStack host, Integer i, String key) {
         net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(host);
         NBTTagCompound tag = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
-        tag.setInt(key, i);
+        NBTTagCompound data = tag.getCompound("ExtraAttributes");
+        data.setInt(key, i);
+        tag.set("ExtraAttributes", data);
         nmsItem.setTag(tag);
 
         return CraftItemStack.asBukkitCopy(nmsItem);
@@ -147,9 +152,10 @@ public class ItemUtilities {
         if(host != null) {
             net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(host);
             NBTTagCompound tag = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
-            if(tag == null) return  null;
+            NBTTagCompound data = tag.getCompound("ExtraAttributes");
+            if(data == null) return  null;
 
-            return tag.getInt(key);
+            return data.getInt(key);
         }
         return null;
     }

@@ -39,7 +39,8 @@ public class PlayerUseCustomItem implements Listener {
 
             net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
             NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-            if(!(compound.hasKey("is-SB"))) return;
+            NBTTagCompound data = compound.getCompound("ExtraAttributes");
+            if(!(data.hasKey("is-SB"))) return;
             if(!(ItemUtilities.getStringFromItem(item, "is-SB").equals("true"))) return;
 
             if (event.getItem().hasItemMeta()) {
@@ -68,7 +69,8 @@ public class PlayerUseCustomItem implements Listener {
 
         net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(used);
         NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-        if(!(compound.hasKey("is-SB"))) return;
+        NBTTagCompound data = compound.getCompound("ExtraAttributes");
+        if(!(data.hasKey("is-SB"))) return;
         if(!(ItemUtilities.getStringFromItem(used, "is-SB").equals("true"))) return;
 
         ItemUtilities.getSBItem(used).clickedInInventoryAction(player, event);
@@ -76,6 +78,7 @@ public class PlayerUseCustomItem implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerHit(EntityDamageByEntityEvent event) {
+        if(!(event.getDamager() instanceof Player)) return;
         Player player = (Player) event.getDamager();
         ItemStack used = player.getInventory().getItemInHand();
 
@@ -85,7 +88,8 @@ public class PlayerUseCustomItem implements Listener {
         if(!(used.getItemMeta().hasDisplayName())) return;
         net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(used);
         NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-        if(!(compound.hasKey("is-SB"))) return;
+        NBTTagCompound data = compound.getCompound("ExtraAttributes");
+        if(!(data.hasKey("is-SB"))) return;
         if(!(ItemUtilities.getStringFromItem(used, "is-SB").equals("true"))) return;
 
 
@@ -108,7 +112,8 @@ public class PlayerUseCustomItem implements Listener {
         if(!(item.getItemMeta().hasDisplayName())) return;
         net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
         NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-        if(!(compound.hasKey("is-SB"))) return;
+        NBTTagCompound data = compound.getCompound("ExtraAttributes");
+        if(!(data.hasKey("is-SB"))) return;
         if(!(ItemUtilities.getStringFromItem(item, "is-SB").equals("true"))) return;
 
         if (item == null || item.getType() == Material.AIR) return;
@@ -127,7 +132,8 @@ public class PlayerUseCustomItem implements Listener {
         if(!(item.getItemMeta().hasDisplayName())) return;
         net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
         NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-        if(!(compound.hasKey("is-SB"))) return;
+        NBTTagCompound data = compound.getCompound("ExtraAttributes");
+        if(!(data.hasKey("is-SB"))) return;
         if(!(ItemUtilities.getStringFromItem(item, "is-SB").equals("true"))) return;
 
         if (item == null || item.getType() == Material.AIR) return;
@@ -147,7 +153,8 @@ public class PlayerUseCustomItem implements Listener {
         if(!(item.getItemMeta().hasDisplayName())) return;
         net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
         NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-        if(!(compound.hasKey("is-SB"))) return;
+        NBTTagCompound data = compound.getCompound("ExtraAttributes");
+        if(!(data.hasKey("is-SB"))) return;
         if(!(ItemUtilities.getStringFromItem(item, "is-SB").equals("true"))) return;
 
         if (item == null || item.getType() == Material.AIR) return;
@@ -203,7 +210,8 @@ public class PlayerUseCustomItem implements Listener {
 
         net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
         NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-        if(!(compound.hasKey("is-SB"))) return;
+        NBTTagCompound data = compound.getCompound("ExtraAttributes");
+        if(!(data.hasKey("is-SB"))) return;
         if(!(ItemUtilities.getStringFromItem(item, "is-SB").equals("true"))) return;
 
         CustomItem sbitem = ItemUtilities.getSBItem(item);

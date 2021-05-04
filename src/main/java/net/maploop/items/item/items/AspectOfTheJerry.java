@@ -21,8 +21,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class AspectOfTheJerry extends CustomItem {
     public AspectOfTheJerry(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, ItemType itemType, boolean glowing, int damage, int strength, int crit_damage, int intelligence, int health, int defense) {
@@ -54,13 +53,19 @@ public class AspectOfTheJerry extends CustomItem {
 
     }
 
+    private final Map<UUID, Long> cooldown = new HashMap<>();
+
     @Override
     public void rightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) {
         event.setCancelled(true);
-        if(!(ItemUtilities.enforceCooldown(player, "parely", 5, item, false))) {
-            ItemUtilities.warnPlayer(player, Collections.singletonList("§cYou are on cooldown!"));
-            return;
+        if(cooldown.containsKey(player.getUniqueId())) {
+            if(cooldown.get(player.getUniqueId()) > System.currentTimeMillis()) {
+                ItemUtilities.warnPlayer(player, Collections.singletonList("§cYou are on cooldown!"));
+                return;
+            }
         }
+        cooldown.put(player.getUniqueId(), System.currentTimeMillis() + (5 * 1000));
+
         player.playSound(player.getLocation(), Sound.VILLAGER_IDLE, 1f, 1f);
     }
 

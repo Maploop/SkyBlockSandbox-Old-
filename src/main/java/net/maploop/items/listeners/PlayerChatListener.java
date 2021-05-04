@@ -1,5 +1,6 @@
 package net.maploop.items.listeners;
 
+import net.maploop.items.Items;
 import net.maploop.items.gui.ItemsGUI;
 import net.maploop.items.gui.MinecraftItemsGUI;
 import net.maploop.items.gui.PlayerMenuUtility;
@@ -13,13 +14,9 @@ public class PlayerChatListener implements Listener {
     @EventHandler
     public void onChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
-        if(MinecraftItemsGUI.mcSearching.contains(player)) {
+        if(Items.getInstance().getShuts().getStringList("list").contains(player.getUniqueId().toString())) {
             event.setCancelled(true);
-            MinecraftItemsGUI.mcSearch.put(player, event.getMessage());
-
-            player.sendMessage("§aYour search query is: " + ChatColor.YELLOW + MinecraftItemsGUI.mcSearch.get(player));
-            MinecraftItemsGUI.mcSearching.remove(player);
-            new MinecraftItemsGUI(new PlayerMenuUtility(player)).open();
+            player.sendMessage("§cYou cannot talk because you are currently shut-upped!");
         }
     }
 }

@@ -61,6 +61,10 @@ public class Bonemerang extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player paramPlayer, PlayerInteractEvent event, ItemStack paramItemStack) {
+        paramPlayer.sendMessage("§cThis item is disabled!");
+        return;
+
+       /*
         if (paramPlayer.getItemInHand().getType().equals(Material.GHAST_TEAR)) return;
         ArmorStand stand = (ArmorStand) paramPlayer.getWorld().spawnEntity(paramPlayer.getLocation().add(0, 0.8f, 0), EntityType.ARMOR_STAND);
         int slot = paramPlayer.getInventory().getHeldItemSlot();
@@ -138,6 +142,12 @@ public class Bonemerang extends CustomItem {
                 paramPlayer.getInventory().setItem(slot, bone);
             }
         }, 90);
+        */
+    }
+
+    @Override
+    public void rightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
+        rightClickAirAction(player, event, item);
     }
 
     @Override
@@ -152,83 +162,12 @@ public class Bonemerang extends CustomItem {
 
     @Override
     public void shiftRightClickAirAction(Player paramPlayer, PlayerInteractEvent event, ItemStack paramItemStack) {
-        if (paramPlayer.getItemInHand().getType().equals(Material.GHAST_TEAR)) return;
-        ArmorStand stand = (ArmorStand) paramPlayer.getWorld().spawnEntity(paramPlayer.getLocation().add(0, 0.8f, 0), EntityType.ARMOR_STAND);
-        int slot = paramPlayer.getInventory().getHeldItemSlot();
-        ItemStack bone = paramPlayer.getItemInHand().clone();
-        stand.getEquipment().setItemInHand(paramPlayer.getItemInHand());
-        stand.setArms(true);
-        stand.setGravity(false);
-        stand.setVisible(false);
-        stand.setRightArmPose(new EulerAngle(270f, 0f, 0f));
-
-        int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonemrangForward(stand, paramPlayer), 0L, 1);
-
-        paramPlayer.getItemInHand().setType(Material.GHAST_TEAR);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Bukkit.getScheduler().cancelTask(i);
-                int i1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonemerangReturn(stand, paramPlayer), 0L, 1);
-
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        Bukkit.getScheduler().cancelTask(i1);
-                        stand.remove();
-                    }
-                }.runTaskLater(Items.getInstance(), 45);
-            }
-        }.runTaskLater(Items.getInstance(), 45);
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Items.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                paramPlayer.getInventory().setItem(slot, bone);
-            }
-        }, 90);
+        rightClickAirAction(paramPlayer, event, paramItemStack);
     }
 
     @Override
     public void shiftRightClickBlockAction(Player paramPlayer, PlayerInteractEvent paramPlayerInteractEvent, Block paramBlock, ItemStack paramItemStack) {
-        paramPlayerInteractEvent.setCancelled(true);
-        if (paramPlayer.getItemInHand().getType().equals(Material.GHAST_TEAR)) return;
-        ArmorStand stand = (ArmorStand) paramPlayer.getWorld().spawnEntity(paramPlayer.getLocation().add(0, 0.8f, 0), EntityType.ARMOR_STAND);
-        int slot = paramPlayer.getInventory().getHeldItemSlot();
-        ItemStack bone = paramPlayer.getItemInHand().clone();
-        stand.getEquipment().setItemInHand(paramPlayer.getItemInHand());
-        stand.setArms(true);
-        stand.setGravity(false);
-        stand.setVisible(false);
-        stand.setRightArmPose(new EulerAngle(270f, 0f, 0f));
-
-        int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonemrangForward(stand, paramPlayer), 0L, 1);
-
-        paramPlayer.getItemInHand().setType(Material.GHAST_TEAR);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Bukkit.getScheduler().cancelTask(i);
-                int i1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonemerangReturn(stand, paramPlayer), 0L, 1);
-
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        Bukkit.getScheduler().cancelTask(i1);
-                        stand.remove();
-                    }
-                }.runTaskLater(Items.getInstance(), 45);
-            }
-        }.runTaskLater(Items.getInstance(), 45);
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Items.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                paramPlayer.getInventory().setItem(slot, bone);
-            }
-        }, 90);
+        rightClickAirAction(paramPlayer, paramPlayerInteractEvent, paramItemStack);
     }
 
     @Override
@@ -237,16 +176,7 @@ public class Bonemerang extends CustomItem {
     }
 
     @Override
-    public void hitEntityAction(Player paramPlayer, EntityDamageByEntityEvent event, Entity paramEntity, ItemStack paramItemStack) {
-        DataHandler handler = new DataHandler((Player) event.getDamager());
-        double damage1 = (5 + 320 + (Math.round(130) / 5)) * (1 + 320/100);
-        double damage2 = (damage1 + (damage1 * 0.25) + (damage1 * 0.56));
-        double finalDmg = damage2 * (1 + handler.getCritDamage()/100);
-
-        event.setDamage(finalDmg);
-        EntityDamageListener listener = new EntityDamageListener();
-        listener.damage = finalDmg;
-    }
+    public void hitEntityAction(Player paramPlayer, EntityDamageByEntityEvent event, Entity paramEntity, ItemStack paramItemStack) { }
 
     @Override
     public void breakBlockAction(Player paramPlayer, BlockBreakEvent paramBlockBreakEvent, Block paramBlock, ItemStack paramItemStack) {

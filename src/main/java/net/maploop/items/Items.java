@@ -39,6 +39,7 @@ import java.util.*;
 
 public final class Items extends JavaPlugin {
     private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
+
     public static List<Player> goded = new ArrayList<>();
     public static boolean BlessingTesting = false;
     public static Items plugin;
@@ -55,27 +56,8 @@ public final class Items extends JavaPlugin {
         registerCommands();
         registerItems();
         loadCommands();
+        createShutsFile();
         x();
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-                    ItemStack item = player.getItemInHand();
-                    if(item == null) return;
-                    if(!(item.hasItemMeta())) return;
-                    if(!(item.getItemMeta().hasDisplayName())) return;
-                    net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
-                    NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-                    if(!(compound.hasKey("is-SB"))) return;
-                    if(!(ItemUtilities.getStringFromItem(item, "is-SB").equals("true"))) return;
-
-                    if (item.getType() == Material.AIR) return;
-                    if (ItemUtilities.isSBItem(item))
-                        ItemUtilities.getSBItem(item).activeEffect(player, item);
-                }
-            }
-        }.runTaskTimer(this, 0, 1);
 
         if(!Bukkit.getServer().getOnlinePlayers().isEmpty()) {
             for(Player player : Bukkit.getOnlinePlayers()) {
@@ -166,6 +148,7 @@ public final class Items extends JavaPlugin {
         SBItems.putItem("ember_rod", new EmberRod(38, Rarity.EPIC, "Ember Rod", Material.BLAZE_ROD, 0, false, false, false, Collections.singletonList(new ItemAbility("Fire Blast", AbilityType.RIGHT_CLICK, IUtil.colorize("&7Shoot 3 Fireballs in rapid\nsuccession in front of you!"), 30)), 150, true, true, ItemType.ITEM, true, 80, 35, 0, 0, 0 ,0));
         SBItems.putItem("jerrychine_gun", new JerrychineGun(39, Rarity.EPIC, "Jerry-chine Gun", Material.GOLD_BARDING, 0, true, false, false, Collections.singletonList(new ItemAbility("Rapid-fire", AbilityType.RIGHT_CLICK, "Fire off multiple jerry bombs\nthat create an explosion on\nimpact, dealing up to §c5,000§7\ndamage.")), 10, true, true, ItemType.DUNGEON_SWORD, false, 80, 0, 0, 200, 0, 0));
         SBItems.putItem("jerry_head", new JerryHead(40, Rarity.UNOBTAINABLE, "Beheaded Jerry", Material.SKULL_ITEM, 3, true, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/41b830eb4082acec836bc835e40a11282bb51193315f91184337e8d3555583", false));
+        SBItems.putItem("hyperion", new Hyperion());
     }
 
     private void registerCommands() {
@@ -185,6 +168,8 @@ public final class Items extends JavaPlugin {
         this.getCommand("placespecialanvil").setExecutor(new Command_placespecialanvil());
         this.getCommand("recombobulate").setExecutor(new Command_recombobulate());
         this.getCommand("itemssetlobby").setExecutor(new Command_setlobby());
+        this.getCommand("shutup").setExecutor(new Command_shutup());
+        this.getCommand("stfu").setExecutor(new Command_shutup());
     }
 
     private void loadCommands() {
@@ -270,6 +255,36 @@ public final class Items extends JavaPlugin {
         try {
             backpackData.load(backpackDataFile);
         } catch (InvalidConfigurationException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private File shuts;
+    private FileConfiguration shutsConfig;
+
+    public FileConfiguration getShuts() {
+        return this.shutsConfig;
+    }
+
+    public void saveShuts() {
+        try {
+            this.shutsConfig.save(shuts);
+        } catch (IOException e) {
+            System.out.println("An error occurred while saving data! [WARN] [CRITICAL]");
+        }
+    }
+
+    private void createShutsFile() {
+        shuts = new File(getDataFolder(), "shuts.yml");
+        if (!shuts.exists()) {
+            shuts.getParentFile().mkdirs();
+            saveResource("shuts.yml", false);
+        }
+
+        shutsConfig= new YamlConfiguration();
+        try {
+            shutsConfig.load(shuts);
+        } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
     }

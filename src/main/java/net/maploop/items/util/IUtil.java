@@ -16,6 +16,7 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -119,7 +120,7 @@ public class IUtil {
         return blocks;
     }
 
-    public static TextComponent makeClickableText(String text, String hoverText, ClickEvent.Action actiom, String actionText) {
+    public static TextComponent makeClickableText(String text, String hoverText, @Nullable ClickEvent.Action actiom, @Nullable String actionText) {
         TextComponent component = new TextComponent(text);
         component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
         component.setClickEvent(new ClickEvent(actiom, actionText));

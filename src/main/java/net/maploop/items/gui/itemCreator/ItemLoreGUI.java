@@ -5,13 +5,17 @@ import net.maploop.items.gui.AnvilGUI;
 import net.maploop.items.gui.GUI;
 import net.maploop.items.gui.PlayerMenuUtility;
 import net.maploop.items.util.IUtil;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +45,19 @@ public class ItemLoreGUI extends GUI {
                 break;
             }
             case 35: {
+                if(player.getItemInHand().hasItemMeta()) {
+                    if(player.getItemInHand().getItemMeta().hasLore()) {
+                        if(player.getItemInHand().getItemMeta().getLore().size() > 24) {
+                            player.sendMessage("§e------------------------------------------------");
+                            player.sendMessage("§cYou have reached the item lore limit on your item!");
+                            player.sendMessage("§cIf you want to increase it, you can buy a rank\nat §6§nhttps://store.skyblocksandbox.net§c!");
+                            player.sendMessage("§e------------------------------------------------");
+                            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 0);
+                            return;
+                        }
+                    }
+                }
+
                 AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
                     @Override
                     public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {

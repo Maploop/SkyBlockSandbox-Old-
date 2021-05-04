@@ -61,6 +61,11 @@ public class BonzoStaff extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) {
+        player.sendMessage("§cThis item is disabled!");
+        return;
+
+
+        /*
         ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getEyeLocation().add(player.getLocation().getDirection().multiply(0.3)), EntityType.ARMOR_STAND);
         stand.setGravity(false);
         stand.setVisible(false);
@@ -112,6 +117,7 @@ public class BonzoStaff extends CustomItem {
                 stand.remove();
             }
         }.runTaskLater(Items.getInstance(), 100);
+         */
     }
 
     @Override

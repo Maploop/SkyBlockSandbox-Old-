@@ -30,6 +30,7 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageEvent event) {
+        double d = event.getDamage();
         if (event.getEntity().hasMetadata("NPC")) {
             NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getEntity());
 
@@ -85,22 +86,17 @@ public class EntityDamageListener implements Listener {
             return;
         }
         if(event.getEntity() instanceof Player) {
+            event.setDamage(0);
             if(event.getEntity().hasMetadata("NPC")) return;
             Player player = (Player) event.getEntity();
             User user = new User(player);
             double reduction = user.getTotalDefense() / (user.getTotalDefense() + 100);
-            double realDmg = event.getDamage() - (event.getDamage() * reduction);
+            double realDmg = d - (d * reduction);
             user.setHealth(user.getHealth() - realDmg);
             System.out.println(realDmg);
             if(user.getHealth() <= 0) {
                 Bukkit.getPluginManager().callEvent(new PlayerCustomDeathEvent(player, user, event.getCause()));
             }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    player.setHealth(player.getMaxHealth());
-                }
-            }.runTaskLater(Items.getInstance(), 1);
         }
         if (event.getEntity().getType() == EntityType.ARMOR_STAND) return;
 
@@ -110,7 +106,7 @@ public class EntityDamageListener implements Listener {
                 if (damage > 0) {
                     addIndicator(damage, IUtil.getRandomLocation(event.getEntity().getLocation(), 2), event.getCause());
                 } else {
-                    addIndicator(event.getDamage(), IUtil.getRandomLocation(event.getEntity().getLocation(), 2), event.getCause());
+                    addIndicator(d, IUtil.getRandomLocation(event.getEntity().getLocation(), 2), event.getCause());
                 }
             }
         }.runTaskLater(Items.getInstance(), 1L);

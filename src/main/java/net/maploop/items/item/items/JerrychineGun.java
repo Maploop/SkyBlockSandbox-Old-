@@ -60,6 +60,9 @@ public class JerrychineGun extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) {
+        player.sendMessage("§cThis item is disabled!");
+
+        /*
         if(new User(player).getIntelligence() < 10) {
             player.sendMessage("§cYou do not have enough mana to use this!");
             player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 0f);
@@ -121,6 +124,7 @@ public class JerrychineGun extends CustomItem {
                 stand.remove();
             }
         }.runTaskLater(Items.getInstance(), 100);
+         */
     }
 
     @Override

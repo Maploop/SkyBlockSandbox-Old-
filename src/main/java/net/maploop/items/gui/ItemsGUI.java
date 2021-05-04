@@ -136,10 +136,11 @@ public class ItemsGUI extends PaginatedGUI {
             default: {
                 net.minecraft.server.v1_8_R3.ItemStack stack = CraftItemStack.asNMSCopy(event.getCurrentItem());
                 NBTTagCompound tag = (stack.hasTag()) ? stack.getTag() : new NBTTagCompound();
-                if(!(tag.hasKey("is-SB"))) return;
-                if(!(tag.getString("is-SB").equals("true"))) return;
+                NBTTagCompound data = tag.getCompound("ExtraAttributes");
+                if(!(data.hasKey("is-SB"))) return;
+                if(!(data.getString("is-SB").equals("true"))) return;
 
-                player.getInventory().addItem(CustomItem.fromString(Items.getInstance(), tag.getString("SB-name"), 1));
+                player.getInventory().addItem(CustomItem.fromString(Items.getInstance(), data.getString("SB-name"), 1));
                 player.playSound(player.getLocation(), Sound.NOTE_PLING, 1f, 2f);
             }
         }
