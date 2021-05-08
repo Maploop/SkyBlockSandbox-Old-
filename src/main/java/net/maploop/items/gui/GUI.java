@@ -21,11 +21,17 @@ import java.util.UUID;
 public abstract class GUI implements InventoryHolder {
 
     protected PlayerMenuUtility playerMenuUtility;
+    protected ItemStack itemStack;
     protected Inventory inventory;
     protected ItemStack FILLER_GLASS = makeItem(Material.STAINED_GLASS_PANE, " ", 1, 15);
 
     public GUI(PlayerMenuUtility playerMenuUtility) {
         this.playerMenuUtility = playerMenuUtility;
+    }
+
+    public GUI(PlayerMenuUtility playerMenuUtility, ItemStack itemStack) {
+        this.playerMenuUtility = playerMenuUtility;
+        this.itemStack = itemStack;
     }
 
     public abstract String getTitle();
@@ -74,6 +80,19 @@ public abstract class GUI implements InventoryHolder {
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
         String[] lore1 = lore.split("\n");
+        meta.setLore(Arrays.asList(lore1));
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    public ItemStack makeItem(Material material, String displayName, int amount, int durability, List<String> lore) {
+        ItemStack item = new ItemStack(material, amount, (short) durability);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(displayName);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
+        String[] lore1 = lore.toArray(new String[0]);
         meta.setLore(Arrays.asList(lore1));
         item.setItemMeta(meta);
 

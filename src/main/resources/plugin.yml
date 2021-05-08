@@ -12,6 +12,8 @@ commands:
   undozap:
   undograndarchitect:
   mcitems:
+    aliases:
+      - mcitem
   gamemode:
     aliases:
       - gm
@@ -26,3 +28,9 @@ commands:
   itemssetlobby:
   shutup:
   stfu:
+  dyeitem:
+    aliases:
+      - dye
+  dyearmoritem:
+    aliases:
+      - dyearmor

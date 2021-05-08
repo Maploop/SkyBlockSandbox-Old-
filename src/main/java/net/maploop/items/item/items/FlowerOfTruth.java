@@ -61,10 +61,6 @@ public class FlowerOfTruth extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player paramPlayer, PlayerInteractEvent event, ItemStack paramItemStack) {
-        if(true) {
-            paramPlayer.sendMessage("§cThis item is disabled!");
-            return;
-        }
 
         if (!(ItemUtilities.enforceCooldown(paramPlayer, "flower_of_truth", 1d, paramItemStack, false))) {  // 1d = (cooldown time in seconds)      item = (item cooldown must be on)     boolean false = if throw error in console (KEEP ON FALSE)
             ItemUtilities.warnPlayer(paramPlayer, Collections.singletonList(ChatColor.RED + "This ability is currently on cooldown for 1 more second."));
@@ -148,7 +144,7 @@ public class FlowerOfTruth extends CustomItem {
     }
 
     private boolean validEntity(Entity entity) {
-        if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER && entity.getType() != EntityType.VILLAGER) {
+        if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER && entity.getType() != EntityType.VILLAGER && entity.getType() != EntityType.SLIME) {
             return true;
         }
         return false;

@@ -113,27 +113,27 @@ public class GrapplingHook extends CustomItem {
     @Override
     public void playerFishAction(Player player, PlayerFishEvent event, ItemStack item) {
         if(event.getState().equals(PlayerFishEvent.State.FAILED_ATTEMPT) || event.getState().equals(PlayerFishEvent.State.IN_GROUND)) {
-            if(player.getInventory().contains(CustomItem.fromString(Items.getInstance(), "magical_clock", 1))) {
+            for (ItemStack itemz : player.getInventory().getContents()) {
+                if (itemz == CustomItem.fromString(Items.getInstance(),"magical_clock",1)) {
+                    Location loc1 = player.getLocation();
+                    Location loc2 = event.getHook().getLocation();
+
+                    Vector v = new Vector(loc2.getX() - loc1.getX(), 1, loc2.getZ() - loc1.getZ());
+
+                    player.setVelocity(v);
+
+                    return;
+                } else if (!(ItemUtilities.enforceCooldown(player, "grapple", 2D, item, false))) {
+                    player.sendMessage("§cWhow! Slow down there!");
+                    return;
+                }
                 Location loc1 = player.getLocation();
                 Location loc2 = event.getHook().getLocation();
 
                 Vector v = new Vector(loc2.getX() - loc1.getX(), 1, loc2.getZ() - loc1.getZ());
 
                 player.setVelocity(v);
-
-                return;
             }
-
-            if(!(ItemUtilities.enforceCooldown(player, "grapple", 2D, item, false))) {
-                player.sendMessage("§cWhow! Slow down there!");
-                return;
-            }
-            Location loc1 = player.getLocation();
-            Location loc2 = event.getHook().getLocation();
-
-            Vector v = new Vector(loc2.getX() - loc1.getX(), 1, loc2.getZ() - loc1.getZ());
-
-            player.setVelocity(v);
         }
     }
 }

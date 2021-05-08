@@ -73,10 +73,24 @@ public class MinecraftItemsGUI extends PaginatedGUI {
                 if(event.getCurrentItem().hasItemMeta()) {
                     event.setCancelled(true);
                 } else {
-                    player.getInventory().addItem(event.getCurrentItem());
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1f, 2f);
-                    break;
+                    new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
                 }
+                break;
+            }
+            case STAINED_CLAY: {
+                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
+                break;
+            }
+            case STAINED_GLASS: {
+                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
+                break;
+            }
+            case INK_SACK: {
+                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
+                break;
+            }
+            case WOOL: {
+                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
                 break;
             }
             case SIGN: {

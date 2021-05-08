@@ -89,14 +89,6 @@ public final class Items extends JavaPlugin {
             for(Player player : Bukkit.getOnlinePlayers()) {
                 User user = new User(player);
                 IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getTotalDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
-
-                if (user.getIntelligence() < user.getTotalIntelligence()) {
-                    user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
-                }
-
-                if (user.getHealth() < user.getTotalHealth()) {
-                    user.setHealth(user.getHealth() + (user.getTotalHealth() * 0.06));
-                }
             }
         }, 1, 20);
     }
@@ -122,7 +114,6 @@ public final class Items extends JavaPlugin {
     private void registerItems() {
         SBItems.putItem("aspect_of_the_dragons", new AspectOfTheDragons(1, Rarity.LEGENDARY, "Aspect of the Dragons", Material.DIAMOND_SWORD, 0, false, false, false, Collections.singletonList(new ItemAbility("Dragon Rage", AbilityType.RIGHT_CLICK, "§7All Monsters in front of you\n§7take §aint §7damage. Hit\n§7monsters take large knockback.")), 100, true, ItemType.SWORD, false));
         SBItems.putItem("flower_of_truth", new FlowerOfTruth(2, Rarity.LEGENDARY, "Flower of Truth", Material.RED_ROSE, 0, false, false, false, Collections.singletonList(new ItemAbility("Heat-Seeking Rose", AbilityType.RIGHT_CLICK, "§7Shoots a rose that ricochets\n§7between enemies, damaging up to\n§a3 §7of your foes! Damage\n§7multiplies as more enemies are\n§7hit.", 1)), 120000000, true, ItemType.DUNGEON_SWORD, true));
-        SBItems.putItem("skyblock_menu", new SkyblockMenu(5, Rarity.SKYBLOCK_MENU, "§aSkyblock GUI §7(Right Click)", Material.NETHER_STAR, 0, true, false, false, null, 0, false, ItemType.ITEM, true));
         SBItems.putItem("skyblock", new Skyblock(6, Rarity.VERY_SPECIAL, "Skyblock", Material.SKULL_ITEM, 3, false, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/2e2cc42015e6678f8fd49ccc01fbf787f1ba2c32bcf559a015332fc5db50", true));
         SBItems.putItem("bone_boomerang", new Bonemerang(8, Rarity.LEGENDARY, "Bonemerang", Material.BONE, 0, false, false, false, Collections.singletonList(new ItemAbility("Swing", AbilityType.RIGHT_CLICK, "§7Throw the bone for a short distance,\n§7dealing the damage an arrow\n§7would.\n\n§7Deals §cdouble damage §7when\n§7coming back. Pierces up to §e10\n§7foes.", 0)), 0, true, ItemType.DUNGEON_BOW, true));
         SBItems.putItem("builders_wand", new BuildersWand(9, Rarity.LEGENDARY, "Builder's Wand", Material.BLAZE_ROD, 0, false, false, false, Arrays.asList(new ItemAbility("Grand Architect", AbilityType.RIGHT_CLICK, "§7Right-Click the face of a block\n§7to extend all connected block\n§7faces.\n§8Consumes blocks from your inventory!"), new ItemAbility("Built-in Storage", AbilityType.LEFT_CLICK, IUtil.colorize("&7Opens the wand storage. Blocks\n&7will be placed from your\n&7inventory or the wand storage.\n&cTHIS ABILITY IS DISABLED!"))), 0, false, ItemType.ITEM, true));
@@ -149,6 +140,7 @@ public final class Items extends JavaPlugin {
         SBItems.putItem("jerrychine_gun", new JerrychineGun(39, Rarity.EPIC, "Jerry-chine Gun", Material.GOLD_BARDING, 0, true, false, false, Collections.singletonList(new ItemAbility("Rapid-fire", AbilityType.RIGHT_CLICK, "Fire off multiple jerry bombs\nthat create an explosion on\nimpact, dealing up to §c5,000§7\ndamage.")), 10, true, true, ItemType.DUNGEON_SWORD, false, 80, 0, 0, 200, 0, 0));
         SBItems.putItem("jerry_head", new JerryHead(40, Rarity.UNOBTAINABLE, "Beheaded Jerry", Material.SKULL_ITEM, 3, true, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/41b830eb4082acec836bc835e40a11282bb51193315f91184337e8d3555583", false));
         SBItems.putItem("hyperion", new Hyperion());
+        SBItems.putItem("danteSoul", new DanteSoul());
     }
 
     private void registerCommands() {
@@ -158,6 +150,8 @@ public final class Items extends JavaPlugin {
         this.getCommand("undozap").setExecutor(new Command_undozap());
         this.getCommand("undograndarchitect").setExecutor(new Command_undograndarchitect());
         this.getCommand("mcitems").setExecutor(new Command_mcitems());
+        this.getCommand("dyeitem").setExecutor(new Command_dyeitems());
+        this.getCommand("dyearmoritem").setExecutor(new Command_dyearmor());
         this.getCommand("gm").setExecutor(new Command_gamemode());
         this.getCommand("gamemode").setExecutor(new Command_gamemode());
         this.getCommand("sbclear").setExecutor(new Command_sbclear());

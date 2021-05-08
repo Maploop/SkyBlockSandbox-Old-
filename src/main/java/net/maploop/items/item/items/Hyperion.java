@@ -1,14 +1,21 @@
 package net.maploop.items.item.items;
 
+import com.comphenix.protocol.ProtocolLib;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.wrappers.EnumWrappers;
 import net.maploop.items.enums.AbilityType;
+import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
+import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.user.User;
+import net.maploop.items.util.Attribute;
 import net.maploop.items.util.IUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -40,8 +47,13 @@ public class Hyperion extends CustomItem {
     }
 
     @Override
-    public void getSpecificLorePrefix(List<String> paramList, ItemStack paramItemStack) {
-
+    public void getSpecificLorePrefix(List<String> lore, ItemStack paramItemStack) {
+        lore.add(ItemStats.GEAR_SCORE.getDisplayname() + "673");
+        lore.add(ItemStats.DAMAGE.getDisplayname() + "260");
+        lore.add(ItemStats.STRENGTH.getDisplayname() + "150");
+        lore.add(ItemStats.INTELLIGENCE.getDisplayname() + "350");
+        ItemStack a = ItemUtilities.storeStringInItem(paramItemStack, "true", "is-SB");
+        ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt("350"), Attribute.INTELLIGENCE.toString());
     }
 
     @Override
@@ -61,21 +73,17 @@ public class Hyperion extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) {
-        if(true) {
-            player.sendMessage("§cYou managed to do it! Hyperion will no longer exist, it'll just be a decorative item, no purpose. You made us disable it, don't cry cause it's disabled.");
-            return;
-        }
-
-        if(new User(player).getIntelligence() < 50) {
+        if(new User(player).getIntelligence() < 250) {
             player.sendMessage("§cYou do not have enough mana to do that.");
             return;
         }
-        new User(player).setIntelligence(new User(player).getIntelligence() - 50);
+        new User(player).setIntelligence(new User(player).getIntelligence() - 250);
 
         Location l = player.getLocation().clone();
         Set<Material> TRANSPARENT = new HashSet<Material>();
         TRANSPARENT.add(Material.AIR);
         TRANSPARENT.add(Material.STATIONARY_WATER);
+        TRANSPARENT.add(Material.VINE);
         Location looking = player.getTargetBlock(TRANSPARENT, 120).getLocation();
         if (looking.distance(l) < 8) {
             switch ((int) looking.distance(l)) {
@@ -110,25 +118,34 @@ public class Hyperion extends CustomItem {
                 case 1:
                 case 0:
                     player.sendMessage(ChatColor.RED + "There are blocks in the way!");
-                    IUtil.sendActionText(player, "§b-150 Mana (§6Wither Impact§b)");
+                    IUtil.sendActionText(player, "§b-250 Mana (§6Wither Impact§b)");
                     player.playSound(player.getLocation(), Sound.EXPLODE, 1.0F, 2.0F);
-                    player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 0);
+                    player.playEffect(EntityEffect.FIREWORK_EXPLODE);
                     onItemUse(player, item);
 
                     int i = 0;
                     for(Entity e : player.getWorld().getNearbyEntities(player.getLocation(), 5, 5, 5)) {
-                        if(e instanceof LivingEntity) {
-                            if(e instanceof Player) continue;
-                            if(e.hasMetadata("NPC")) continue;
+                        if (e instanceof LivingEntity) {
+                            if (e instanceof Player) continue;
+                            if (e.hasMetadata("NPC")) {
+                                if (e.getName().contains("§cSlime Goon")) {
+                                    ++i;
+                                    ((LivingEntity) e).damage(190000);
+                                } else {
+                                    continue;
+                                }
+                            }
 
                             ++i;
-                            ((LivingEntity)e).damage(190000);
+                            ((LivingEntity) e).damage(190000);
                         }
+
                     }
 
-                    if(i > 1) {
+                    if(i >= 1) {
                         DecimalFormat format = new DecimalFormat("#,###");
-                        player.sendMessage(IUtil.colorize("&7Your Wither Impact hit &c" + i + "&7 enemies dealing &c" + format.format(190000) + " damage&7."));
+                        int damage = 190000 * i;
+                        player.sendMessage(IUtil.colorize("&7Your Wither Impact hit &c" + i + "&7 enemies dealing &c" + format.format(damage) + " damage&7."));
                     }
                     return;
 
@@ -136,30 +153,37 @@ public class Hyperion extends CustomItem {
         } else
             l.add(player.getEyeLocation().getDirection().multiply(8));
 
-        IUtil.sendActionText(player, "§b-150 Mana (§6Wither Impact§b)");
+        IUtil.sendActionText(player, "§b-250 Mana (§6Wither Impact§b)");
         player.playSound(player.getLocation(), Sound.EXPLODE, 1.0F, 2.0F);
         if (l.getPitch() < 0) {
             player.teleport(new Location(l.getWorld(), l.getX(), l.getY() - 1, l.getZ(), l.getYaw(), l.getPitch()));
         } else {
             player.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1.5F, l.getZ(), l.getYaw(), l.getPitch()));
         }
-        player.getWorld().playEffect(player.getLocation(), Effect.EXPLOSION_LARGE, 0);
         onItemUse(player, item);
 
         int i = 0;
         for(Entity e : player.getWorld().getNearbyEntities(player.getLocation(), 5, 5, 5)) {
             if(e instanceof LivingEntity) {
                 if(e instanceof Player) continue;
-                if(e.hasMetadata("NPC")) continue;
+                if(e.hasMetadata("NPC")){
+                    if(e.getName().contains("§cSlime Goon")){
+                        ++i;
+                        ((LivingEntity)e).damage(1900000);
+                    } else{
+                        continue;
+                    }
+                }
 
                 ++i;
                 ((LivingEntity)e).damage(190000);
             }
         }
 
-        if(i > 1) {
+        if(i >= 1) {
             DecimalFormat format = new DecimalFormat("#,###");
-            player.sendMessage(IUtil.colorize("&7Your Wither Impact hit &c" + i + "&7 enemies dealing &c" + format.format(190000) + " damage&7."));
+            int damage = 190000 * i;
+            player.sendMessage(IUtil.colorize("&7Your Wither Impact hit &c" + i + "&7 enemies dealing &c" + format.format(damage) + " damage&7."));
         }
     }
 

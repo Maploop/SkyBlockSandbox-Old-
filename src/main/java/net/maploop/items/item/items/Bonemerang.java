@@ -61,10 +61,6 @@ public class Bonemerang extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player paramPlayer, PlayerInteractEvent event, ItemStack paramItemStack) {
-        paramPlayer.sendMessage("§cThis item is disabled!");
-        return;
-
-       /*
         if (paramPlayer.getItemInHand().getType().equals(Material.GHAST_TEAR)) return;
         ArmorStand stand = (ArmorStand) paramPlayer.getWorld().spawnEntity(paramPlayer.getLocation().add(0, 0.8f, 0), EntityType.ARMOR_STAND);
         int slot = paramPlayer.getInventory().getHeldItemSlot();
@@ -100,7 +96,7 @@ public class Bonemerang extends CustomItem {
             public void run() {
                 paramPlayer.getInventory().setItem(slot, bone);
             }
-        }, 90);
+        }, 45);
     }
 
     @Override
@@ -141,13 +137,7 @@ public class Bonemerang extends CustomItem {
             public void run() {
                 paramPlayer.getInventory().setItem(slot, bone);
             }
-        }, 90);
-        */
-    }
-
-    @Override
-    public void rightClickBlockAction(Player player, PlayerInteractEvent event, Block paramBlock, ItemStack item) {
-        rightClickAirAction(player, event, item);
+        }, 45);
     }
 
     @Override

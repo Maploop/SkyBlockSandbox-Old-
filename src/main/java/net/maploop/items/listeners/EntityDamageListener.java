@@ -2,6 +2,7 @@ package net.maploop.items.listeners;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.ender.sbx.Elections.data.DataHandler;
 import net.maploop.items.Items;
 import net.maploop.items.event.PlayerCustomDeathEvent;
 import net.maploop.items.user.User;
@@ -82,6 +83,10 @@ public class EntityDamageListener implements Listener {
                 }
 
                 npc.setName("§d§lLost Adventurer " + health + "§c❤");
+            } else if (npc.getName().contains("§6﴾§cEnder§6﴿")){
+                LivingEntity livingEntity = (LivingEntity) event.getEntity();
+                String health = "";
+                event.setDamage(event.getDamage());
             }
             return;
         }

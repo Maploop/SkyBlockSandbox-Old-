@@ -15,7 +15,8 @@ public enum ItemType {
     DUNGEON_SWORD("DUNGEON SWORD"),
     AXE("AXE"),
     PICKAXE("PICKAXE"),
-    HOE("HOE");
+    HOE("HOE"),
+    SUMMONING("SUMMONING ITEM");
 
     private String s;
 

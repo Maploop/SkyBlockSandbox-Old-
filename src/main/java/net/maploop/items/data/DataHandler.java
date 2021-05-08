@@ -48,6 +48,10 @@ public class DataHandler {
                     addMana(getMaxMana() / 10);
                 }
 
+                if(getMana() > getMaxHealth()){
+                    setMana(getMaxMana());
+                }
+
                 if(getHealth() < getMaxHealth()) {
                     addHealth(getMaxHealth() / 50);
                 }
