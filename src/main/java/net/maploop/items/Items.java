@@ -89,6 +89,14 @@ public final class Items extends JavaPlugin {
             for(Player player : Bukkit.getOnlinePlayers()) {
                 User user = new User(player);
                 IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getTotalDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
+
+                if (user.getIntelligence() < user.getTotalIntelligence()) {
+                    user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
+                }
+
+                if (user.getHealth() < user.getTotalHealth()) {
+                    user.setHealth(user.getHealth() + (user.getTotalHealth() * 0.06));
+                }
             }
         }, 1, 20);
     }
@@ -150,8 +158,6 @@ public final class Items extends JavaPlugin {
         this.getCommand("undozap").setExecutor(new Command_undozap());
         this.getCommand("undograndarchitect").setExecutor(new Command_undograndarchitect());
         this.getCommand("mcitems").setExecutor(new Command_mcitems());
-        this.getCommand("dyeitem").setExecutor(new Command_dyeitems());
-        this.getCommand("dyearmoritem").setExecutor(new Command_dyearmor());
         this.getCommand("gm").setExecutor(new Command_gamemode());
         this.getCommand("gamemode").setExecutor(new Command_gamemode());
         this.getCommand("sbclear").setExecutor(new Command_sbclear());
