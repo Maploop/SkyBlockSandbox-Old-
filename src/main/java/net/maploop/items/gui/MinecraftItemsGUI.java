@@ -69,30 +69,30 @@ public class MinecraftItemsGUI extends PaginatedGUI {
                 }
                 break;
             }
-            case STAINED_GLASS_PANE: {
-                if(event.getCurrentItem().hasItemMeta()) {
-                    event.setCancelled(true);
-                } else {
-                    new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
-                }
-                break;
-            }
-            case STAINED_CLAY: {
-                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
-                break;
-            }
-            case STAINED_GLASS: {
-                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
-                break;
-            }
-            case INK_SACK: {
-                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
-                break;
-            }
-            case WOOL: {
-                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
-                break;
-            }
+            //case STAINED_GLASS_PANE: {
+            //                if(event.getCurrentItem().hasItemMeta()) {
+            //                    event.setCancelled(true);
+            //                } else {
+            //                    new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
+            //                }
+            //                break;
+            //            }
+            //            case STAINED_CLAY: {
+            //                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
+            //                break;
+            //            }
+            //            case STAINED_GLASS: {
+            //                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
+            //                break;
+            //            }
+            //            case INK_SACK: {
+            //                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
+            //                break;
+            //            }
+            //            case WOOL: {
+            //                new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
+            //                break;
+            //            }
             case SIGN: {
                 if(event.getClick().equals(ClickType.RIGHT)) {
                     if(mcSearch.containsKey(player)) {

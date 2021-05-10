@@ -86,7 +86,7 @@ public class ItemCreatorGUI extends GUI {
             case 11: {
                 if(player.getItemInHand().getItemMeta().hasDisplayName() && player.getItemInHand().getItemMeta().hasLore()) {
                     if(Stream.of(Material.STAINED_CLAY, Material.STAINED_GLASS, Material.STAINED_GLASS_PANE, Material.INK_SACK, Material.WOOL).anyMatch(material -> player.getItemInHand().getType().equals(material))){
-                        new DyeGUI(playerMenuUtility, player.getItemInHand()).open();
+                        // new DyeGUI(playerMenuUtility, player.getItemInHand()).open();
                         break;
                     } else {
                         player.sendMessage("§cThat isn't a valid item!");
