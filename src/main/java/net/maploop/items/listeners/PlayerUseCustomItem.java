@@ -53,6 +53,8 @@ public class PlayerUseCustomItem implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onClick(InventoryClickEvent event) {
+        if(true) return;
+
         Player player = (Player) event.getWhoClicked();
         ItemStack used = event.getCurrentItem();
 
@@ -69,7 +71,7 @@ public class PlayerUseCustomItem implements Listener {
 
         net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(used);
         NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-        NBTTagCompound data = compound.getCompound("ExtraAttributes");
+        NBTTagCompound data = (compound.getCompound("ExtraAttributes") != null ? compound.getCompound("ExtraAttributes") : new NBTTagCompound());
         if(!(data.hasKey("is-SB"))) return;
         if(!(ItemUtilities.getStringFromItem(used, "is-SB").equals("true"))) return;
 

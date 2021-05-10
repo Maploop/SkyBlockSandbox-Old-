@@ -28,9 +28,11 @@ commands:
   itemssetlobby:
   shutup:
   stfu:
+  piano:
   dyeitem:
     aliases:
       - dye
   dyearmoritem:
     aliases:
       - dyearmor
+  rainbow:

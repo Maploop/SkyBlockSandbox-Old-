@@ -6,7 +6,8 @@ public enum Attribute {
     CRIT_DAMAGE("Crit Damage", Integer.MAX_VALUE),
     HEALTH("Health", Integer.MAX_VALUE),
     DEFENSE("Defense", Integer.MAX_VALUE),
-    INTELLIGENCE("Intelligence", Integer.MAX_VALUE);
+    INTELLIGENCE("Intelligence", Integer.MAX_VALUE),
+    DAMAGE("Damage", INTELLIGENCE.getMaxValue());
 
     private final String name;
     private final int maxValue;

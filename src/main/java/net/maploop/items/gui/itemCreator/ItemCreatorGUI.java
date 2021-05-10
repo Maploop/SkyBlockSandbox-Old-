@@ -1,10 +1,7 @@
 package net.maploop.items.gui.itemCreator;
 
 import net.maploop.items.Items;
-import net.maploop.items.gui.AnvilGUI;
-import net.maploop.items.gui.DyeGUI;
-import net.maploop.items.gui.GUI;
-import net.maploop.items.gui.PlayerMenuUtility;
+import net.maploop.items.gui.*;
 import net.maploop.items.util.IUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -103,9 +100,7 @@ public class ItemCreatorGUI extends GUI {
                 }
             }
             case 15: {
-                player.sendMessage("§cThis feature is coming soon!");
-                player.closeInventory();
-                player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 0f);
+                new AbilityEditorGUI(playerMenuUtility).open();
             }
         }
     }
@@ -122,7 +117,7 @@ public class ItemCreatorGUI extends GUI {
         inventory.setItem(13, makeItem(Material.PAPER, "§aEdit Item Lore", 1, 0, IUtil.colorize("&7Edit the lore of the item you\n&7have in your hand!\n\n&eClick to edit!")));
         inventory.setItem(14, makeItem(Material.GOLDEN_APPLE, "§aEdit Item Stats", 1, 0, IUtil.colorize("&7Edit the stats the item has!\n&7Including Defense, Health, and Intelligence!\n\n&eClick to edit!")));
         inventory.setItem(12, makeItem(Material.PAINTING, "§aSet item Rarity", 1, 0, IUtil.colorize("&7Set the rarity of your item\n&7you can choose anything\n&7between: &fCommon&7, &aUncommon\n&9Rare&7, &5Epic&7, &6Legendary&7,\n&dMythic&7, &cSpecial&7.\n\n§cNote: The last line of\n§clore in your item will\n§cturn into the rarity name.\n\n&eClick to set!")));
-        inventory.setItem(15, makeItem(Material.GLOWSTONE_DUST, "§aSet item ability", 1, 0, "§c§lCOMING SOON"));
+        inventory.setItem(15, makeItem(Material.GLOWSTONE_DUST, "§aEdit item ability", 1, 0, "§7ok im coding now"));
         inventory.setItem(11,makeItem(Material.INK_SACK,"§aSet item color",1,5,IUtil.colorize("&7Edit the color of the item!\n&7you can change any item\n&7from: &aWool &7, &aStained_Clay &7, \n&aStained_Glass_Panes &7, &aStained_Glass  \n&7or &aINK_SACK(DYES)")));
     }
 }

@@ -23,6 +23,7 @@ import net.maploop.items.util.IUtil;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -89,6 +90,13 @@ public final class Items extends JavaPlugin {
             for(Player player : Bukkit.getOnlinePlayers()) {
                 User user = new User(player);
                 IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getTotalDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
+                if(player.getInventory().contains(Material.BARRIER)) {
+                    if(player.hasPermission("items.admin")) continue;
+                    player.getInventory().remove(Material.BARRIER);
+                    player.sendMessage("§cBlacklisted items were removed from your inventory!");
+                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 0);
+
+                }
             }
         }, 1, 20);
     }
@@ -164,6 +172,8 @@ public final class Items extends JavaPlugin {
         this.getCommand("itemssetlobby").setExecutor(new Command_setlobby());
         this.getCommand("shutup").setExecutor(new Command_shutup());
         this.getCommand("stfu").setExecutor(new Command_shutup());
+        this.getCommand("piano").setExecutor(new Command_piano());
+        this.getCommand("rainbow").setExecutor(new Command_rainbow());
     }
 
     private void loadCommands() {

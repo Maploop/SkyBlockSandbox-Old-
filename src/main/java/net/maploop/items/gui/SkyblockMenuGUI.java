@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
+
 public class SkyblockMenuGUI extends GUI {
     public SkyblockMenuGUI(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
@@ -68,6 +70,7 @@ public class SkyblockMenuGUI extends GUI {
     @Override
     public void setItems() {
         Player pLayer = playerMenuUtility.getOwner();
+        DecimalFormat formatter = new DecimalFormat("#,###");
         DataHandler handler = new DataHandler(pLayer);
         User user = new User(pLayer);
 
@@ -79,12 +82,12 @@ public class SkyblockMenuGUI extends GUI {
 
         ItemStack profile = makeSkullItem("§aYour Skyblock Profile", pLayer.getName(), 1,
                 "§c❤ Health §f" +
-                        user.getTotalHealth() + " HP\n§a❈ Defense §f" +
-                        user.getTotalDefense() + "\n§c❁ Strength §f" +
-                        user.getTotalStrength() + "\n§9☣ Crit Chance §f" +
-                        user.getCrit_chance() + "%\n§9☠ Crit Damage §f" +
-                        user.getCrit_damage() + "%\n§b✎ Intelligence §f" +
-                        user.getTotalIntelligence() + "\n \n§eClick to view your profile!");
+                        formatter.format(user.getTotalHealth()) + " HP\n§a❈ Defense §f" +
+                        formatter.format(user.getTotalDefense()) + "\n§c❁ Strength §f" +
+                        formatter.format(user.getTotalStrength()) + "\n§9☣ Crit Chance §f" +
+                        formatter.format(user.getCrit_chance()) + "%\n§9☠ Crit Damage §f" +
+                        formatter.format(user.getCrit_damage()) + "%\n§b✎ Intelligence §f" +
+                        formatter.format(user.getTotalIntelligence()) + "\n \n§eClick to view your profile!");
         inventory.setItem(13, profile);
 
         ItemStack trades = makeItem(Material.EMERALD, "§cTrades", 1, 0, "§cThis feature is disabled\n§cin the Dungeon simulator\n§cserver!");
