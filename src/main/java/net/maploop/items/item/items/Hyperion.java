@@ -76,6 +76,10 @@ public class Hyperion extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) {
+        if(true) {
+            player.sendMessage("item is disabldd wdawda");
+            return;
+        }
         if(new User(player).getIntelligence() < 250) {
             player.sendMessage("§cYou do not have enough mana to do that.");
             return;
