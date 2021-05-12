@@ -28,7 +28,7 @@ import java.util.Set;
 public class StatsEditorGUI extends GUI {
     /*
     TODO
-      - Add mana, defense, damage, and strength editing to the GUI.
+      - Add damage, critchance and critdamage editing to the GUI.
      */
 
     public StatsEditorGUI(PlayerMenuUtility playerMenuUtility) {

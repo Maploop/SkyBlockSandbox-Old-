@@ -1,5 +1,6 @@
 package net.maploop.items.listeners;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.maploop.items.Items;
@@ -82,10 +83,6 @@ public class EntityDamageListener implements Listener {
                 }
 
                 npc.setName("§d§lLost Adventurer " + health + "§c❤");
-            } else if (npc.getName().contains("§6﴾§cEnder§6﴿")){
-                LivingEntity livingEntity = (LivingEntity) event.getEntity();
-                String health = "";
-                event.setDamage(event.getDamage());
             }
             return;
         }
@@ -96,8 +93,12 @@ public class EntityDamageListener implements Listener {
             User user = new User(player);
             double reduction = user.getTotalDefense() / (user.getTotalDefense() + 100);
             double realDmg = d - (d * reduction);
-            user.setHealth(user.getHealth() - realDmg);
-            System.out.println(realDmg);
+            String text = "%worldguard_region_name%";
+            String regionid = PlaceholderAPI.setPlaceholders(((Player) event).getPlayer(), text);
+            if (regionid.equals("colosseum")) {
+                user.setHealth(user.getHealth() - realDmg);
+            }
+
             if(user.getHealth() <= 0) {
                 Bukkit.getPluginManager().callEvent(new PlayerCustomDeathEvent(player, user, event.getCause()));
             }

@@ -1,10 +1,7 @@
 package net.maploop.items.gui.itemCreator;
 
 import net.maploop.items.Items;
-import net.maploop.items.gui.AnvilGUI;
-import net.maploop.items.gui.DyeGUI;
-import net.maploop.items.gui.GUI;
-import net.maploop.items.gui.PlayerMenuUtility;
+import net.maploop.items.gui.*;
 import net.maploop.items.util.IUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -27,7 +24,7 @@ public class ItemCreatorGUI extends GUI {
 
     @Override
     public int getSize() {
-        return 36;
+        return 5*9;
     }
 
     @Override
@@ -89,7 +86,7 @@ public class ItemCreatorGUI extends GUI {
             case 11: {
                 if(player.getItemInHand().getItemMeta().hasDisplayName() && player.getItemInHand().getItemMeta().hasLore()) {
                     if(Stream.of(Material.STAINED_CLAY, Material.STAINED_GLASS, Material.STAINED_GLASS_PANE, Material.INK_SACK, Material.WOOL).anyMatch(material -> player.getItemInHand().getType().equals(material))){
-                        new DyeGUI(playerMenuUtility, player.getItemInHand()).open();
+                        // new DyeGUI(playerMenuUtility, player.getItemInHand()).open();
                         break;
                     } else {
                         player.sendMessage("§cThat isn't a valid item!");
@@ -103,9 +100,12 @@ public class ItemCreatorGUI extends GUI {
                 }
             }
             case 15: {
-                player.sendMessage("§cThis feature is coming soon!");
-                player.closeInventory();
-                player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 0f);
+                if (player.hasPermission("items.admin")) {
+                    new AbilityEditorGUI(playerMenuUtility).open();
+                }
+            }
+            case 22: {
+                new TagsEditorGUI(playerMenuUtility).open();
             }
         }
     }
@@ -115,14 +115,15 @@ public class ItemCreatorGUI extends GUI {
         setFilter();
         Player player = playerMenuUtility.getOwner();
 
-        inventory.setItem(31, makeItem(Material.BARRIER, "§cClose", 1, 0));
+        inventory.setItem(40, makeItem(Material.BARRIER, "§cClose", 1, 0));
         inventory.setItem(4, makeItem(Material.NAME_TAG, "§aRename Item", 1, 0,
                 IUtil.colorize("&7Rename the item you have\n&7in your hand!\n\n&eClick to rename!")));
 
         inventory.setItem(13, makeItem(Material.PAPER, "§aEdit Item Lore", 1, 0, IUtil.colorize("&7Edit the lore of the item you\n&7have in your hand!\n\n&eClick to edit!")));
         inventory.setItem(14, makeItem(Material.GOLDEN_APPLE, "§aEdit Item Stats", 1, 0, IUtil.colorize("&7Edit the stats the item has!\n&7Including Defense, Health, and Intelligence!\n\n&eClick to edit!")));
         inventory.setItem(12, makeItem(Material.PAINTING, "§aSet item Rarity", 1, 0, IUtil.colorize("&7Set the rarity of your item\n&7you can choose anything\n&7between: &fCommon&7, &aUncommon\n&9Rare&7, &5Epic&7, &6Legendary&7,\n&dMythic&7, &cSpecial&7.\n\n§cNote: The last line of\n§clore in your item will\n§cturn into the rarity name.\n\n&eClick to set!")));
-        inventory.setItem(15, makeItem(Material.GLOWSTONE_DUST, "§aSet item ability", 1, 0, "§c§lCOMING SOON"));
-        inventory.setItem(11,makeItem(Material.INK_SACK,"§aSet item color",1,5,IUtil.colorize("&7Edit the color of the item!\n&7you can change any item\n&7from: &aWool &7, &aStained_Clay &7, \n&aStained_Glass_Panes &7, &aStained_Glass  \n&7or &aINK_SACK(DYES)")));
+        inventory.setItem(15, makeItem(Material.GLOWSTONE_DUST, "§aEdit item ability", 1, 0, "§7ok im coding now"));
+        inventory.setItem(11,makeItem(Material.INK_SACK,"§aSet item color",1,5,IUtil.colorize("&7Edit the color of the item!\n&7You can change any item\n&7from: &aWool &7, &aStained_Clay &7, \n&aStained_Glass_Panes &7, &aStained_Glass  \n&7or &aINK_SACK(DYES)")));
+        inventory.setItem(22,makeItem(Material.WATCH,"§aSet item tags",1,0,IUtil.colorize("&7Edit the tags of the item!\n\n&eClick to edit!")));
     }
 }

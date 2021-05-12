@@ -4,33 +4,32 @@ import net.maploop.items.command.AbstractCommand;
 import net.maploop.items.command.CommandHandler;
 import net.maploop.items.command.commands.*;
 import net.maploop.items.data.BackpackData;
-import net.maploop.items.data.DataHandler;
 import net.maploop.items.enums.AbilityType;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
+import net.maploop.items.event.PlayerCustomDeathEvent;
 import net.maploop.items.gui.PlayerMenuUtility;
 import net.maploop.items.item.ItemAbility;
-import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.item.SBItems;
 import net.maploop.items.item.items.*;
 import net.maploop.items.listeners.*;
 import net.maploop.items.sql.MySQL;
-import net.maploop.items.sql.SQLGetter;
 import net.maploop.items.user.User;
 import net.maploop.items.user.UserInjector;
 import net.maploop.items.util.IReflections;
 import net.maploop.items.util.IUtil;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,15 +89,16 @@ public final class Items extends JavaPlugin {
                 User user = new User(player);
                 IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getTotalDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
 
-                if (user.getIntelligence() < user.getTotalIntelligence()) {
-                    user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
-                }
+                if (user.getHealth() > user.getTotalHealth()){
+                    user.setHealth(user.getTotalHealth());
 
-                if (user.getHealth() < user.getTotalHealth()) {
+                } else {
                     user.setHealth(user.getHealth() + (user.getTotalHealth() * 0.06));
                 }
+
+                user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
             }
-        }, 1, 20);
+        }, 0, 20);
     }
 
     private void registerListeners() {
@@ -158,6 +158,8 @@ public final class Items extends JavaPlugin {
         this.getCommand("undozap").setExecutor(new Command_undozap());
         this.getCommand("undograndarchitect").setExecutor(new Command_undograndarchitect());
         this.getCommand("mcitems").setExecutor(new Command_mcitems());
+        this.getCommand("dyeitem").setExecutor(new Command_dyeitems());
+        this.getCommand("dyearmoritem").setExecutor(new Command_dyearmor());
         this.getCommand("gm").setExecutor(new Command_gamemode());
         this.getCommand("gamemode").setExecutor(new Command_gamemode());
         this.getCommand("sbclear").setExecutor(new Command_sbclear());
@@ -170,6 +172,8 @@ public final class Items extends JavaPlugin {
         this.getCommand("itemssetlobby").setExecutor(new Command_setlobby());
         this.getCommand("shutup").setExecutor(new Command_shutup());
         this.getCommand("stfu").setExecutor(new Command_shutup());
+        this.getCommand("piano").setExecutor(new Command_piano());
+        this.getCommand("rainbow").setExecutor(new Command_rainbow());
     }
 
     private void loadCommands() {

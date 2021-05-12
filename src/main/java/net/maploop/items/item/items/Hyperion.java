@@ -3,10 +3,18 @@ package net.maploop.items.item.items;
 import com.comphenix.protocol.ProtocolLib;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.wrappers.EnumWrappers;
+import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.bukkit.RegionQuery;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.maploop.items.enums.AbilityType;
 import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
+import net.maploop.items.event.PlayerCustomDeathEvent;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
 import net.maploop.items.item.ItemUtilities;
@@ -15,21 +23,16 @@ import net.maploop.items.util.Attribute;
 import net.maploop.items.util.IUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Hyperion extends CustomItem {
     public Hyperion() {
@@ -116,6 +119,9 @@ public class Hyperion extends CustomItem {
                     player.sendMessage(ChatColor.RED + "There are blocks in the way!");
                     break;
                 case 1:
+                    l.add(player.getEyeLocation().getDirection().multiply(1));
+                    player.sendMessage(ChatColor.RED + "There are blocks in the way!");
+                    break;
                 case 0:
                     player.sendMessage(ChatColor.RED + "There are blocks in the way!");
                     IUtil.sendActionText(player, "§b-250 Mana (§6Wither Impact§b)");
@@ -126,19 +132,25 @@ public class Hyperion extends CustomItem {
                     int i = 0;
                     for(Entity e : player.getWorld().getNearbyEntities(player.getLocation(), 5, 5, 5)) {
                         if (e instanceof LivingEntity) {
-                            if (e instanceof Player) continue;
-                            if (e.hasMetadata("NPC")) {
-                                if (e.getName().contains("§cSlime Goon")) {
-                                    ++i;
-                                    ((LivingEntity) e).damage(190000);
-                                } else {
-                                    continue;
+                            if(! (e instanceof Player || e instanceof ArmorStand || e instanceof NPC)) {
+                                ++i;
+                                ((LivingEntity) e).damage(190000);
+                            } else {
+                                if (e instanceof Player) {
+                                    if (!((Player) e).getPlayer().equals(player)) {
+                                        String text = "%worldguard_region_name%";
+                                        String regionid = PlaceholderAPI.setPlaceholders(((Player) e).getPlayer(), text);
+                                        if (regionid.equals("colosseum")) {
+                                            ++i;
+                                            User user = new User(((Player) e).getPlayer());
+                                            int damage = (int) 20/10;
+                                            ((Player) e).damage(damage);
+                                        }
+                                    }
                                 }
                             }
-
-                            ++i;
-                            ((LivingEntity) e).damage(190000);
                         }
+
 
                     }
 
@@ -150,34 +162,44 @@ public class Hyperion extends CustomItem {
                     return;
 
             }
-        } else
+        } else {
             l.add(player.getEyeLocation().getDirection().multiply(8));
+        }
 
         IUtil.sendActionText(player, "§b-250 Mana (§6Wither Impact§b)");
         player.playSound(player.getLocation(), Sound.EXPLODE, 1.0F, 2.0F);
-        if (l.getPitch() < 0) {
-            player.teleport(new Location(l.getWorld(), l.getX(), l.getY() - 1, l.getZ(), l.getYaw(), l.getPitch()));
+        if (l.getPitch() <= 0) {
+            player.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1.0F, l.getZ(), l.getYaw(), l.getPitch()));
         } else {
             player.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1.5F, l.getZ(), l.getYaw(), l.getPitch()));
         }
         onItemUse(player, item);
 
         int i = 0;
-        for(Entity e : player.getWorld().getNearbyEntities(player.getLocation(), 5, 5, 5)) {
-            if(e instanceof LivingEntity) {
-                if(e instanceof Player) continue;
-                if(e.hasMetadata("NPC")){
-                    if(e.getName().contains("§cSlime Goon")){
+        try {
+            for (Entity e : player.getWorld().getNearbyEntities(player.getLocation(), 5, 5, 5)) {
+                if (e instanceof LivingEntity) {
+                    if (!(e instanceof Player || e instanceof ArmorStand || e instanceof NPC)) {
                         ++i;
-                        ((LivingEntity)e).damage(1900000);
-                    } else{
-                        continue;
+                        ((LivingEntity) e).damage(190000);
+                    } else {
+                        if (e instanceof Player) {
+                            if (!((Player) e).getPlayer().equals(player)) {
+                                String text = "%worldguard_region_name%";
+                                String regionid = PlaceholderAPI.setPlaceholders(((Player) e).getPlayer(), text);
+                                if (regionid.equals("colosseum")) {
+                                    ++i;
+                                    User user = new User(((Player) e).getPlayer());
+                                    int damage = (int) 10;
+                                    ((Player) e).damage(damage);
+                                }
+                            }
+                        }
                     }
                 }
-
-                ++i;
-                ((LivingEntity)e).damage(190000);
             }
+        }catch(ClassCastException e){
+            return;
         }
 
         if(i >= 1) {

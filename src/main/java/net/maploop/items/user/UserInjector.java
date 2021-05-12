@@ -4,6 +4,8 @@ import net.maploop.items.Items;
 import net.maploop.items.services.ItemsService;
 import net.maploop.items.util.IUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 public class UserInjector extends ItemsService {
@@ -22,5 +24,6 @@ public class UserInjector extends ItemsService {
     public void inject() {
         Player player = user.getBukkitPlayer();
         user.setHealth(user.getTotalHealth());
+        user.setIntelligence(user.getTotalIntelligence());
     }
 }

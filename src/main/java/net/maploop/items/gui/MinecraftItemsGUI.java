@@ -2,6 +2,7 @@ package net.maploop.items.gui;
 
 import net.maploop.items.Items;
 import net.maploop.items.api.SignGUI;
+import net.maploop.items.gui.itemCreator.DyeGUI;
 import net.maploop.items.util.IUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -70,10 +71,35 @@ public class MinecraftItemsGUI extends PaginatedGUI {
                 break;
             }
             case STAINED_GLASS_PANE: {
-                if(event.getCurrentItem().hasItemMeta()) {
+                if (event.getCurrentItem().hasItemMeta()) {
                     event.setCancelled(true);
                 } else {
-                    new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
+                    new DyeGUI(new PlayerMenuUtility(player), event.getCurrentItem()).open();
+                }
+                break;
+            }
+            case SIGN: {
+                if (event.getClick().equals(ClickType.RIGHT)) {
+                    if (mcSearch.containsKey(player)) {
+                        mcSearch.remove(player);
+                        mcSearch.remove(player);
+                        player.playSound(player.getLocation(), Sound.CAT_MEOW, 1f, 1.5f);
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                new MinecraftItemsGUI(new PlayerMenuUtility(player)).open();
+                            }
+                        }.runTaskLater(Items.getInstance(), 3);
+                        return;
+                    }
+                    event.setCancelled(true);
+                    return;
+                }
+
+                if (event.getCurrentItem().hasItemMeta()) {
+                    mcSearching.add(player);
+                    String[] text = new String[]{"", "^^^^^^", "Enter your", "query!"};
+                    SignGUI.openSignEditor(player, text);
                 }
                 break;
             }
@@ -91,35 +117,6 @@ public class MinecraftItemsGUI extends PaginatedGUI {
             }
             case WOOL: {
                 new DyeGUI(new PlayerMenuUtility(player),event.getCurrentItem()).open();
-                break;
-            }
-            case SIGN: {
-                if(event.getClick().equals(ClickType.RIGHT)) {
-                    if(mcSearch.containsKey(player)) {
-                        mcSearch.remove(player);
-                        mcSearch.remove(player);
-                        player.playSound(player.getLocation(), Sound.CAT_MEOW, 1f, 1.5f);
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                new MinecraftItemsGUI(new PlayerMenuUtility(player)).open();
-                            }
-                        }.runTaskLater(Items.getInstance(), 3);
-                        return;
-                    }
-                    event.setCancelled(true);
-                    return;
-                }
-
-                if(event.getCurrentItem().hasItemMeta()) {
-                    mcSearching.add(player);
-                    String[] text = new String[] {"", "^^^^^^", "Enter your", "query!"};
-                    SignGUI.openSignEditor(player, text);
-                } else {
-                    player.getInventory().addItem(event.getCurrentItem());
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1f, 2f);
-                    break;
-                }
                 break;
             }
             case ANVIL: {

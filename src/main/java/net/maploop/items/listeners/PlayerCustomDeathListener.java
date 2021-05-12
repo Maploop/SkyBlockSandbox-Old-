@@ -27,6 +27,7 @@ public class PlayerCustomDeathListener implements Listener {
 
         Location loc = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
         player.teleport(loc);
+        player.setHealth(0);
     }
 
 }
