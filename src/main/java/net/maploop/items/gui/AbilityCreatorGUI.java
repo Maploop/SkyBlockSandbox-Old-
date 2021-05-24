@@ -1,6 +1,7 @@
 package net.maploop.items.gui;
 
 import net.maploop.items.Items;
+import net.maploop.items.api.SignGUIRevamped;
 import net.maploop.items.data.AbilityData;
 import net.maploop.items.data.EnumAbilityData;
 import net.maploop.items.item.ItemUtilities;
@@ -62,31 +63,53 @@ public class AbilityCreatorGUI extends GUI {
                     }
                 });
 
-                gui.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, makeItem(Material.NAME_TAG, "Enter name", 1, 0));
+                gui.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, makeItem(Material.NAME_TAG, "Name input", 1, 0));
                 player.setItemOnCursor(null);
                 gui.open();
                 break;
             }
             case WATCH: {
-                AnvilGUI gui = new AnvilGUI(player, e -> {
-                    if(e.getSlot().equals(AnvilGUI.AnvilSlot.INPUT_LEFT)) {
-                        e.setWillDestroy(false);
-                        e.setWillClose(false);
-                        return;
-                    }
-                    if(e.getSlot().equals(AnvilGUI.AnvilSlot.OUTPUT)) {
-                        if(ItemUtilities.isInteger(e.getName())) {
-                            player.setItemInHand(AbilityData.setData(EnumAbilityData.COOLDOWN, player.getItemInHand(), e.getName(), index));
+                SignGUIRevamped.openSignEditor(player, new String[] {"", "^^^^^^", "Enter your", "cooldown!"}, e -> {
+                    if(ItemUtilities.isInteger(e.getSignText()[0])) {
+                        if(Integer.parseInt(e.getSignText()[0]) > 1000) {
+                            player.sendMessage("§cThe cooldown cannot be more than 1,000!");
                             Bukkit.getScheduler().runTaskLater(Items.getInstance(), super::open, 2);
-                        } else {
-                            player.sendMessage("§cThat's not a valid number!");
-                            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 0);
-                            Bukkit.getScheduler().runTaskLater(Items.getInstance(), super::open, 2);
+                            return;
                         }
+                        player.setItemInHand(AbilityData.setData(EnumAbilityData.COOLDOWN, player.getItemInHand(), e.getSignText()[0], index));
+                        Bukkit.getScheduler().runTaskLater(Items.getInstance(), super::open, 2);
+                    } else {
+                        player.sendMessage("§cThat's not a valid number!");
+                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 0);
+                        Bukkit.getScheduler().runTaskLater(Items.getInstance(), super::open, 2);
                     }
                 });
-                gui.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, makeItem(Material.PAPER, "Enter integer", 1, 0));
-                gui.open();
+                break;
+            }
+            case HOPPER: {
+                new BaseAbilitiesGUI(new PlayerMenuUtility(player), index).open();
+                break;
+            }
+            case EYE_OF_ENDER: {
+                SignGUIRevamped.openSignEditor(player, new String[] {"", "^^^^^^", "Enter your", "mana cost!"}, e -> {
+                    if(ItemUtilities.isInteger(e.getSignText()[0])) {
+                        if(Integer.parseInt(e.getSignText()[0]) > 500) {
+                            player.sendMessage("§cThe mana cost cannot be more than 500!");
+                            Bukkit.getScheduler().runTaskLater(Items.getInstance(), super::open, 2);
+                            return;
+                        }
+                        player.setItemInHand(AbilityData.setData(EnumAbilityData.MANA_COST, player.getItemInHand(), e.getSignText()[0], index));
+                        Bukkit.getScheduler().runTaskLater(Items.getInstance(), super::open, 2);
+                    } else {
+                        player.sendMessage("§cThat's not a valid number!");
+                        player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 0);
+                        Bukkit.getScheduler().runTaskLater(Items.getInstance(), super::open, 2);
+                    }
+                });
+                break;
+            }
+            case COMMAND: {
+                new FunctionsGUI(new PlayerMenuUtility(player), index).open();
                 break;
             }
         }
@@ -101,6 +124,19 @@ public class AbilityCreatorGUI extends GUI {
                 IUtil.colorize("&7Set the name of your ability!\n\n&cNOTICE: Inappropriate ability names\n&cwill result in a warn/ban.\n\n&eClick to set name!")));
 
         inventory.setItem(21, makeItem(Material.WATCH, "§aSet ability cooldown", 1, 0,
-                IUtil.colorize("&7Set the cooldown of your ability!\n\nMaximum: &a1,000s\n\n&eClick to set!")));
+                IUtil.colorize("&7Set the cooldown of your ability!\n\n§7Maximum: &a1,000s\n\n&eClick to set!")));
+
+        inventory.setItem(23, makeItem(Material.HOPPER, "§aSet base ability", 1, 0, IUtil.colorize(
+                "&7Set the base ability if your item\n" +
+                        "&7the base ability is the origin of\n" +
+                        "&7your item's ability.\n\n" +
+                        "&eClick to set!"
+        )));
+
+        inventory.setItem(22, makeItem(Material.EYE_OF_ENDER, "§aSet item Mana cost", 1, 0, IUtil.colorize(
+                "&7Set the amount of&b intelligence\n&7your ability costs to use!\n\n&7Maximum: &a500\n\n&eClick to set!"
+        )));
+
+        inventory.setItem(31, makeItem(Material.COMMAND, "§aFunctions", 1, 0, "§7You can add functions to\n§7your item to make it weirder!\n§7You can add up to §a3\n§7functions to your items.\n\n§eClick to view!"));
     }
 }

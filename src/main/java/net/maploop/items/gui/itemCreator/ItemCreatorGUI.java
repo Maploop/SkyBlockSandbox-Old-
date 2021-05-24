@@ -1,8 +1,8 @@
 package net.maploop.items.gui.itemCreator;
 
 import net.maploop.items.Items;
+import net.maploop.items.gui.AbilityEditorGUI;
 import net.maploop.items.gui.AnvilGUI;
-import net.maploop.items.gui.DyeGUI;
 import net.maploop.items.gui.GUI;
 import net.maploop.items.gui.PlayerMenuUtility;
 import net.maploop.items.util.IUtil;
@@ -103,9 +103,13 @@ public class ItemCreatorGUI extends GUI {
                 }
             }
             case 15: {
-                player.sendMessage("§cThis feature is coming soon!");
-                player.closeInventory();
-                player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 0f);
+                if(player.hasPermission("items.admin")) {
+                    new AbilityEditorGUI(new PlayerMenuUtility(player)).open();
+                } else {
+                    player.sendMessage("§cThis feature is coming soon!");
+                    player.closeInventory();
+                    player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 0f);
+                }
             }
         }
     }

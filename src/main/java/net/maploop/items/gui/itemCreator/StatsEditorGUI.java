@@ -64,6 +64,18 @@ public class StatsEditorGUI extends GUI {
                 AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
                     @Override
                     public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
+                        if(!ItemUtilities.isInteger(event.getName())) {
+                            player.sendMessage("§cThat's not a valid number!");
+                            player.closeInventory();
+                            return;
+                        }
+                        if(Integer.parseInt(event.getName()) > 100000) {
+                            player.sendMessage("§cThe health amount can't be more than 100,000!");
+                            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 0);
+                            player.closeInventory();
+                            return;
+                        }
+
                         if(ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
                             ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
                             ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.HEALTH.toString());
@@ -98,6 +110,18 @@ public class StatsEditorGUI extends GUI {
                 AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
                     @Override
                     public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
+                        if(!ItemUtilities.isInteger(event.getName())) {
+                            player.sendMessage("§cThat's not a valid number!");
+                            player.closeInventory();
+                            return;
+                        }
+                        if(Integer.parseInt(event.getName()) > 100000) {
+                            player.sendMessage("§cThe intelligence amount can't be more than 100,000!");
+                            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 0);
+                            player.closeInventory();
+                            return;
+                        }
+
                         if(ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
                             ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
                             ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.INTELLIGENCE.toString());
@@ -133,6 +157,18 @@ public class StatsEditorGUI extends GUI {
                 AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
                     @Override
                     public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
+                        if(!ItemUtilities.isInteger(event.getName())) {
+                            player.sendMessage("§cThat's not a valid number!");
+                            player.closeInventory();
+                            return;
+                        }
+                        if(Integer.parseInt(event.getName()) > 100000) {
+                            player.sendMessage("§cThe defense amount can't be more than 100,000!");
+                            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 0);
+                            player.closeInventory();
+                            return;
+                        }
+
                         if(ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
                             ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
                             ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.DEFENSE.toString());
@@ -169,6 +205,18 @@ public class StatsEditorGUI extends GUI {
                     @Override
                     public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
                         if(ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
+                            if(!ItemUtilities.isInteger(event.getName())) {
+                                player.sendMessage("§cThat's not a valid number!");
+                                player.closeInventory();
+                                return;
+                            }
+                            if(Integer.parseInt(event.getName()) > 100000) {
+                                player.sendMessage("§cThe strength amount can't be more than 100,000!");
+                                player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1, 0);
+                                player.closeInventory();
+                                return;
+                            }
+
                             ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
                             ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.STRENGTH.toString());
                             ItemMeta hmeta = h.getItemMeta();

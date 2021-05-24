@@ -230,7 +230,7 @@ public class User {
             e.printStackTrace();
         }
 
-        double def = pD.getDouble("stats.extra_defense")+100;
+        double def = pD.getDouble("stats.extra_defense")+1;
         ItemStack[] armor = user.getEquipment().getArmorContents();
         for(ItemStack a : armor) {
             if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
@@ -250,7 +250,7 @@ public class User {
             e.printStackTrace();
         }
 
-        double x = pD.getDouble("stats.extra_strength")+100;
+        double x = pD.getDouble("stats.extra_strength")+50;
         ItemStack[] armor = user.getEquipment().getArmorContents();
         for(ItemStack a : armor) {
             if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {

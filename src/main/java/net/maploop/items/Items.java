@@ -3,6 +3,7 @@ package net.maploop.items;
 import net.maploop.items.command.AbstractCommand;
 import net.maploop.items.command.CommandHandler;
 import net.maploop.items.command.commands.*;
+import net.maploop.items.data.AbilityHandler;
 import net.maploop.items.data.BackpackData;
 import net.maploop.items.enums.AbilityType;
 import net.maploop.items.enums.ItemType;
@@ -96,7 +97,9 @@ public final class Items extends JavaPlugin {
                     user.setHealth(user.getHealth() + (user.getTotalHealth() * 0.06));
                 }
 
-                user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
+                if(user.getIntelligence() < user.getTotalIntelligence()) {
+                    user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
+                }
             }
         }, 0, 20);
     }
@@ -116,6 +119,7 @@ public final class Items extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerQuitEvent(), this);
         this.getServer().getPluginManager().registerEvents(new EntityInteractAtEntityListener(), this);
         this.getServer().getPluginManager().registerEvents(new SignGUIUpdateListener(), this);
+        this.getServer().getPluginManager().registerEvents(new AbilityHandler(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerCustomDeathListener(), this);
     }
 

@@ -2,6 +2,7 @@ package net.maploop.items.gui;
 
 import net.maploop.items.Items;
 import net.maploop.items.api.SignGUI;
+import net.maploop.items.gui.itemCreator.DyeGUI;
 import net.maploop.items.util.IUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
