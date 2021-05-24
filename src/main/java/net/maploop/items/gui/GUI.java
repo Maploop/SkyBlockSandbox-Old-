@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -78,6 +79,24 @@ public abstract class GUI implements InventoryHolder {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(displayName);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
+        String[] lore1 = lore.split("\n");
+        meta.setLore(Arrays.asList(lore1));
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    public ItemStack makeItem(Material material, String displayName, int amount, int durability, String lore, boolean glowing) {
+        ItemStack item = new ItemStack(material, amount, (short) durability);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(displayName);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
+        if(glowing) {
+            meta.addEnchant(Enchantment.LUCK, 1, false);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
 
         String[] lore1 = lore.split("\n");
         meta.setLore(Arrays.asList(lore1));

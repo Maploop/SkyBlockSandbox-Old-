@@ -1,20 +1,10 @@
 package net.maploop.items.item.items;
 
-import com.comphenix.protocol.ProtocolLib;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.wrappers.EnumWrappers;
-import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.RegionQuery;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.maploop.items.enums.AbilityType;
 import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
-import net.maploop.items.event.PlayerCustomDeathEvent;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
 import net.maploop.items.item.ItemUtilities;
@@ -35,13 +25,8 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class Hyperion extends CustomItem {
-    public Hyperion() {
-        super(11111, Rarity.LEGENDARY, "Hyperion", Material.IRON_SWORD, 0, false, false, false,
-                Collections.singletonList(
-                        new ItemAbility("Wither Impact", AbilityType.RIGHT_CLICK, "Teleport §a10 blocks §7ahead of\nyou. Then implode dealing\n§c190,000 §7damage to nearby\nenemies. Also applies the wither\nshield scroll" +
-                                " ability reducing\ndamage taken and granting an absorption shield for §e5§7\nseconds.")
-                )
-                , 250, true, ItemType.DUNGEON_SWORD, false);
+    public Hyperion(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, boolean enchantable, ItemType itemType, boolean glowing, int damage, int strength, int crit_damage, int intelligence, int health, int defense) {
+        super(id, rarity, name, material, durability, stackable, oneTimeUse, hasActive, abilities, manaCost, reforgeable, enchantable, itemType, glowing, damage, strength, crit_damage, intelligence, health, defense);
     }
 
     @Override
@@ -51,12 +36,6 @@ public class Hyperion extends CustomItem {
 
     @Override
     public void getSpecificLorePrefix(List<String> lore, ItemStack paramItemStack) {
-        lore.add(ItemStats.GEAR_SCORE.getDisplayname() + "673");
-        lore.add(ItemStats.DAMAGE.getDisplayname() + "260");
-        lore.add(ItemStats.STRENGTH.getDisplayname() + "150");
-        lore.add(ItemStats.INTELLIGENCE.getDisplayname() + "350");
-        ItemStack a = ItemUtilities.storeStringInItem(paramItemStack, "true", "is-SB");
-        ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt("350"), Attribute.INTELLIGENCE.toString());
     }
 
     @Override
@@ -76,11 +55,7 @@ public class Hyperion extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) {
-        if(true) {
-            player.sendMessage("item is disabldd wdawda");
-            return;
-        }
-        if(new User(player).getIntelligence() < 250) {
+        if(new User(player).getIntelligence() <= 250) {
             player.sendMessage("§cYou do not have enough mana to do that.");
             return;
         }
@@ -123,39 +98,37 @@ public class Hyperion extends CustomItem {
                     player.sendMessage(ChatColor.RED + "There are blocks in the way!");
                     break;
                 case 1:
-                    l.add(player.getEyeLocation().getDirection().multiply(1));
-                    player.sendMessage(ChatColor.RED + "There are blocks in the way!");
-                    break;
                 case 0:
                     player.sendMessage(ChatColor.RED + "There are blocks in the way!");
                     IUtil.sendActionText(player, "§b-250 Mana (§6Wither Impact§b)");
                     player.playSound(player.getLocation(), Sound.EXPLODE, 1.0F, 2.0F);
-                    player.playEffect(EntityEffect.FIREWORK_EXPLODE);
+
                     onItemUse(player, item);
 
                     int i = 0;
-                    for(Entity e : player.getWorld().getNearbyEntities(player.getLocation(), 5, 5, 5)) {
+                    for (Entity e : player.getWorld().getNearbyEntities(player.getLocation(), 5, 5, 5)) {
                         if (e instanceof LivingEntity) {
-                            if(! (e instanceof Player || e instanceof ArmorStand || e instanceof NPC)) {
+                            if (!(e instanceof Player || e instanceof ArmorStand || e instanceof NPC)) {
                                 ++i;
-                                ((LivingEntity) e).damage(190000);
-                            } else {
-                                if (e instanceof Player) {
-                                    if (!((Player) e).getPlayer().equals(player)) {
-                                        String text = "%worldguard_region_name%";
-                                        String regionid = PlaceholderAPI.setPlaceholders(((Player) e).getPlayer(), text);
-                                        if (regionid.equals("colosseum")) {
-                                            ++i;
-                                            User user = new User(((Player) e).getPlayer());
-                                            int damage = (int) 20/10;
-                                            ((Player) e).damage(damage);
-                                        }
-                                    }
+                                if(e.isDead()) {
+                                    ((LivingEntity) e).damage(0);
+                                } else {
+                                    ((LivingEntity) e).damage(190000);
                                 }
-                            }
+                            }/* else {
+                        if (e instanceof Player) {
+                            if (!((Player) e).getPlayer().equals(player)) {
+                                String text = "%worldguard_region_name%";
+                                String regionid = PlaceholderAPI.setPlaceholders(((Player) e).getPlayer(), text);
+                                if (regionid.equals("colosseum")) {
+                                    ++i;
+                                    User user = new User(((Player) e).getPlayer());
+                                    int damage = (int) 1900;
+                                    double health = user.getHealth()-damage;
+                                    user.setHealth(health);
+                                }
+                                */
                         }
-
-
                     }
 
                     if(i >= 1) {
@@ -166,27 +139,31 @@ public class Hyperion extends CustomItem {
                     return;
 
             }
-        } else {
+        } else
             l.add(player.getEyeLocation().getDirection().multiply(8));
-        }
 
         IUtil.sendActionText(player, "§b-250 Mana (§6Wither Impact§b)");
         player.playSound(player.getLocation(), Sound.EXPLODE, 1.0F, 2.0F);
+
         if (l.getPitch() <= 0) {
-            player.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1.0F, l.getZ(), l.getYaw(), l.getPitch()));
+            player.teleport(new Location(l.getWorld(), l.getX(), l.getY() - 1, l.getZ(), l.getYaw(), l.getPitch()));
         } else {
             player.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1.5F, l.getZ(), l.getYaw(), l.getPitch()));
         }
+
         onItemUse(player, item);
 
         int i = 0;
-        try {
-            for (Entity e : player.getWorld().getNearbyEntities(player.getLocation(), 5, 5, 5)) {
-                if (e instanceof LivingEntity) {
-                    if (!(e instanceof Player || e instanceof ArmorStand || e instanceof NPC)) {
-                        ++i;
-                        ((LivingEntity) e).damage(190000);
+        for (Entity e : player.getWorld().getNearbyEntities(player.getLocation(), 5, 5, 5)) {
+            if (e instanceof LivingEntity) {
+                if (!(e instanceof Player || e instanceof ArmorStand || e instanceof NPC)) {
+                    ++i;
+                    if(e.isDead()) {
+                        ((LivingEntity) e).damage(0);
                     } else {
+                        ((LivingEntity) e).damage(190000);
+                    }
+                }/* else {
                         if (e instanceof Player) {
                             if (!((Player) e).getPlayer().equals(player)) {
                                 String text = "%worldguard_region_name%";
@@ -194,16 +171,12 @@ public class Hyperion extends CustomItem {
                                 if (regionid.equals("colosseum")) {
                                     ++i;
                                     User user = new User(((Player) e).getPlayer());
-                                    int damage = (int) 10;
-                                    ((Player) e).damage(damage);
+                                    int damage = (int) 1900;
+                                    double health = user.getHealth()-damage;
+                                    user.setHealth(health);
                                 }
-                            }
-                        }
-                    }
-                }
+                                */
             }
-        }catch(ClassCastException e){
-            return;
         }
 
         if(i >= 1) {

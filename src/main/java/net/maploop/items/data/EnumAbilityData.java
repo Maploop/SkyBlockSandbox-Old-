@@ -4,8 +4,9 @@ public enum EnumAbilityData {
     NAME("name", 1),
     COOLDOWN("cooldown", 2),
     DAMAGE("damage", 3),
-    FUNCTION("function", 4),
-    BASE_ABILITY("base_ability", 5);
+    MANA_COST("mana_cost", 4),
+    FUNCTION("function", 5),
+    BASE_ABILITY("base_ability", 6);
 
     private final String a;
     private final int b;

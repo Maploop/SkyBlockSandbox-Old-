@@ -15,34 +15,14 @@ public class EntityDamageByEntityListener implements Listener {
         if(event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
             User user = new User(player);
-            if (event.getEntity().hasMetadata("NPC")) {
-                NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getEntity());
-                if(npc.getName().equals("§6﴾§cEnder§6﴿")){
-//                    DataHandler playerGetter = new DataHandler(player);
-//                    event.setDamage(playerGetter.getVoteCount() * 1000);
-                } else {
-                    // Calculations
-                    double d = 0;
-                    d += (5 + ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") + (user.getTotalStrength() / 5)) * (1 + user.getTotalStrength() / 100);
-                    d += 1 + (1 * 0.04);
-                    d += (d * 1 * (1 + user.getCrit_damage() / 100));
-                    event.setDamage(d);
-                    EntityDamageListener l = new EntityDamageListener();
-                    l.damage = d;
-                }
-            } else {
-                // Calculations
-                double d = 0;
-                d += (5 + ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") + (user.getTotalStrength() / 5)) * (1 + user.getTotalStrength() / 100);
-                d += 1 + (1 * 0.04);
-                d += (d * 1 * (1 + user.getCrit_damage() / 100));
-                event.setDamage(d);
-                EntityDamageListener l = new EntityDamageListener();
-                l.damage = d;
-            }
-
-
-
+            // Calculations
+            double d = 0;
+            d += (5 + ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") + (user.getTotalStrength() / 5)) * (1 + user.getTotalStrength() / 100);
+            d += 1 + (1 * 0.04);
+            d += (d * 1 * (1 + user.getCrit_damage() / 100));
+            event.setDamage(d);
+            EntityDamageListener l = new EntityDamageListener();
+            l.damage = d;
         }
     }
 }

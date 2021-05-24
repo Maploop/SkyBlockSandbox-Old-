@@ -85,7 +85,7 @@ public class EntityDamageListener implements Listener {
                 npc.setName("§d§lLost Adventurer " + health + "§c❤");
             }
             return;
-        }
+        }else
         if(event.getEntity() instanceof Player) {
             event.setDamage(0);
             if(event.getEntity().hasMetadata("NPC")) return;
@@ -97,13 +97,20 @@ public class EntityDamageListener implements Listener {
             String regionid = PlaceholderAPI.setPlaceholders(((Player) event).getPlayer(), text);
             if (regionid.equals("colosseum")) {
                 user.setHealth(user.getHealth() - realDmg);
-            }
-
-            if(user.getHealth() <= 0) {
-                Bukkit.getPluginManager().callEvent(new PlayerCustomDeathEvent(player, user, event.getCause()));
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (damage > 0) {
+                            addIndicator(damage, IUtil.getRandomLocation(event.getEntity().getLocation(), 2), event.getCause());
+                        } else {
+                            addIndicator(d, IUtil.getRandomLocation(event.getEntity().getLocation(), 2), event.getCause());
+                        }
+                    }
+                }.runTaskLater(Items.getInstance(), 1L);
             }
         }
         if (event.getEntity().getType() == EntityType.ARMOR_STAND) return;
+        if (event.getEntity().getType() == EntityType.PLAYER) return;
 
         new BukkitRunnable() {
             @Override
@@ -134,6 +141,17 @@ public class EntityDamageListener implements Listener {
             new_string = "§f✧" + (str.charAt(0)) + "§e" + String.valueOf(str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + str.charAt(5) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
         if (str.length() == 7)
             new_string = "§f✧" + (str.charAt(0)) + "§e" + (str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + str.charAt(5) + str.charAt(6) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+        if(str.length() == 8)
+            new_string = "§f✧" + (str.charAt(0)) + "§e" + (str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + str.charAt(5) + str.charAt(6) + str.charAt(7) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+        if(str.length() == 9)
+            new_string = "§f✧" + (str.charAt(0)) + "§e" + (str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + str.charAt(5) + str.charAt(6) + str.charAt(7) + str.charAt(8) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+        if(str.length() == 10)
+            new_string = "§f✧" + (str.charAt(0)) + "§e" + (str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + str.charAt(5) + str.charAt(6) + str.charAt(7) + str.charAt(8) + "§6" + str.charAt(9) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+        if(str.length() == 11)
+            new_string = "§f✧" + (str.charAt(0)) + "§e" + (str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + str.charAt(5) + str.charAt(6) + str.charAt(7) + str.charAt(8) + str.charAt(9) + "§e" + str.charAt(10) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+        if(str.length() == 12)
+            new_string = "§f✧" + (str.charAt(0)) + "§e" + (str.charAt(1)) + "§6" + String.valueOf(str.charAt(2)) + "§c" + String.valueOf(str.charAt(3)) + str.charAt(4) + str.charAt(5) + str.charAt(6) + str.charAt(7) + str.charAt(8) + str.charAt(9) + str.charAt(10) + "§f" + str.charAt(11) + "§f✧".replaceAll(",", ChatColor.DARK_PURPLE + ",");
+
         return new_string;
     }
 

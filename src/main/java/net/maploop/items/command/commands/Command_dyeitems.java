@@ -18,7 +18,9 @@ public class Command_dyeitems implements CommandExecutor {
             if(player.hasPermission("mcitems.use")) {
                 if(Stream.of(Material.STAINED_CLAY, Material.STAINED_GLASS, Material.STAINED_GLASS_PANE, Material.INK_SACK, Material.WOOL).anyMatch(material -> player.getItemInHand().getType().equals(material)) && player.getItemInHand().hasItemMeta()){
                     new DyeGUI(new PlayerMenuUtility(player),player.getItemInHand()).open();
-                } else {
+                } else if(Stream.of(Material.LEATHER_HELMET, Material.LEATHER_LEGGINGS, Material.LEATHER_BOOTS, Material.LEATHER_CHESTPLATE).anyMatch(material -> player.getItemInHand().getType().equals(material))) {
+                    player.performCommand("dyearmor");
+                }else {
                     player.sendMessage("§cYou dont have an item in your hand that can be dyed!");
                 }
             } else {

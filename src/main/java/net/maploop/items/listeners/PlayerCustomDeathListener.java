@@ -13,6 +13,7 @@ public class PlayerCustomDeathListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDeath(PlayerCustomDeathEvent event) {
         Player player = event.getPlayer();
+        player.setHealth(0);
         player.sendMessage("§c☠ §7You died!");
         event.getUser().playSound("random.anvil.land", 1, 2);
         event.getUser().setHealth(event.getUser().getTotalHealth());
@@ -27,7 +28,6 @@ public class PlayerCustomDeathListener implements Listener {
 
         Location loc = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
         player.teleport(loc);
-        player.setHealth(0);
     }
 
 }

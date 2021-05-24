@@ -396,7 +396,7 @@ public abstract class CustomItem {
         ItemStack step7 = ItemUtilities.storeIntInItem(step6,  item.getIntelligence(), Attribute.INTELLIGENCE.toString());
         ItemStack step8 = ItemUtilities.storeIntInItem(step7,  item.getHealth(), Attribute.HEALTH.toString());
         ItemStack step9 = ItemUtilities.storeIntInItem(step8,  item.getDefense(), Attribute.DEFENSE.toString());
-        ItemStack step10 = ItemUtilities.storeIntInItem(step9,  item.getDefense(), Attribute.DAMAGE.toString());
+        ItemStack step10 = ItemUtilities.storeIntInItem(step9,  item.getDamage(), Attribute.DAMAGE.toString());
 
         ItemStack step11 = ItemUtilities.storeStringInItem(step10, Boolean.toString(item.isReforgeable()), "reforgable");
         ItemStack step12 = ItemUtilities.storeStringInItem(step11, Boolean.toString(item.isEnchantable()), "enchantable");

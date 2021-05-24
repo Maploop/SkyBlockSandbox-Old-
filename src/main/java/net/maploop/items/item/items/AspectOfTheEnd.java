@@ -107,8 +107,8 @@ public class AspectOfTheEnd extends CustomItem {
 
         IUtil.sendActionText(player, "§b-50 Mana (§6Instant Transmission§b)");
         player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
-        if (l.getPitch() < 0) {
-            player.teleport(new Location(l.getWorld(), l.getX(), l.getY() - 1, l.getZ(), l.getYaw(), l.getPitch()));
+        if (l.getPitch() <= 0) {
+            player.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1, l.getZ(), l.getYaw(), l.getPitch()));
         } else {
             player.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1.5F, l.getZ(), l.getYaw(), l.getPitch()));
         }

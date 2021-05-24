@@ -39,6 +39,7 @@ public class StatsEditorGUI extends GUI {
     public static Set<Player> intelligenceChange = new HashSet<>();
     public static Set<Player> defenseChange = new HashSet<>();
     public static Set<Player> strengthChange = new HashSet<>();
+    public static Set<Player> damage = new HashSet<>();
 
     @Override
     public String getTitle() {
@@ -64,12 +65,12 @@ public class StatsEditorGUI extends GUI {
                 AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
                     @Override
                     public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
-                        if(ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
+                        if (ItemUtilities.isInteger(event.getName()) && event.getName() != null && Integer.parseInt(event.getName()) >= 0) {
                             ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
                             ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.HEALTH.toString());
                             ItemMeta hmeta = h.getItemMeta();
                             List<String> lore;
-                            if(hmeta.hasLore()) lore = new ArrayList<>(hmeta.getLore());
+                            if (hmeta.hasLore()) lore = new ArrayList<>(hmeta.getLore());
                             else lore = new ArrayList<>();
                             lore.add("§7Health: §a+" + event.getName());
                             hmeta.setLore(lore);
@@ -98,12 +99,12 @@ public class StatsEditorGUI extends GUI {
                 AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
                     @Override
                     public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
-                        if(ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
+                        if (ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
                             ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
                             ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.INTELLIGENCE.toString());
                             ItemMeta hmeta = h.getItemMeta();
                             List<String> lore;
-                            if(hmeta.hasLore()) lore = new ArrayList<>(hmeta.getLore());
+                            if (hmeta.hasLore()) lore = new ArrayList<>(hmeta.getLore());
                             else lore = new ArrayList<>();
                             lore.add("§7Intelligence: §a+" + event.getName());
                             hmeta.setLore(lore);
@@ -133,12 +134,12 @@ public class StatsEditorGUI extends GUI {
                 AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
                     @Override
                     public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
-                        if(ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
+                        if (ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
                             ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
                             ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.DEFENSE.toString());
                             ItemMeta hmeta = h.getItemMeta();
                             List<String> lore;
-                            if(hmeta.hasLore()) lore = new ArrayList<>(hmeta.getLore());
+                            if (hmeta.hasLore()) lore = new ArrayList<>(hmeta.getLore());
                             else lore = new ArrayList<>();
                             lore.add("§7Defense: §a+" + event.getName());
                             hmeta.setLore(lore);
@@ -168,14 +169,49 @@ public class StatsEditorGUI extends GUI {
                 AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
                     @Override
                     public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
-                        if(ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
+                        if (ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
                             ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
                             ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.STRENGTH.toString());
                             ItemMeta hmeta = h.getItemMeta();
                             List<String> lore;
-                            if(hmeta.hasLore()) lore = new ArrayList<>(hmeta.getLore());
+                            if (hmeta.hasLore()) lore = new ArrayList<>(hmeta.getLore());
                             else lore = new ArrayList<>();
                             lore.add("§7Strength: §c+" + event.getName());
+                            hmeta.setLore(lore);
+                            h.setItemMeta(hmeta);
+
+                            player.setItemInHand(h);
+
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    new StatsEditorGUI(new PlayerMenuUtility(player)).open();
+                                }
+                            }.runTaskLater(Items.getInstance(), 2);
+                        } else {
+                            invalidNumberError(event, player);
+                        }
+                    }
+                });
+
+                gui.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, makeItem(Material.PAPER, "Enter value", 1, 0));
+                gui.open();
+
+                break;
+            }
+            case BLAZE_POWDER: {
+
+                AnvilGUI gui = new AnvilGUI(player, new AnvilGUI.AnvilClickEventHandler() {
+                    @Override
+                    public void onAnvilClick(AnvilGUI.AnvilClickEvent event) {
+                        if (ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
+                            ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
+                            ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.DAMAGE.toString());
+                            ItemMeta hmeta = h.getItemMeta();
+                            List<String> lore;
+                            if (hmeta.hasLore()) lore = new ArrayList<>(hmeta.getLore());
+                            else lore = new ArrayList<>();
+                            lore.add("§7Damage: §c+" + event.getName());
                             hmeta.setLore(lore);
                             h.setItemMeta(hmeta);
 
@@ -210,6 +246,7 @@ public class StatsEditorGUI extends GUI {
         inventory.setItem(15, makeItem(Material.IRON_CHESTPLATE, "§aSet Defense", 1, 0, IUtil.colorize("&7Edit the amount of &a❈ Defense\n&7your item has!\n\n&eClick to set!")));
         inventory.setItem(31, makeItem(Material.IRON_SWORD, "§aSet Strength", 1, 0, IUtil.colorize("&7Edit the amount of &c❁ Strength\n&7your item has!\n\n&eClick to set!")));
         inventory.setItem(11, makeItem(Material.GOLDEN_APPLE, "§aSet Health", 1, 0, IUtil.colorize("&7Edit the amount of &c❤ Health\n&7your item has!\n\n&eClick to set!")));
+        inventory.setItem(29, makeItem(Material.BLAZE_POWDER,"§aSet Damage",1,0,IUtil.colorize("&7Edit the amount of &c❁ Damage\n&7your item has!\n\n&eClick to set!")));
     }
 
     private void invalidNumberError(AnvilGUI.AnvilClickEvent event, Player player) {

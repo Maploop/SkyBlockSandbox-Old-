@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -32,14 +33,9 @@ public class TagsEditorGUI extends GUI {
         super(playerMenuUtility);
     }
 
-    public static Set<Player> healthChange = new HashSet<>();
-    public static Set<Player> intelligenceChange = new HashSet<>();
-    public static Set<Player> defenseChange = new HashSet<>();
-    public static Set<Player> strengthChange = new HashSet<>();
-
     @Override
     public String getTitle() {
-        return "Edit item stats";
+        return "Edit item tags";
     }
 
     @Override
@@ -62,12 +58,14 @@ public class TagsEditorGUI extends GUI {
                 if(event.getClick().isRightClick()){
                     ItemMeta itemMeta = item.getItemMeta();
                     itemMeta.removeItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+                    item.setDurability((short) 0);
                     itemMeta.spigot().setUnbreakable(false);
                     item.setItemMeta(itemMeta);
                 }
                 if(event.getClick().isLeftClick()){
                     ItemMeta itemMeta = item.getItemMeta();
                     itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+                    item.setDurability((short) 0);
                     itemMeta.spigot().setUnbreakable(true);
                     item.setItemMeta(itemMeta);
                 }
@@ -104,12 +102,12 @@ public class TagsEditorGUI extends GUI {
             case GOLDEN_APPLE: {
                 if(event.getClick().isRightClick()){
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                     item.setItemMeta(itemMeta);
                 }
                 if(event.getClick().isLeftClick()){
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                    itemMeta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                     item.setItemMeta(itemMeta);
                 }
                 break;
@@ -123,7 +121,7 @@ public class TagsEditorGUI extends GUI {
         inventory.setItem(49, makeItem(Material.ARROW, "§aGo Back", 1, 0, "§7To Create an Item"));
 
         inventory.setItem(13, makeItem(Material.IRON_BLOCK, "§aToggle Unbreakable", 1, 0, IUtil.colorize("&7Toggle the unbreakable tag\n\n&eLeft click to Enable\n&eRight click to Disable!")));
-        inventory.setItem(15, makeItem(Material.ENCHANTED_BOOK, "§aToggle Enchant Tag", 1, 0, IUtil.colorize("&7Toggle the unbreakable tag\n\n&eLeft click to Enable\n&eRight click to Disable!")));
+        inventory.setItem(15, makeItem(Material.ENCHANTED_BOOK, "§aToggle Enchant Tag", 1, 0, IUtil.colorize("&7Toggle the enchant tag\n\n&eLeft click to Enable\n&eRight click to Disable!")));
         inventory.setItem(31, makeItem(Material.GLOWSTONE_DUST, "§aToggle Glowing", 1, 0, IUtil.colorize("&7Toggle Item Glow\n\n&eLeft click to Enable\n&eRight click to Disable!")));
         inventory.setItem(11, makeItem(Material.GOLDEN_APPLE, "§aToggle Damage Tag", 1, 0, IUtil.colorize("&7Toggle the damage tag\n\n&eLeft click to Enable\n&eRight click to Disable!")));
     }

@@ -3,6 +3,7 @@ package net.maploop.items;
 import net.maploop.items.command.AbstractCommand;
 import net.maploop.items.command.CommandHandler;
 import net.maploop.items.command.commands.*;
+import net.maploop.items.data.AbilityHandler;
 import net.maploop.items.data.BackpackData;
 import net.maploop.items.enums.AbilityType;
 import net.maploop.items.enums.ItemType;
@@ -57,6 +58,7 @@ public final class Items extends JavaPlugin {
         loadCommands();
         createShutsFile();
         x();
+        h();
 
         if(!Bukkit.getServer().getOnlinePlayers().isEmpty()) {
             for(Player player : Bukkit.getOnlinePlayers()) {
@@ -96,9 +98,24 @@ public final class Items extends JavaPlugin {
                     user.setHealth(user.getHealth() + (user.getTotalHealth() * 0.06));
                 }
 
-                user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
+                if(user.getIntelligence() < user.getTotalIntelligence()) {
+                    user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
+                }
             }
         }, 0, 20);
+    }
+
+    private void h(){
+        IUtil.scheduleRepeatingTask(() -> {
+            if (Bukkit.getOnlinePlayers().size() == 0) return;
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                User user = new User(player);
+                if (user.getHealth() <= 0) {
+                    Bukkit.getPluginManager().callEvent(new PlayerCustomDeathEvent(player, user, EntityDamageEvent.DamageCause.ENTITY_ATTACK));
+                    user.setHealth(user.getTotalHealth());
+                }
+            }
+        },0,1);
     }
 
     private void registerListeners() {
@@ -116,6 +133,7 @@ public final class Items extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerQuitEvent(), this);
         this.getServer().getPluginManager().registerEvents(new EntityInteractAtEntityListener(), this);
         this.getServer().getPluginManager().registerEvents(new SignGUIUpdateListener(), this);
+        this.getServer().getPluginManager().registerEvents(new AbilityHandler(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerCustomDeathListener(), this);
     }
 
@@ -147,7 +165,7 @@ public final class Items extends JavaPlugin {
         SBItems.putItem("ember_rod", new EmberRod(38, Rarity.EPIC, "Ember Rod", Material.BLAZE_ROD, 0, false, false, false, Collections.singletonList(new ItemAbility("Fire Blast", AbilityType.RIGHT_CLICK, IUtil.colorize("&7Shoot 3 Fireballs in rapid\nsuccession in front of you!"), 30)), 150, true, true, ItemType.ITEM, true, 80, 35, 0, 0, 0 ,0));
         SBItems.putItem("jerrychine_gun", new JerrychineGun(39, Rarity.EPIC, "Jerry-chine Gun", Material.GOLD_BARDING, 0, true, false, false, Collections.singletonList(new ItemAbility("Rapid-fire", AbilityType.RIGHT_CLICK, "Fire off multiple jerry bombs\nthat create an explosion on\nimpact, dealing up to §c5,000§7\ndamage.")), 10, true, true, ItemType.DUNGEON_SWORD, false, 80, 0, 0, 200, 0, 0));
         SBItems.putItem("jerry_head", new JerryHead(40, Rarity.UNOBTAINABLE, "Beheaded Jerry", Material.SKULL_ITEM, 3, true, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/41b830eb4082acec836bc835e40a11282bb51193315f91184337e8d3555583", false));
-        SBItems.putItem("hyperion", new Hyperion());
+        SBItems.putItem("hyperion", new Hyperion(41, Rarity.LEGENDARY, "Hyperion", Material.IRON_SWORD, 0, true, false, false, Collections.singletonList(new ItemAbility("Wither Impact", AbilityType.RIGHT_CLICK, "Teleport §a10 blocks §7ahead of\nyou. Then implode dealing\n§c190,000 §7damage to nearby\nenemies. Also applies the wither\nshield scroll ability reducing\ndamage taken and granting an absorption shield for §e5§7\nseconds.")), 250, true, true, ItemType.DUNGEON_SWORD, false, 260, 150, 0, 350, 0, 0));
         SBItems.putItem("danteSoul", new DanteSoul());
     }
 
@@ -159,7 +177,6 @@ public final class Items extends JavaPlugin {
         this.getCommand("undograndarchitect").setExecutor(new Command_undograndarchitect());
         this.getCommand("mcitems").setExecutor(new Command_mcitems());
         this.getCommand("dyeitem").setExecutor(new Command_dyeitems());
-        this.getCommand("dyearmoritem").setExecutor(new Command_dyearmor());
         this.getCommand("gm").setExecutor(new Command_gamemode());
         this.getCommand("gamemode").setExecutor(new Command_gamemode());
         this.getCommand("sbclear").setExecutor(new Command_sbclear());
