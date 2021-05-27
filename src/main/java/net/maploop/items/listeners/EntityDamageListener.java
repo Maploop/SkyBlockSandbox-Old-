@@ -26,6 +26,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
 
+import static net.maploop.items.listeners.EntityDamageByEntityListener.activatedcrithit;
+
 public class EntityDamageListener implements Listener {
     public double damage = 0;
 
@@ -85,29 +87,6 @@ public class EntityDamageListener implements Listener {
                 npc.setName("§d§lLost Adventurer " + health + "§c❤");
             }
             return;
-        }else
-        if(event.getEntity() instanceof Player) {
-            event.setDamage(0);
-            if(event.getEntity().hasMetadata("NPC")) return;
-            Player player = (Player) event.getEntity();
-            User user = new User(player);
-            double reduction = user.getTotalDefense() / (user.getTotalDefense() + 100);
-            double realDmg = d - (d * reduction);
-            String text = "%worldguard_region_name%";
-            String regionid = PlaceholderAPI.setPlaceholders(((Player) event).getPlayer(), text);
-            if (regionid.equals("colosseum")) {
-                user.setHealth(user.getHealth() - realDmg);
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (damage > 0) {
-                            addIndicator(damage, IUtil.getRandomLocation(event.getEntity().getLocation(), 2), event.getCause());
-                        } else {
-                            addIndicator(d, IUtil.getRandomLocation(event.getEntity().getLocation(), 2), event.getCause());
-                        }
-                    }
-                }.runTaskLater(Items.getInstance(), 1L);
-            }
         }
         if (event.getEntity().getType() == EntityType.ARMOR_STAND) return;
         if (event.getEntity().getType() == EntityType.PLAYER) return;
@@ -174,10 +153,11 @@ public class EntityDamageListener implements Listener {
         } else if(cause == EntityDamageEvent.DamageCause.POISON) {
             Indicator.setCustomName("§2" + Math.round(damage));
         } else {
-            if (damage < 600) {
-                Indicator.setCustomName("§7" + Math.round(damage));
-            } else if (damage > 600) {
+            if (activatedcrithit) {
                 Indicator.setCustomName(addCritTexture(formatted));
+                activatedcrithit = false;
+            } else {
+                Indicator.setCustomName("§7" + Math.round(damage));
             }
         }
 

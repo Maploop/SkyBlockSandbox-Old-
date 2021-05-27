@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -34,6 +35,9 @@ public class ItemCreatorGUI extends GUI {
     public void hadleMenu(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         event.setCancelled(true);
+        if(event.getClickedInventory().getType().equals(InventoryType.PLAYER)){
+            return;
+        }
 
         switch (event.getSlot()) {
             case 31: {

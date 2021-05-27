@@ -3,7 +3,10 @@ package net.maploop.items.user;
 import jdk.nashorn.internal.ir.Block;
 import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.util.Attribute;
+import net.minecraft.server.v1_8_R3.EnumParticle;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import net.minecraft.server.v1_8_R3.PacketPlayOutNamedSoundEffect;
+import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -29,6 +32,7 @@ public class User {
     private Map<Enchantment, Integer> ench_opt_2;
     private Map<Enchantment, Integer> ench_opt_3;
     public static final Map<Player, Double> currHealth = new HashMap<>();
+    public static final Map<Player, Double> currIntelligence = new HashMap<>();
     public static final Map<Player, Double> currDefense = new HashMap<>();
 
     private static double strength;
@@ -148,11 +152,12 @@ public class User {
     }
 
     public double getIntelligence() {
-        return intelligence;
+        return currIntelligence.get(user);
     }
 
     public void setIntelligence(double d) {
         intelligence = d;
+        currIntelligence.put(user, intelligence);
     }
 
     public double getHealth() {
@@ -230,7 +235,7 @@ public class User {
             e.printStackTrace();
         }
 
-        double def = pD.getDouble("stats.extra_defense")+1;
+        double def = pD.getDouble("stats.extra_defense");
         ItemStack[] armor = user.getEquipment().getArmorContents();
         for(ItemStack a : armor) {
             if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
@@ -264,10 +269,58 @@ public class User {
         return x;
     }
 
+    public double getTotalCritDamage() {
+        File playerData = new File("plugins/Items/playerData/" + user.getUniqueId().toString() + "/data.yml");
+        FileConfiguration pD = YamlConfiguration.loadConfiguration(playerData);
+
+        try {
+            pD.load(playerData);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        double x = pD.getDouble("stats.extra_crit_damage");
+        ItemStack[] armor = user.getEquipment().getArmorContents();
+        for(ItemStack a : armor) {
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
+                x = x + ItemUtilities.getIntFromItem(a, Attribute.CRIT_DAMAGE.toString());
+            }
+        }
+        ItemStack iih = user.getItemInHand();
+        if(iih != null && iih.hasItemMeta() && iih.getItemMeta().hasLore()) {
+            x = x + ItemUtilities.getIntFromItem(iih, Attribute.CRIT_DAMAGE.toString());
+        }
+        return x;
+    }
+
+    public double getTotalCritChance() {
+        File playerData = new File("plugins/Items/playerData/" + user.getUniqueId().toString() + "/data.yml");
+        FileConfiguration pD = YamlConfiguration.loadConfiguration(playerData);
+
+        try {
+            pD.load(playerData);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        double x = pD.getDouble("stats.extra_crit_chance" + 30);
+        ItemStack[] armor = user.getEquipment().getArmorContents();
+        for(ItemStack a : armor) {
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
+                x = x + ItemUtilities.getIntFromItem(a, Attribute.CRIT_CHANCE.toString());
+            }
+        }
+        ItemStack iih = user.getItemInHand();
+        if(iih != null && iih.hasItemMeta() && iih.getItemMeta().hasLore()) {
+            x = x + ItemUtilities.getIntFromItem(iih, Attribute.CRIT_CHANCE.toString());
+        }
+        return x;
+    }
+
     public void playSound(String s, int vol, int pitch) {
         CraftPlayer player = (CraftPlayer) user;
         Location l = user.getLocation();
         player.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(s, l.getX(), l.getY(), l.getZ(), vol, pitch));
-
     }
+
 }

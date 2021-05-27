@@ -1,5 +1,6 @@
 package net.maploop.items.item.items;
 
+import net.maploop.items.Items;
 import net.maploop.items.data.BackpackData;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
@@ -115,24 +116,7 @@ public class LargeBackpack extends CustomItem {
 
     @Override
     public void clickedInInventoryAction(Player player, InventoryClickEvent event) {
-        if(event.getAction().equals(InventoryAction.PICKUP_HALF)) {
-            event.setCancelled(true);
-            String uuid = ItemUtilities.getStringFromItem(event.getCurrentItem(), "UUID");
-            player.playSound(player.getLocation(), Sound.HORSE_ARMOR, 1f, 1f);
 
-            Inventory backPackinv = Bukkit.createInventory(player, 9 * 3, "Large Backpack");
-            if(BackpackData.getData().containsKey(uuid)) {
-                backPackinv.setContents(BackpackData.getData().get(uuid));
-                player.openInventory(backPackinv);
-                BackpackData.inv.put(player.getUniqueId(), event.getCurrentItem());
-                return;
-            }
-            BackpackData.inv.put(player.getUniqueId(), event.getCurrentItem());
-            player.openInventory(backPackinv);
-        }
-        if(event.getInventory().getTitle().contains("Backpack") || event.getAction().equals(InventoryAction.HOTBAR_MOVE_AND_READD) || event.getAction().equals(InventoryAction.HOTBAR_SWAP)) {
-            event.setCancelled(true);
-        }
     }
 
     @Override

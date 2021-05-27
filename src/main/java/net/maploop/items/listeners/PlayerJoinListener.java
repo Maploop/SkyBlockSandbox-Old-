@@ -41,9 +41,6 @@ public class PlayerJoinListener implements Listener {
         user.setIntelligence(user.getTotalIntelligence());
         injector.inject();
 
-        ItemStack skyblock_menu = CustomItem.fromString(Items.getInstance(), "skyblock_menu", 1);
-        player.getInventory().setItem(8, skyblock_menu);
-
         final Player p = event.getPlayer();
         File playerData = new File("plugins/Items/playerData/" + p.getUniqueId().toString() + "/data.yml");
         FileConfiguration pD = new YamlConfiguration();
@@ -69,5 +66,7 @@ public class PlayerJoinListener implements Listener {
                 e.printStackTrace();
             }
         }
+
     }
+
 }

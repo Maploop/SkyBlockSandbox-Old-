@@ -141,7 +141,7 @@ public abstract class GUI implements InventoryHolder {
         return item;
     }
 
-    public static ItemStack makeCustomSkullItem(String url, String displayname, int amount, String... lore) {
+    public static ItemStack makeCustomSkullItem(String url, String displayname, int amount, String lore) {
         ItemStack item = new ItemStack(Material.SKULL_ITEM, amount, (short) 3);
         if (url.isEmpty()) return item;
 
@@ -158,7 +158,8 @@ public abstract class GUI implements InventoryHolder {
             e.printStackTrace();
         }
         itemMeta.setDisplayName(displayname);
-        itemMeta.setLore(Arrays.asList(lore));
+        String[] lore1 = lore.split("\n");
+        itemMeta.setLore(Arrays.asList(lore1));
         item.setItemMeta(itemMeta);
         return item;
     }

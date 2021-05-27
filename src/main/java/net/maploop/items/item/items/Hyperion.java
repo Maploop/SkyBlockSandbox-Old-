@@ -1,22 +1,18 @@
 package net.maploop.items.item.items;
 
-import me.clip.placeholderapi.PlaceholderAPI;
-import net.maploop.items.enums.AbilityType;
-import net.maploop.items.enums.ItemStats;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
-import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.user.User;
-import net.maploop.items.util.Attribute;
+import net.maploop.items.util.PacketParticle;
 import net.maploop.items.util.IUtil;
+import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -61,6 +57,9 @@ public class Hyperion extends CustomItem {
         }
         new User(player).setIntelligence(new User(player).getIntelligence() - 250);
 
+        User user = new User(player);
+        double d = 10000 * (1+(user.getTotalIntelligence()/100) * 0.3);
+
         Location l = player.getLocation().clone();
         Set<Material> TRANSPARENT = new HashSet<Material>();
         TRANSPARENT.add(Material.AIR);
@@ -102,6 +101,8 @@ public class Hyperion extends CustomItem {
                     player.sendMessage(ChatColor.RED + "There are blocks in the way!");
                     IUtil.sendActionText(player, "§b-250 Mana (§6Wither Impact§b)");
                     player.playSound(player.getLocation(), Sound.EXPLODE, 1.0F, 2.0F);
+                    PacketParticle particle = new PacketParticle(EnumParticle.EXPLOSION_HUGE, player.getLocation().add(0,2.25,0), true, 0.75f, 0.75f, 0.75f, 0, 10);
+                    particle.sendPlayer(player);
 
                     onItemUse(player, item);
 
@@ -113,7 +114,7 @@ public class Hyperion extends CustomItem {
                                 if(e.isDead()) {
                                     ((LivingEntity) e).damage(0);
                                 } else {
-                                    ((LivingEntity) e).damage(190000);
+                                    ((LivingEntity) e).damage(d);
                                 }
                             }/* else {
                         if (e instanceof Player) {
@@ -133,7 +134,7 @@ public class Hyperion extends CustomItem {
 
                     if(i >= 1) {
                         DecimalFormat format = new DecimalFormat("#,###");
-                        int damage = 190000 * i;
+                        int damage = (int) (d * i);
                         player.sendMessage(IUtil.colorize("&7Your Wither Impact hit &c" + i + "&7 enemies dealing &c" + format.format(damage) + " damage&7."));
                     }
                     return;
@@ -144,6 +145,8 @@ public class Hyperion extends CustomItem {
 
         IUtil.sendActionText(player, "§b-250 Mana (§6Wither Impact§b)");
         player.playSound(player.getLocation(), Sound.EXPLODE, 1.0F, 2.0F);
+        PacketParticle particle = new PacketParticle(EnumParticle.EXPLOSION_HUGE, player.getLocation().add(0,0,0), true, 0.75f, 0.75f, 0.75f, 0, 100);
+        particle.sendPlayer(player);
 
         if (l.getPitch() <= 0) {
             player.teleport(new Location(l.getWorld(), l.getX(), l.getY() - 1, l.getZ(), l.getYaw(), l.getPitch()));
@@ -161,7 +164,7 @@ public class Hyperion extends CustomItem {
                     if(e.isDead()) {
                         ((LivingEntity) e).damage(0);
                     } else {
-                        ((LivingEntity) e).damage(190000);
+                        ((LivingEntity) e).damage(d);
                     }
                 }/* else {
                         if (e instanceof Player) {
@@ -181,7 +184,7 @@ public class Hyperion extends CustomItem {
 
         if(i >= 1) {
             DecimalFormat format = new DecimalFormat("#,###");
-            int damage = 190000 * i;
+            int damage = (int) (d * i);
             player.sendMessage(IUtil.colorize("&7Your Wither Impact hit &c" + i + "&7 enemies dealing &c" + format.format(damage) + " damage&7."));
         }
     }

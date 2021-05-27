@@ -23,6 +23,8 @@ commands:
       - clear
   loop:
   createitem:
+    aliases:
+      - edit
   placespecialanvil:
   recombobulate:
   itemssetlobby:

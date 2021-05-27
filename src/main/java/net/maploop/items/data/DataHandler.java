@@ -32,34 +32,6 @@ public class DataHandler {
         this.player = player;
     }
 
-    public void inject() {
-        int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                if(plugin.getConfig().getBoolean("use-actionbar")) {
-                    if (getHealth() > getMaxHealth()) {
-                        IUtil.sendActionText(player, "§6" + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + "❤§a    " + Math.round(getDefense()) + "❈§b    " + Math.round(getMana()) + "/" + Math.round(getMaxMana()) + "✎");
-                    } else {
-                        IUtil.sendActionText(player, "§c" + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + "❤§a    " + Math.round(getDefense()) + "❈§b    " + Math.round(getMana()) + "/" + Math.round(getMaxMana()) + "✎");
-                    }
-                }
-
-                if(getMana() < getMaxMana()) {
-                    addMana(getMaxMana() / 10);
-                }
-
-                if(getMana() > getMaxHealth()){
-                    setMana(getMaxMana());
-                }
-
-                if(getHealth() < getMaxHealth()) {
-                    addHealth(getMaxHealth() / 50);
-                }
-
-            }
-        }, 0, 20L);
-    }
-
     public void saveData() {
         if (exits()) {
             TextComponent component = new TextComponent(ChatColor.DARK_GRAY + getUniqueId().toString());

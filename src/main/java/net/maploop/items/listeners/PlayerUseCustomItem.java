@@ -86,6 +86,7 @@ public class PlayerUseCustomItem implements Listener {
         NBTTagCompound data = compound.getCompound("ExtraAttributes");
         if(!(data.hasKey("is-SB"))) return;
         if(!(ItemUtilities.getStringFromItem(used, "is-SB").equals("true"))) return;
+        if(ItemUtilities.getIntFromItem(used,"SB-ID") == null) return;
 
 
         if (used != null) {
