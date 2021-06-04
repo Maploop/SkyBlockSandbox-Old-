@@ -15,10 +15,12 @@ import net.maploop.items.item.SBItems;
 import net.maploop.items.item.items.*;
 import net.maploop.items.listeners.*;
 import net.maploop.items.sql.MySQL;
+import net.maploop.items.sql.SQLGetter;
 import net.maploop.items.user.User;
 import net.maploop.items.user.UserInjector;
 import net.maploop.items.util.IReflections;
 import net.maploop.items.util.IUtil;
+import net.maploop.items.util.PAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -31,6 +33,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public final class Items extends JavaPlugin {
@@ -47,7 +50,6 @@ public final class Items extends JavaPlugin {
         createDataFile();
         createBackpackDataFile();
         saveDefaultConfig();
-        updateStats();
         registerListeners();
         registerCommands();
         registerItems();
@@ -61,6 +63,24 @@ public final class Items extends JavaPlugin {
                 UserInjector injector = new UserInjector(user);
                 injector.inject();
             }
+        }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PAPI().register();
+        }
+
+        this.sql = new MySQL(this);
+        try {
+            this.sql.connect();
+            SQLGetter.createTable();
+            System.out.println("SQL Successfully connected.");
+            for (final Player p : Bukkit.getOnlinePlayers()) {
+                final SQLGetter getter = new SQLGetter(p, getInstance());
+                getter.inject();
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("SQL Connection failed.");
         }
 
         new BukkitRunnable() {
@@ -77,36 +97,6 @@ public final class Items extends JavaPlugin {
     public void onDisable() {
         BackpackData.save();
         getServer().getConsoleSender().sendMessage("§cItems was disabled.");
-    }
-
-    private void updateStats() {
-        if(Bukkit.getOnlinePlayers().size() == 0) return;
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            IUtil.scheduleRepeatingTask(() -> {
-                User user = new User(player);
-                if(user.getTotalDefense() == 0){
-                    IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
-
-                } else {
-                    IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§a    " + Math.round(user.getTotalDefense()) + "❈§a Defense§b    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
-                }
-                if (user.getIntelligence() < user.getTotalIntelligence()) {
-                    user.setIntelligence(user.getIntelligence() + (user.getTotalIntelligence() * 0.04));
-                }
-
-                if (user.getIntelligence() > user.getTotalIntelligence()) {
-                    user.setIntelligence(user.getTotalIntelligence());
-                }
-
-                if (user.getHealth() < user.getTotalHealth()) {
-                    user.setHealth(user.getHealth() + (user.getTotalHealth() * 0.06));
-                }
-
-                if (user.getHealth() > user.getTotalHealth()) {
-                    user.setHealth(user.getTotalHealth());
-                }
-            }, 1, 20);
-        }
     }
 
     private void checkIfDead(){
@@ -143,7 +133,7 @@ public final class Items extends JavaPlugin {
 
     private void registerItems() {
         SBItems.putItem("aspect_of_the_dragons", new AspectOfTheDragons(1, Rarity.LEGENDARY, "Aspect of the Dragons", Material.DIAMOND_SWORD, 0, false, false, false, Collections.singletonList(new ItemAbility("Dragon Rage", AbilityType.RIGHT_CLICK, "§7All Monsters in front of you\n§7take §aint §7damage. Hit\n§7monsters take large knockback.")), 100, true, ItemType.SWORD, false));
-        SBItems.putItem("flower_of_truth", new FlowerOfTruth(2, Rarity.LEGENDARY, "Flower of Truth", Material.RED_ROSE, 0, false, false, false, Collections.singletonList(new ItemAbility("Heat-Seeking Rose", AbilityType.RIGHT_CLICK, "§7Shoots a rose that ricochets\n§7between enemies, damaging up to\n§a3 §7of your foes! Damage\n§7multiplies as more enemies are\n§7hit.", 1)), 120000000, true, ItemType.DUNGEON_SWORD, true));
+        SBItems.putItem("flower_of_truth", new FlowerOfTruth(2, Rarity.LEGENDARY, "Flower of Truth", Material.RED_ROSE, 0, false, false, false, Collections.singletonList(new ItemAbility("Heat-Seeking Rose", AbilityType.RIGHT_CLICK, "§7Shoots a rose that ricochets\n§7between enemies, damaging up to\n§a3 §7of your foes! Damage\n§7multiplies as more enemies are\n§7hit.", 1)), 0, true, ItemType.DUNGEON_SWORD, true));
         SBItems.putItem("skyblock", new Skyblock(6, Rarity.VERY_SPECIAL, "Skyblock", Material.SKULL_ITEM, 3, false, false, false, null, 0, false, ItemType.ITEM, "http://textures.minecraft.net/texture/2e2cc42015e6678f8fd49ccc01fbf787f1ba2c32bcf559a015332fc5db50", true));
         SBItems.putItem("bone_boomerang", new Bonemerang(8, Rarity.LEGENDARY, "Bonemerang", Material.BONE, 0, false, false, false, Collections.singletonList(new ItemAbility("Swing", AbilityType.RIGHT_CLICK, "§7Throw the bone for a short distance,\n§7dealing the damage an arrow\n§7would.\n\n§7Deals §cdouble damage §7when\n§7coming back. Pierces up to §e10\n§7foes.", 0)), 0, true, ItemType.DUNGEON_BOW, true));
         SBItems.putItem("builders_wand", new BuildersWand(9, Rarity.LEGENDARY, "Builder's Wand", Material.BLAZE_ROD, 0, false, false, false, Arrays.asList(new ItemAbility("Grand Architect", AbilityType.RIGHT_CLICK, "§7Right-Click the face of a block\n§7to extend all connected block\n§7faces.\n§8Consumes blocks from your inventory!"), new ItemAbility("Built-in Storage", AbilityType.LEFT_CLICK, IUtil.colorize("&7Opens the wand storage. Blocks\n&7will be placed from your\n&7inventory or the wand storage.\n&cTHIS ABILITY IS DISABLED!"))), 0, false, ItemType.ITEM, true));
@@ -186,6 +176,7 @@ public final class Items extends JavaPlugin {
         this.getCommand("sbclear").setExecutor(new Command_sbclear());
         this.getCommand("clear").setExecutor(new Command_sbclear());
         this.getCommand("cl").setExecutor(new Command_sbclear());
+        this.getCommand("setspawn").setExecutor(new Command_setspawn());
         this.getCommand("loop").setExecutor(new Command_loop());
         this.getCommand("createitem").setExecutor(new Command_createitem());
         this.getCommand("placespecialanvil").setExecutor(new Command_placespecialanvil());
@@ -195,6 +186,7 @@ public final class Items extends JavaPlugin {
         this.getCommand("stfu").setExecutor(new Command_shutup());
         this.getCommand("piano").setExecutor(new Command_piano());
         this.getCommand("rainbow").setExecutor(new Command_rainbow());
+        this.getCommand("wardrobe").setExecutor(new Command_wardrobe());
     }
 
     private void loadCommands() {

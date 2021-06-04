@@ -17,18 +17,19 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class IUtil {
+    public static Map<Player,Boolean> abilityUsed = new HashMap<>();
     public static String colorize(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
 //
-
+    public static void sendAbilityActionText(Player player, String ability){
+        PacketPlayOutChat packet = new PacketPlayOutChat(new ChatComponentText("NO"), (byte)2);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+    }
     public static void sendActionText(Player player, String message){
         PacketPlayOutChat packet = new PacketPlayOutChat(new ChatComponentText(message), (byte)2);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);

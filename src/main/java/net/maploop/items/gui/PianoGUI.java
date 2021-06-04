@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 public class PianoGUI extends GUI {
-    public final static Set<Player> playingWithKeyboard = new HashSet<>();
+    public final static Set<Player> playingWithKeyboard = new HashSet<Player>();
     private final static Map<UUID, ItemStack[]> hotbar = new HashMap();
 
     public PianoGUI(PlayerMenuUtility playerMenuUtility) {

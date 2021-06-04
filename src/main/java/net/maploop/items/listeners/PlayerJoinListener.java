@@ -10,6 +10,7 @@ import net.maploop.items.util.IUtil;
 import net.minecraft.server.v1_8_R3.EntityWither;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,12 +22,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.bukkit.Bukkit.getScheduler;
 
 public class PlayerJoinListener implements Listener {
     public static Map<Player, EntityWither> bossBar = new HashMap<>();
@@ -44,11 +50,11 @@ public class PlayerJoinListener implements Listener {
         final Player p = event.getPlayer();
         File playerData = new File("plugins/Items/playerData/" + p.getUniqueId().toString() + "/data.yml");
         FileConfiguration pD = new YamlConfiguration();
-        if(!new File("plugins/Items/playerData/" + p.getUniqueId().toString()).exists()) {
+        if (!new File("plugins/Items/playerData/" + p.getUniqueId().toString()).exists()) {
             new File("plugins/Items/playerData/" + p.getUniqueId().toString()).mkdirs();
         }
-        if(!playerData.exists()) {
-            try{
+        if (!playerData.exists()) {
+            try {
                 playerData.createNewFile();
                 pD.load(playerData);
                 pD.set("stats.extra_mana", 0);
@@ -62,11 +68,24 @@ public class PlayerJoinListener implements Listener {
                 pD.set("skill.foraging.level", 0);
                 pD.set("skill.combat.level", 0);
                 pD.save(playerData);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        Items plugin = Items.getInstance();
+        double x = plugin.getConfig().getDouble("locations.lobbyspawn.x");
+        double y = plugin.getConfig().getDouble("locations.lobbyspawn.y");
+        double z = plugin.getConfig().getDouble("locations.lobbyspawn.z");
+        String world = plugin.getConfig().getString("locations.lobbyspawn.world");
+        float yaw = plugin.getConfig().getInt("locations.lobbyspawn.yaw");
+        float pitch = plugin.getConfig().getInt("locations.lobbyspawn.pitch");
 
+        Location loc = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+        player.teleport(loc);
+        player.setMaxHealth(20);
+        player.setHealthScale(20);
+        player.setHealth(20);
+        player.setWalkSpeed(0.2f);
     }
 
 }

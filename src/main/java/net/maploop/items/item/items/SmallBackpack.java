@@ -3,6 +3,7 @@ package net.maploop.items.item.items;
 import net.maploop.items.data.BackpackData;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
+import net.maploop.items.gui.PlayerMenuUtility;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
 import net.maploop.items.item.ItemUtilities;
@@ -61,16 +62,7 @@ public class SmallBackpack extends CustomItem {
         event.setCancelled(true);
         String uuid = ItemUtilities.getStringFromItem(item, "UUID");
         player.playSound(player.getLocation(), Sound.HORSE_ARMOR, 1f, 1f);
-
-        Inventory backPackinv = Bukkit.createInventory(player, 9, "Small Backpack");
-        if(BackpackData.getData().containsKey(uuid)) {
-            backPackinv.setContents(BackpackData.getData().get(uuid));
-            player.openInventory(backPackinv);
-            BackpackData.inv.put(player.getUniqueId(), item);
-            return;
-        }
-        BackpackData.inv.put(player.getUniqueId(), item);
-        player.openInventory(backPackinv);
+        new net.maploop.items.gui.backPacks.SmallBackpack(new PlayerMenuUtility(player),uuid, item).open();
     }
 
     @Override

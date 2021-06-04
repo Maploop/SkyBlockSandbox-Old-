@@ -47,10 +47,6 @@ public class SkyblockMenuGUI extends GUI {
                 player.playSound(player.getLocation(), Sound.CHEST_OPEN, 1f, 0);
                 break;
             }
-            case 13: {
-                new ProfileGUI(playerMenuUtility).open();
-                break;
-            }
             case 50: {
                 new SettingsGUI(playerMenuUtility).open();
                 break;

@@ -191,14 +191,14 @@ public class User {
             e.printStackTrace();
         }
 
-        double health = pD.getDouble("stats.extra_health")+100;
+        double health = pD.getDouble("stats.extra_health");
         ItemStack[] armor = user.getEquipment().getArmorContents();
         for(ItemStack a : armor) {
-            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
-                health = health + ItemUtilities.getIntFromItem(a, "HEALTH");
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore()) {
+                health = health + ItemUtilities.getIntFromItem(a, Attribute.HEALTH.toString());
             }
         }
-        return health;
+        return health + 100;
     }
 
     public double getTotalIntelligence() {
@@ -211,10 +211,10 @@ public class User {
             e.printStackTrace();
         }
 
-        double intelligence = pD.getDouble("stats.extra_mana")+100;
+        double intelligence = pD.getDouble("stats.extra_mana");
         ItemStack[] armor = user.getEquipment().getArmorContents();
         for(ItemStack a : armor) {
-            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore()) {
                 intelligence = intelligence + ItemUtilities.getIntFromItem(a, "INTELLIGENCE");
             }
         }
@@ -222,7 +222,7 @@ public class User {
         if(iih != null && iih.hasItemMeta() && iih.getItemMeta().hasLore()) {
             intelligence = intelligence + ItemUtilities.getIntFromItem(iih, "INTELLIGENCE");
         }
-        return intelligence;
+        return intelligence + 100;
     }
 
     public double getTotalDefense() {
@@ -238,7 +238,7 @@ public class User {
         double def = pD.getDouble("stats.extra_defense");
         ItemStack[] armor = user.getEquipment().getArmorContents();
         for(ItemStack a : armor) {
-            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore()) {
                 def = def + ItemUtilities.getIntFromItem(a, "DEFENSE");
             }
         }
@@ -255,10 +255,10 @@ public class User {
             e.printStackTrace();
         }
 
-        double x = pD.getDouble("stats.extra_strength")+50;
+        double x = pD.getDouble("stats.extra_strength");
         ItemStack[] armor = user.getEquipment().getArmorContents();
         for(ItemStack a : armor) {
-            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore()) {
                 x = x + ItemUtilities.getIntFromItem(a, Attribute.STRENGTH.toString());
             }
         }
@@ -282,7 +282,7 @@ public class User {
         double x = pD.getDouble("stats.extra_crit_damage");
         ItemStack[] armor = user.getEquipment().getArmorContents();
         for(ItemStack a : armor) {
-            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore()) {
                 x = x + ItemUtilities.getIntFromItem(a, Attribute.CRIT_DAMAGE.toString());
             }
         }
@@ -290,7 +290,7 @@ public class User {
         if(iih != null && iih.hasItemMeta() && iih.getItemMeta().hasLore()) {
             x = x + ItemUtilities.getIntFromItem(iih, Attribute.CRIT_DAMAGE.toString());
         }
-        return x;
+        return x + 50;
     }
 
     public double getTotalCritChance() {
@@ -303,10 +303,10 @@ public class User {
             e.printStackTrace();
         }
 
-        double x = pD.getDouble("stats.extra_crit_chance" + 30);
+        double x = pD.getDouble("stats.extra_crit_chance");
         ItemStack[] armor = user.getEquipment().getArmorContents();
         for(ItemStack a : armor) {
-            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore() && ItemUtilities.getStringFromItem(a, "is-SB").equals("true")) {
+            if(a != null && a.hasItemMeta() && a.getItemMeta().hasLore()) {
                 x = x + ItemUtilities.getIntFromItem(a, Attribute.CRIT_CHANCE.toString());
             }
         }
@@ -314,7 +314,7 @@ public class User {
         if(iih != null && iih.hasItemMeta() && iih.getItemMeta().hasLore()) {
             x = x + ItemUtilities.getIntFromItem(iih, Attribute.CRIT_CHANCE.toString());
         }
-        return x;
+        return x + 30;
     }
 
     public void playSound(String s, int vol, int pitch) {

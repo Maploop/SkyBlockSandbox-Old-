@@ -2,6 +2,7 @@ package net.maploop.items.listeners;
 
 import net.maploop.items.data.BackpackData;
 import net.maploop.items.gui.PianoGUI;
+import net.maploop.items.gui.wardobes.GUIManager;
 import net.maploop.items.item.ItemUtilities;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryCloseListener implements Listener {
@@ -23,6 +25,8 @@ public class InventoryCloseListener implements Listener {
         }
         Player player = (Player) event.getPlayer();
 
+
+
         if(event.getInventory().getTitle().contains("Piano")) {
             if(PianoGUI.playingWithKeyboard.contains(player)) {
                 player.getInventory().setItem(0, new ItemStack(Material.AIR));
@@ -36,6 +40,12 @@ public class InventoryCloseListener implements Listener {
 
                 PianoGUI.playingWithKeyboard.remove(player);
             }
+        }
+
+        InventoryHolder holder = event.getInventory().getHolder();
+        if (holder instanceof GUIManager) {
+            GUIManager GUI = (GUIManager) holder;
+            GUI.closeMenu(event);
         }
     }
 }

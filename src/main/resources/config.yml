@@ -7,3 +7,6 @@ mysql:
   password: 'your-password'
 
 use-actionbar: false
+
+locations:
+  lobbyspawn:

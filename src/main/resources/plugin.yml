@@ -4,6 +4,8 @@ main: net.maploop.items.Items
 authors: [ Maploop ]
 description: ITEMS
 website: POG.com
+softdepend:
+  - PlaceholderAPI
 commands:
   item:
   items:
@@ -35,3 +37,5 @@ commands:
     aliases:
       - dye
   rainbow:
+  setspawn:
+  wardrobe:

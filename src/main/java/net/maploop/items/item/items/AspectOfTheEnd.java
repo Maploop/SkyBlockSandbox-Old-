@@ -59,7 +59,8 @@ public class AspectOfTheEnd extends CustomItem {
             player.sendMessage("§cYou do not have enough mana to do that.");
             return;
         }
-        new User(player).setIntelligence(new User(player).getIntelligence() - 50);
+        User user = new User(player);
+        user.setIntelligence(user.getIntelligence() - 50);
 
         Location l = player.getLocation().clone();
         Set<Material> TRANSPARENT = new HashSet<Material>();
@@ -105,7 +106,9 @@ public class AspectOfTheEnd extends CustomItem {
         } else
             l.add(player.getEyeLocation().getDirection().multiply(8));
 
-        IUtil.sendActionText(player, "§b-50 Mana (§6Instant Transmission§b)");
+        IUtil.abilityUsed.put(player,true);
+        IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§b    -50 Mana (§6Instant Transmission§b)    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
+
         player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
         if (l.getPitch() <= 0) {
             player.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1, l.getZ(), l.getYaw(), l.getPitch()));

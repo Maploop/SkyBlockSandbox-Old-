@@ -1,11 +1,14 @@
-package net.maploop.items.gui;
+package net.maploop.items.gui.wardobes;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import net.maploop.items.gui.PlayerMenuUtility;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
@@ -14,12 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-public abstract class GUI implements InventoryHolder {
+public abstract class GUIManager implements InventoryHolder {
 
     protected PlayerMenuUtility playerMenuUtility;
     protected ItemStack itemStack;
@@ -27,18 +27,8 @@ public abstract class GUI implements InventoryHolder {
     protected String uuid;
     protected ItemStack FILLER_GLASS = makeItem(Material.STAINED_GLASS_PANE, " ", 1, 15);
 
-    public GUI(PlayerMenuUtility playerMenuUtility) {
+    public GUIManager(PlayerMenuUtility playerMenuUtility) {
         this.playerMenuUtility = playerMenuUtility;
-    }
-
-    public GUI(PlayerMenuUtility playerMenuUtility, ItemStack itemStack) {
-        this.playerMenuUtility = playerMenuUtility;
-        this.itemStack = itemStack;
-    }
-    public GUI(PlayerMenuUtility playerMenuUtility, String uuid, ItemStack itemStack) {
-        this.playerMenuUtility = playerMenuUtility;
-        this.uuid = uuid;
-        this.itemStack = itemStack;
     }
 
     public abstract String getTitle();
@@ -48,6 +38,8 @@ public abstract class GUI implements InventoryHolder {
     public abstract void hadleMenu(InventoryClickEvent event);
 
     public abstract void setItems();
+
+    public abstract void closeMenu(InventoryCloseEvent event);
 
     public void open() {
         inventory = Bukkit.createInventory(this, getSize(), getTitle());
@@ -255,5 +247,106 @@ public abstract class GUI implements InventoryHolder {
             inventory.setItem(slots[0], item);
             inventory.setItem(slots[1], item);
         }
+    }
+
+    public ItemStack getEmpty(final Integer slot) {
+        final ItemStack item = new ItemStack(Material.INK_SACK, 1, (short)8);
+        final ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7Slot " + slot + "&7: &cEmpty"));
+        final ArrayList<String> lore = new ArrayList<String>();
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7This wardrobe slot contains no"));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7armor."));
+        meta.setLore((List)lore);
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public ItemStack getEquiped(final Integer slot) {
+        final ItemStack item = new ItemStack(Material.INK_SACK, 1, (short)10);
+        final ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7Slot " + slot + "&7: &aEquipped"));
+        final ArrayList<String> lore = new ArrayList<String>();
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7This wardrobe slot contains your"));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7current armor set."));
+        meta.setLore((List)lore);
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public ItemStack getSlot(final Integer slot, final Integer color, final Integer armorType) {
+        ItemStack item = null;
+        switch (color) {
+            case 1: {
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
+                break;
+            }
+            case 2: {
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)1);
+                break;
+            }
+            case 3: {
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)4);
+                break;
+            }
+            case 4: {
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)5);
+                break;
+            }
+            case 5: {
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)13);
+                break;
+            }
+            case 6: {
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)3);
+                break;
+            }
+            case 7: {
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)11);
+                break;
+            }
+            case 8: {
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)6);
+                break;
+            }
+            case 9: {
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)10);
+                break;
+            }
+            default: {
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)0);
+                break;
+            }
+        }
+        String type = null;
+        switch (armorType) {
+            case 1: {
+                type = "Helmet";
+                break;
+            }
+            case 2: {
+                type = "Chestplate";
+                break;
+            }
+            case 3: {
+                type = "Leggings";
+                break;
+            }
+            case 4: {
+                type = "Boots";
+                break;
+            }
+            default: {
+                type = "Armor Piece";
+                break;
+            }
+        }
+        final ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&aSlot " + slot + "&a " + type));
+        final ArrayList<String> lore = new ArrayList<String>();
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7Place a pair of " + type + "&7 here to"));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7add them to the armor set."));
+        meta.setLore((List)lore);
+        item.setItemMeta(meta);
+        return item;
     }
 }

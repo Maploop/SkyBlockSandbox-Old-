@@ -1,6 +1,7 @@
 package net.maploop.items.animations;
 
 import net.maploop.items.Items;
+import net.maploop.items.listeners.EntityDamageByEntityListener;
 import net.maploop.items.listeners.EntityDamageListener;
 import net.maploop.items.util.IUtil;
 import org.bukkit.Bukkit;
@@ -31,7 +32,7 @@ public class BonemerangReturn implements Runnable {
                     if (e1 != null) {
                         e1.damage(dmg);
 
-                        EntityDamageListener listener = new EntityDamageListener();
+                        EntityDamageByEntityListener listener = new EntityDamageByEntityListener();
                         if(!alreadyDone) {
                             alreadyDone = true;
                             listener.addIndicator(dmg, IUtil.getRandomLocation(e1.getLocation(), 2), EntityDamageEvent.DamageCause.ENTITY_ATTACK);

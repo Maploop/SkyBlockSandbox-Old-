@@ -125,8 +125,6 @@ public class AspectOfTheDragons extends CustomItem {
 
     @Override
     public void onSwapAction(Player player, PlayerItemHeldEvent event, ItemStack item) {
-        SQLGetter getter = new SQLGetter(player, Items.getInstance());
-        getter.setCritDamage(getter.getCritDamage() + 150);
-        getter.setStrength(getter.getStrength() + 250);
+
     }
 }

@@ -4,7 +4,6 @@ import net.citizensnpcs.api.npc.NPC;
 import net.maploop.items.Items;
 import net.maploop.items.data.DataHandler;
 import net.maploop.items.gui.PlayerMenuUtility;
-import net.maploop.items.gui.PlayerProfileGUI;
 import net.maploop.items.gui.SBAnvilGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

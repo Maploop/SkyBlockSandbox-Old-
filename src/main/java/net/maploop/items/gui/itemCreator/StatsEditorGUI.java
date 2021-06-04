@@ -11,6 +11,7 @@ import net.maploop.items.util.Attribute;
 import net.maploop.items.util.IUtil;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -20,10 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class StatsEditorGUI extends GUI {
     /*
@@ -85,25 +83,52 @@ public class StatsEditorGUI extends GUI {
                             return;
                         }
                         if (ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
-                            ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
-                            ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.HEALTH.toString());
-                            ItemMeta hmeta = h.getItemMeta();
-                            List<String> loreList;
-                            if (hmeta.hasLore()) loreList = new ArrayList<>(hmeta.getLore());
-                            else loreList = new ArrayList<>();
-                            loreList.add("§7Health: §a+" + event.getName());
-                            hmeta.setLore(loreList);
-                            h.setItemMeta(hmeta);
+                            String s = event.getName();
+                            int strength = Integer.parseInt(s);
 
-                            player.setItemInHand(h);
-                            StatsEditorGUI.healthChange.remove(player);
+                            ItemStack is = player.getItemInHand();
+                            ItemMeta im = is.getItemMeta();
+                            ArrayList new_lore;
+                            if (player.getItemInHand().getItemMeta().getLore() == null) {
+                                new_lore = new ArrayList();
+                                new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "&7Health: §a+" + strength));
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.HEALTH.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Health to the item in your hand!".replace("[strength]", event.getName())));
+                            } else {
+                                new_lore = new ArrayList();
+                                Iterator var12 = player.getItemInHand().getItemMeta().getLore().iterator();
 
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    new StatsEditorGUI(new PlayerMenuUtility(player)).open();
+                                String str;
+                                while (var12.hasNext()) {
+                                    str = (String) var12.next();
+                                    if (!str.contains("§7" + ChatColor.translateAlternateColorCodes('&', "Health: §a+"))) {
+                                        new_lore.add(str);
+                                    } else {
+                                        new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "Health: §a+" + strength));
+                                    }
                                 }
-                            }.runTaskLater(Items.getInstance(), 2);
+
+                                str = "§7" + ChatColor.translateAlternateColorCodes('&', "Health: §a+" + strength);
+                                if (!new_lore.contains(str)) {
+                                    new_lore.add(str);
+                                }
+
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.HEALTH.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Health to the item in your hand!".replace("[strength]", event.getName())));
+
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        new StatsEditorGUI(new PlayerMenuUtility(player)).open();
+                                    }
+                                }.runTaskLater(Items.getInstance(), 2);
+                            }
                         } else {
                             invalidNumberError(event, player);
                         }
@@ -136,24 +161,52 @@ public class StatsEditorGUI extends GUI {
                             return;
                         }
                         if (ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
-                            ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
-                            ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.INTELLIGENCE.toString());
-                            ItemMeta hmeta = h.getItemMeta();
-                            List<String> loreList;
-                            if (hmeta.hasLore()) loreList = new ArrayList<>(hmeta.getLore());
-                            else loreList = new ArrayList<>();
-                            loreList.add("§7Intelligence: §a+" + event.getName());
-                            hmeta.setLore(loreList);
-                            h.setItemMeta(hmeta);
+                            String s = event.getName();
+                            int strength = Integer.parseInt(s);
 
-                            player.setItemInHand(h);
+                            ItemStack is = player.getItemInHand();
+                            ItemMeta im = is.getItemMeta();
+                            ArrayList new_lore;
+                            if (player.getItemInHand().getItemMeta().getLore() == null) {
+                                new_lore = new ArrayList();
+                                new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "&7Intelligence: §a+" + strength));
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.INTELLIGENCE.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Intelligence to the item in your hand!".replace("[strength]", event.getName())));
+                            } else {
+                                new_lore = new ArrayList();
+                                Iterator var12 = player.getItemInHand().getItemMeta().getLore().iterator();
 
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    new StatsEditorGUI(new PlayerMenuUtility(player)).open();
+                                String str;
+                                while (var12.hasNext()) {
+                                    str = (String) var12.next();
+                                    if (!str.contains("§7" + ChatColor.translateAlternateColorCodes('&', "Intelligence: §a+"))) {
+                                        new_lore.add(str);
+                                    } else {
+                                        new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "Intelligence: §a+" + strength));
+                                    }
                                 }
-                            }.runTaskLater(Items.getInstance(), 2);
+
+                                str = "§7" + ChatColor.translateAlternateColorCodes('&', "Intelligence: §a+" + strength);
+                                if (!new_lore.contains(str)) {
+                                    new_lore.add(str);
+                                }
+
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.INTELLIGENCE.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Intelligence to the item in your hand!".replace("[strength]", event.getName())));
+
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        new StatsEditorGUI(new PlayerMenuUtility(player)).open();
+                                    }
+                                }.runTaskLater(Items.getInstance(), 2);
+                            }
                         } else {
                             invalidNumberError(event, player);
                         }
@@ -188,26 +241,53 @@ public class StatsEditorGUI extends GUI {
                             return;
                         }
                         if (ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
-                            ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
-                            ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.DEFENSE.toString());
-                            ItemMeta hmeta = h.getItemMeta();
-                            List<String> loreList;
-                            if (hmeta.hasLore()) loreList = new ArrayList<>(hmeta.getLore());
-                            else loreList = new ArrayList<>();
-                            int i = -1;
-                            loreList.add("§7Defense: §a+" + event.getName());
-                            hmeta.setLore(loreList);
-                            h.setItemMeta(hmeta);
+                            String s = event.getName();
+                            int strength = Integer.parseInt(s);
 
-                            player.setItemInHand(h);
+                            ItemStack is = player.getItemInHand();
+                            ItemMeta im = is.getItemMeta();
+                            ArrayList new_lore;
+                            if (player.getItemInHand().getItemMeta().getLore() == null) {
+                                new_lore = new ArrayList();
+                                new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "&7Defense: §a+" + strength));
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.DEFENSE.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Defense to the item in your hand!".replace("[strength]", event.getName())));
+                            } else {
+                                new_lore = new ArrayList();
+                                Iterator var12 = player.getItemInHand().getItemMeta().getLore().iterator();
 
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    new StatsEditorGUI(new PlayerMenuUtility(player)).open();
+                                String str;
+                                while (var12.hasNext()) {
+                                    str = (String) var12.next();
+                                    if (!str.contains("§7" + ChatColor.translateAlternateColorCodes('&', "Defense: §a+"))) {
+                                        new_lore.add(str);
+                                    } else {
+                                        new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "Defense: §a+" + strength));
+                                    }
                                 }
-                            }.runTaskLater(Items.getInstance(), 2);
-                        } else {
+
+                                str = "§7" + ChatColor.translateAlternateColorCodes('&', "Defense: §a+" + strength);
+                                if (!new_lore.contains(str)) {
+                                    new_lore.add(str);
+                                }
+
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.DEFENSE.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Defense to the item in your hand!".replace("[strength]", event.getName())));
+
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        new StatsEditorGUI(new PlayerMenuUtility(player)).open();
+                                    }
+                                }.runTaskLater(Items.getInstance(), 2);
+                            }
+                        }else {
                             invalidNumberError(event, player);
                         }
                     }
@@ -241,18 +321,45 @@ public class StatsEditorGUI extends GUI {
                             return;
                         }
                         if (ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
-                            ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
-                            ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.STRENGTH.toString());
-                            ItemMeta hmeta = h.getItemMeta();
-                            List<String> loreList;
-                            if (hmeta.hasLore()) loreList = new ArrayList<>(hmeta.getLore());
-                            else loreList = new ArrayList<>();
-                            int i = -1;
-                            loreList.add("§7Strength: §c+" + event.getName());
-                            hmeta.setLore(loreList);
-                            h.setItemMeta(hmeta);
+                            String s = event.getName();
+                            int strength = Integer.parseInt(s);
 
-                            player.setItemInHand(h);
+                            ItemStack is = player.getItemInHand();
+                            ItemMeta im = is.getItemMeta();
+                            ArrayList new_lore;
+                            if (player.getItemInHand().getItemMeta().getLore() == null) {
+                                new_lore = new ArrayList();
+                                new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "&7Strength: §c+" + strength));
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.STRENGTH.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Strength to the item in your hand!".replace("[strength]", event.getName())));
+                            } else {
+                                new_lore = new ArrayList();
+                                Iterator var12 = player.getItemInHand().getItemMeta().getLore().iterator();
+
+                                String str;
+                                while (var12.hasNext()) {
+                                    str = (String) var12.next();
+                                    if (!str.contains("§7" + ChatColor.translateAlternateColorCodes('&', "Strength: §c+"))) {
+                                        new_lore.add(str);
+                                    } else {
+                                        new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "Strength: §c+" + strength));
+                                    }
+                                }
+
+                                str = "§7" + ChatColor.translateAlternateColorCodes('&', "Strength: §c+" + strength);
+                                if (!new_lore.contains(str)) {
+                                    new_lore.add(str);
+                                }
+
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.STRENGTH.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Strength to the item in your hand!".replace("[strength]", event.getName())));
+                            }
 
                             new BukkitRunnable() {
                                 @Override
@@ -294,18 +401,45 @@ public class StatsEditorGUI extends GUI {
                             return;
                         }
                         if (ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
-                            ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
-                            ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.DAMAGE.toString());
-                            ItemMeta hmeta = h.getItemMeta();
-                            List<String> loreList;
-                            if (hmeta.hasLore()) loreList = new ArrayList<>(hmeta.getLore());
-                            else loreList = new ArrayList<>();
-                            int i = -1;
-                            loreList.add("§7Damage: §c+" + event.getName());
-                            hmeta.setLore(loreList);
-                            h.setItemMeta(hmeta);
+                            String s = event.getName();
+                            int strength = Integer.parseInt(s);
 
-                            player.setItemInHand(h);
+                            ItemStack is = player.getItemInHand();
+                            ItemMeta im = is.getItemMeta();
+                            ArrayList new_lore;
+                            if (player.getItemInHand().getItemMeta().getLore() == null) {
+                                new_lore = new ArrayList();
+                                new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "&7Damage: §c+" + strength));
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.DAMAGE.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Damage to the item in your hand!".replace("[strength]", event.getName())));
+                            } else {
+                                new_lore = new ArrayList();
+                                Iterator var12 = player.getItemInHand().getItemMeta().getLore().iterator();
+
+                                String str;
+                                while (var12.hasNext()) {
+                                    str = (String) var12.next();
+                                    if (!str.contains("§7" + ChatColor.translateAlternateColorCodes('&', "Damage: §c+"))) {
+                                        new_lore.add(str);
+                                    } else {
+                                        new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "Damage: §c+" + strength));
+                                    }
+                                }
+
+                                str = "§7" + ChatColor.translateAlternateColorCodes('&', "Damage: §c+" + strength);
+                                if (!new_lore.contains(str)) {
+                                    new_lore.add(str);
+                                }
+
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.DAMAGE.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Damage to the item in your hand!".replace("[strength]", event.getName())));
+                            }
 
                             new BukkitRunnable() {
                                 @Override
@@ -348,18 +482,45 @@ public class StatsEditorGUI extends GUI {
                             return;
                         }
                         if (ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
-                            ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
-                            ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.CRIT_CHANCE.toString());
-                            ItemMeta hmeta = h.getItemMeta();
-                            List<String> loreList;
-                            if (hmeta.hasLore()) loreList = new ArrayList<>(hmeta.getLore());
-                            else loreList = new ArrayList<>();
-                            int i = -1;
-                            loreList.add("§7Crit Chance: §c+" + event.getName() + "%");
-                            hmeta.setLore(loreList);
-                            h.setItemMeta(hmeta);
+                            String s = event.getName();
+                            int strength = Integer.parseInt(s);
 
-                            player.setItemInHand(h);
+                            ItemStack is = player.getItemInHand();
+                            ItemMeta im = is.getItemMeta();
+                            ArrayList new_lore;
+                            if (player.getItemInHand().getItemMeta().getLore() == null) {
+                                new_lore = new ArrayList();
+                                new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "&7Crit Chance: §c+" + strength + "%"));
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.CRIT_CHANCE.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Crit Chance to the item in your hand!".replace("[strength]", event.getName())));
+                            } else {
+                                new_lore = new ArrayList();
+                                Iterator var12 = player.getItemInHand().getItemMeta().getLore().iterator();
+
+                                String str;
+                                while (var12.hasNext()) {
+                                    str = (String) var12.next();
+                                    if (!str.contains("§7" + ChatColor.translateAlternateColorCodes('&', "Crit Chance: §c+"))) {
+                                        new_lore.add(str);
+                                    } else {
+                                        new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "Crit Chance: §c+" + strength + "%"));
+                                    }
+                                }
+
+                                str = "§7" + ChatColor.translateAlternateColorCodes('&', "Crit Chance: §c+" + strength + "%");
+                                if (!new_lore.contains(str)) {
+                                    new_lore.add(str);
+                                }
+
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.CRIT_CHANCE.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Crit Chance to the item in your hand!".replace("[strength]", event.getName())));
+                            }
 
                             new BukkitRunnable() {
                                 @Override
@@ -400,18 +561,45 @@ public class StatsEditorGUI extends GUI {
                             return;
                         }
                         if (ItemUtilities.isInteger(event.getName()) && event.getName() != null) {
-                            ItemStack a = ItemUtilities.storeStringInItem(player.getItemInHand(), "true", "is-SB");
-                            ItemStack h = ItemUtilities.storeIntInItem(a, Integer.parseInt(event.getName()), Attribute.CRIT_DAMAGE.toString());
-                            ItemMeta hmeta = h.getItemMeta();
-                            List<String> loreList;
-                            if (hmeta.hasLore()) loreList = new ArrayList<>(hmeta.getLore());
-                            else loreList = new ArrayList<>();
-                            int i = -1;
-                            loreList.add("§7Crit Damage: §c+" + event.getName() + "%");
-                            hmeta.setLore(loreList);
-                            h.setItemMeta(hmeta);
+                            String s = event.getName();
+                            int strength = Integer.parseInt(s);
 
-                            player.setItemInHand(h);
+                            ItemStack is = player.getItemInHand();
+                            ItemMeta im = is.getItemMeta();
+                            ArrayList new_lore;
+                            if (player.getItemInHand().getItemMeta().getLore() == null) {
+                                new_lore = new ArrayList();
+                                new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "&7Crit Damage: §c+" + strength + "%"));
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.CRIT_DAMAGE.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Crit Damage to the item in your hand!".replace("[strength]", event.getName())));
+                            } else {
+                                new_lore = new ArrayList();
+                                Iterator var12 = player.getItemInHand().getItemMeta().getLore().iterator();
+
+                                String str;
+                                while (var12.hasNext()) {
+                                    str = (String) var12.next();
+                                    if (!str.contains("§7" + ChatColor.translateAlternateColorCodes('&', "Crit Damage: §c+"))) {
+                                        new_lore.add(str);
+                                    } else {
+                                        new_lore.add("§7" + ChatColor.translateAlternateColorCodes('&', "Crit Damage: §c+" + strength + "%"));
+                                    }
+                                }
+
+                                str = "§7" + ChatColor.translateAlternateColorCodes('&', "Crit Damage: §c+" + strength + "%");
+                                if (!new_lore.contains(str)) {
+                                    new_lore.add(str);
+                                }
+
+                                im.setLore(new_lore);
+                                is.setItemMeta(im);
+                                ItemStack i = ItemUtilities.storeIntInItem(is, strength, Attribute.CRIT_DAMAGE.toString());
+                                player.setItemInHand(i);
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aAdded [strength] Crit Damage to the item in your hand!".replace("[strength]", event.getName())));
+                            }
 
                             new BukkitRunnable() {
                                 @Override

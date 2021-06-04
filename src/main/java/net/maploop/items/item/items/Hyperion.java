@@ -142,8 +142,8 @@ public class Hyperion extends CustomItem {
             }
         } else
             l.add(player.getEyeLocation().getDirection().multiply(8));
-
-        IUtil.sendActionText(player, "§b-250 Mana (§6Wither Impact§b)");
+        IUtil.abilityUsed.put(player,true);
+        IUtil.sendActionText(player, "§c" + Math.round(user.getHealth()) + "/" + Math.round(user.getTotalHealth()) + "❤§b    §b-250 Mana (§6Wither Impact§b)    " + Math.round(user.getIntelligence()) + "/" + Math.round(user.getTotalIntelligence()) + "✎ Mana");
         player.playSound(player.getLocation(), Sound.EXPLODE, 1.0F, 2.0F);
         PacketParticle particle = new PacketParticle(EnumParticle.EXPLOSION_HUGE, player.getLocation().add(0,0,0), true, 0.75f, 0.75f, 0.75f, 0, 100);
         particle.sendPlayer(player);

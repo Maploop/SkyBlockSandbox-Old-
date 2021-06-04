@@ -244,4 +244,21 @@ public class ItemUtilities {
             warnPlayer((CommandSender) player, Collections.singletonList("This ability is on cooldown for " + timeLeft + "s."));
         return false;
     }
+    public static boolean enforceCooldown(Player player, HashMap<Player,Integer> key, double seconds, ItemStack item, boolean throwError) {
+        double time = System.currentTimeMillis() / 1000.0D;
+        int lastTime = key.get(player);
+        if (lastTime == 0) {
+            key.put(player, (int) time);
+            return true;
+        }
+        if (time - seconds > lastTime) {
+            key.put(player, (int) time);
+            return true;
+        }
+        int timeLeft = (int) time - lastTime;
+        timeLeft = (int) seconds - timeLeft;
+        if (throwError)
+            warnPlayer((CommandSender) player, Collections.singletonList("This ability is on cooldown for " + timeLeft + "s."));
+        return false;
+    }
 }

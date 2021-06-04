@@ -9,6 +9,7 @@ import net.maploop.items.item.ItemAbility;
 import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.util.IUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -18,6 +19,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -116,7 +118,36 @@ public class LargeBackpack extends CustomItem {
 
     @Override
     public void clickedInInventoryAction(Player player, InventoryClickEvent event) {
+        try {
+            if (event.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 
+                if (ItemUtilities.getIntFromItem(event.getCurrentItem(), "SB-ID") == 20) {
+                    if (event.getInventory().getTitle().contains("Backpack") || event.getInventory().getTitle().contains("Profile") || event.getInventory().getTitle().contains("Trade with")) {
+                        event.setCancelled(true);
+                    } else {
+                        if (player.getGameMode().equals(GameMode.CREATIVE)) {
+                            player.sendMessage("§cYou cannot use creative with this item!");
+                            return;
+                        }
+                        if (event.isRightClick()) {
+                            event.setCancelled(true);
+                            String uuid = ItemUtilities.getStringFromItem(event.getCurrentItem(), "UUID");
+                            player.playSound(player.getLocation(), Sound.HORSE_ARMOR, 1f, 1f);
+
+                            Inventory backPackinv = Bukkit.createInventory(player, 9 * 3, "Large Backpack");
+                            if (BackpackData.getData().containsKey(uuid)) {
+                                backPackinv.setContents(BackpackData.getData().get(uuid));
+                                player.openInventory(backPackinv);
+                                BackpackData.inv.put(player.getUniqueId(), event.getCurrentItem());
+                            }
+                            BackpackData.inv.put(player.getUniqueId(), event.getCurrentItem());
+                            player.openInventory(backPackinv);
+                        }
+                    }
+                }
+            }
+        } catch (NullPointerException e) {
+        }
     }
 
     @Override
