@@ -112,6 +112,15 @@ public class AbilityCreatorGUI extends GUI {
                 new FunctionsGUI(new PlayerMenuUtility(player), index).open();
                 break;
             }
+            case SUGAR: {
+                SignGUIRevamped.openSignEditor(player, new String[]{"", "^^^^^", "Enter your", "speed amount"}, e -> {
+                    if(ItemUtilities.isInteger(e.getSignText()[0])) {
+                        if(Integer.parseInt(e.getSignText()[0]) > 1000) {
+
+                        }
+                    }
+                });
+            }
         }
     }
 
@@ -138,5 +147,7 @@ public class AbilityCreatorGUI extends GUI {
         )));
 
         inventory.setItem(31, makeItem(Material.COMMAND, "§aFunctions", 1, 0, "§7You can add functions to\n§7your item to make it weirder!\n§7You can add up to §a3\n§7functions to your items.\n\n§eClick to view!"));
+
+        inventory.setItem(32, makeItem(Material.SUGAR, "§aSet Speed after teleport", 1, 0, IUtil.colorize("&7Set the speed that's given to players\n&7after teleporting!\n&7Only works with Instant Transmission\n\n&eClick to set!")));
     }
 }

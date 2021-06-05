@@ -1,12 +1,16 @@
 package net.maploop.items.item.items;
 
+import net.maploop.items.Items;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -14,9 +18,14 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class EmberRod extends CustomItem {
+    private final Map<UUID, Long> cooldown = new HashMap<>();
+
     public EmberRod(int id, Rarity rarity, String name, Material material, int durability, boolean stackable, boolean oneTimeUse, boolean hasActive, List<ItemAbility> abilities, int manaCost, boolean reforgeable, boolean enchantable, ItemType itemType, boolean glowing, int damage, int strength, int crit_damage, int intelligence, int health, int defense) {
         super(id, rarity, name, material, durability, stackable, oneTimeUse, hasActive, abilities, manaCost, reforgeable, enchantable, itemType, glowing, damage, strength, crit_damage, intelligence, health, defense);
     }
@@ -48,7 +57,25 @@ public class EmberRod extends CustomItem {
 
     @Override
     public void rightClickAirAction(Player player, PlayerInteractEvent event, ItemStack item) {
+        if(this.cooldown.containsKey(player.getUniqueId())) {
+            if(this.cooldown.get(player.getUniqueId()) > System.currentTimeMillis()) {
+                player.sendMessage("§cYou are on cooldown!");
+                return;
+            }
+        }
 
+        this.cooldown.put(player.getUniqueId(), (System.currentTimeMillis() + (30 * 1000)));
+
+        for (int i = 0; i < 3; ++i) {
+            Bukkit.getScheduler().runTaskLater(Items.getInstance(), () -> {
+                player.playSound(player.getLocation(), Sound.GHAST_FIREBALL, 1, 1);
+                org.bukkit.entity.Fireball fireball = (org.bukkit.entity.Fireball) player.getWorld().spawnEntity(player.getEyeLocation().add(player.getLocation().getDirection().multiply(1.5)), EntityType.FIREBALL);
+                fireball.setVelocity(player.getLocation().getDirection().multiply(0.5));
+                fireball.setShooter(player);
+                fireball.setIsIncendiary(false);
+                fireball.setYield(0.0F);
+            }, i * 10);
+        }
     }
 
     @Override

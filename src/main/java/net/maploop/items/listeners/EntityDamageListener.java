@@ -16,12 +16,15 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
@@ -38,6 +41,23 @@ public class EntityDamageListener implements Listener {
             if(event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)){return;}
             user.setHealth(user.getHealth() - event.getDamage());
             event.setDamage(0.1);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onExplode(EntityExplodeEvent event) {
+        if(event.getEntity() instanceof Fireball) {
+            event.setYield(0.0F);
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPrimeExplode(ExplosionPrimeEvent event) {
+        if(event.getEntity() instanceof Fireball) {
+            event.setFire(false);
+            event.setRadius(0.0F);
+            event.setCancelled(true);
         }
     }
 }

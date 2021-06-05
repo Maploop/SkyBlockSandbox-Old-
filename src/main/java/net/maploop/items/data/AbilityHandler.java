@@ -15,14 +15,16 @@ import org.bukkit.inventory.ItemStack;
 public class AbilityHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInteract(PlayerInteractEvent event) {
-        if(true) return;
-
         if(event.getPlayer().getItemInHand() == null) return;
         if(event.getItem().getType().equals(Material.AIR)) return;
         if(!event.getItem().hasItemMeta()) return;
         if(!AbilityData.hasAbility(event.getItem())) return;
         ItemStack item = event.getItem();
         Player player = event.getPlayer();
+
+        if(player.getItemInHand().getType().equals(Material.AIR)) return;
+        if(!player.getItemInHand().hasItemMeta()) return;
+        if(!AbilityData.hasAbility(player.getItemInHand())) return;
 
         if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
             for(int i = 0; i < 6; ++i) {

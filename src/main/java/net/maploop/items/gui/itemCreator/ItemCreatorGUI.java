@@ -115,6 +115,7 @@ public class ItemCreatorGUI extends GUI {
                     player.closeInventory();
                     player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1f, 0f);
                 }
+                break;
             }
             case 22: {
                 if(player.getItemInHand().getItemMeta().hasDisplayName() && player.getItemInHand().getItemMeta().hasLore()) {
