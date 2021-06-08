@@ -28,6 +28,20 @@ public class BukkitSerialization {
         return new String[] { content, armor };
     }
 
+    public static String itemStackToBase64(ItemStack stack) {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+
+            dataOutput.writeObject(stack);
+
+            dataOutput.close();
+            return Base64Coder.encodeLines(outputStream.toByteArray());
+        }catch (Exception ex) {
+            throw new IllegalStateException("Unable to encode item stack!");
+        }
+    }
+
     /**
      *
      * A method to serialize an {@link ItemStack} array to Base64 String.
@@ -155,6 +169,19 @@ public class BukkitSerialization {
             return items;
         } catch (ClassNotFoundException e) {
             throw new IOException("Unable to decode class type.", e);
+        }
+    }
+
+    public static ItemStack itemStackFromBase64(String base64) {
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(base64));
+            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+            ItemStack item = (ItemStack) dataInput.readObject();
+            dataInput.close();
+
+            return item;
+        } catch (Exception ex) {
+            throw new IllegalStateException("Could not decode item stack.");
         }
     }
 }

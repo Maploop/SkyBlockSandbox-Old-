@@ -261,4 +261,75 @@ public class ItemUtilities {
             warnPlayer((CommandSender) player, Collections.singletonList("This ability is on cooldown for " + timeLeft + "s."));
         return false;
     }
+
+    public static class AuctionData {
+        public ItemStack put(ItemStack item, String key, String value) {
+            net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+            NBTTagCompound tag = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
+            NBTTagCompound data = tag.getCompound("AuctionData");
+            data.setString(key, value);
+            data.setString("ah-item", "1");
+            tag.set("AuctionData", data);
+            nmsItem.setTag(tag);
+
+            return CraftItemStack.asBukkitCopy(nmsItem);
+        }
+
+        public String getString(ItemStack item, String key) {
+            if(item != null) {
+                net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+                NBTTagCompound tag = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
+                NBTTagCompound data = tag.getCompound("AuctionData");
+                if(data == null) return  null;
+
+                return data.getString(key);
+            }
+            return null;
+        }
+
+        public int getInt(ItemStack item, String key) {
+            if(item != null) {
+                net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+                NBTTagCompound tag = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
+                NBTTagCompound data = tag.getCompound("AuctionData");
+                if(data == null) return  0;
+
+                return data.getInt(key);
+            }
+            return 0;
+        }
+
+        public boolean isAuctionedItem(ItemStack item) {
+            if(item != null) {
+                net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+                NBTTagCompound tag = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
+                NBTTagCompound data = tag.getCompound("AuctionData");
+                if(data == null) return false;
+
+                return data.hasKey("ah-item");
+            }
+            return false;
+        }
+
+        public ItemStack remove(ItemStack stack) {
+            net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(stack);
+            NBTTagCompound tag = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
+            tag.remove("AuctionData");
+            nmsItem.setTag(tag);
+
+            return CraftItemStack.asBukkitCopy(nmsItem);
+        }
+
+        public ItemStack put(ItemStack item, String key, int value) {
+            net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+            NBTTagCompound tag = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
+            NBTTagCompound data = tag.getCompound("AuctionData");
+            data.setInt(key, value);
+            data.setString("ah-item", "1");
+            tag.set("AuctionData", data);
+            nmsItem.setTag(tag);
+
+            return CraftItemStack.asBukkitCopy(nmsItem);
+        }
+    }
 }

@@ -10,9 +10,12 @@ import net.maploop.items.enums.Rarity;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemAbility;
 import net.maploop.items.listeners.EntityDamageListener;
+import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -60,26 +63,26 @@ public class Bonemerang extends CustomItem {
     }
 
     @Override
-    public void rightClickAirAction(Player paramPlayer, PlayerInteractEvent event, ItemStack paramItemStack) {
-        if (paramPlayer.getItemInHand().getType().equals(Material.GHAST_TEAR)) return;
-        ArmorStand stand = (ArmorStand) paramPlayer.getWorld().spawnEntity(paramPlayer.getLocation().add(0, 0.8f, 0), EntityType.ARMOR_STAND);
-        int slot = paramPlayer.getInventory().getHeldItemSlot();
-        ItemStack bone = paramPlayer.getItemInHand().clone();
-        stand.getEquipment().setItemInHand(paramPlayer.getItemInHand());
+    public void rightClickAirAction(Player player, PlayerInteractEvent event, ItemStack paramItemStack) {
+        if (player.getItemInHand().getType().equals(Material.GHAST_TEAR)) return;
+        ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation().add(0, 0.8f, 0), EntityType.ARMOR_STAND);
+        int slot = player.getInventory().getHeldItemSlot();
+        ItemStack bone = player.getItemInHand().clone();
+        stand.getEquipment().setItemInHand(player.getItemInHand());
         stand.setArms(true);
         stand.setGravity(false);
         stand.setVisible(false);
         stand.setRightArmPose(new EulerAngle(270f, 0f, 0f));
 
-        int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonemrangForward(stand, paramPlayer), 0L, 1);
+        int i = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonemrangForward(stand, player), 0L, 1);
 
-        paramPlayer.getItemInHand().setType(Material.GHAST_TEAR);
+        player.getItemInHand().setType(Material.GHAST_TEAR);
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 Bukkit.getScheduler().cancelTask(i);
-                int i1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonemerangReturn(stand, paramPlayer), 0L, 1);
+                int i1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Items.getInstance(), new BonemerangReturn(stand, player), 0L, 1);
 
                 new BukkitRunnable() {
                     @Override
@@ -94,7 +97,7 @@ public class Bonemerang extends CustomItem {
         Bukkit.getScheduler().scheduleSyncDelayedTask(Items.getInstance(), new Runnable() {
             @Override
             public void run() {
-                paramPlayer.getInventory().setItem(slot, bone);
+                player.getInventory().setItem(slot, bone);
             }
         }, 45);
     }

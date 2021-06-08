@@ -1,5 +1,8 @@
 package net.maploop.items;
 
+import net.maploop.items.auction.AuctionBrowserGUI;
+import net.maploop.items.auction.AuctionItem;
+import net.maploop.items.auction.AuctionItemHandler;
 import net.maploop.items.command.AbstractCommand;
 import net.maploop.items.command.CommandHandler;
 import net.maploop.items.command.commands.*;
@@ -14,13 +17,16 @@ import net.maploop.items.item.ItemAbility;
 import net.maploop.items.item.SBItems;
 import net.maploop.items.item.items.*;
 import net.maploop.items.listeners.*;
+import net.maploop.items.mongo.MongoConnect;
 import net.maploop.items.sql.MySQL;
 import net.maploop.items.sql.SQLGetter;
 import net.maploop.items.user.User;
 import net.maploop.items.user.UserInjector;
+import net.maploop.items.util.BukkitSerialization;
 import net.maploop.items.util.IReflections;
 import net.maploop.items.util.IUtil;
 import net.maploop.items.util.PAPI;
+import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -56,6 +62,7 @@ public final class Items extends JavaPlugin {
         loadCommands();
         createShutsFile();
         checkIfDead();
+        new MongoConnect().connect();
 
         if(!Bukkit.getServer().getOnlinePlayers().isEmpty()) {
             for(Player player : Bukkit.getOnlinePlayers()) {
@@ -91,6 +98,8 @@ public final class Items extends JavaPlugin {
         }.runTaskLater(this, 3);
 
         getServer().getConsoleSender().sendMessage("§aItems was enabled successfully with no fatal errors.");
+
+        loadAuctions();
     }
 
     @Override
@@ -187,6 +196,23 @@ public final class Items extends JavaPlugin {
         this.getCommand("piano").setExecutor(new Command_piano());
         this.getCommand("rainbow").setExecutor(new Command_rainbow());
         this.getCommand("wardrobe").setExecutor(new Command_wardrobe());
+        this.getCommand("ah").setExecutor(new Command_ah());
+        this.getCommand("ahreload").setExecutor(new Command_ahreload());
+    }
+
+    public void loadAuctions() {
+        MongoConnect mongo = new MongoConnect();
+
+        for (Document doc : mongo.getAllDocuments("auctions")) {
+            AuctionBrowserGUI.put(
+                    new AuctionItemHandler(UUID.fromString(doc.get("id").toString()), Integer.parseInt(doc.get("price").toString()),
+                            Bukkit.getPlayer(UUID.fromString(doc.get("owner").toString())),
+                            BukkitSerialization.itemStackFromBase64(doc.get("item-stack").toString()),
+                            Boolean.parseBoolean(doc.get("bin").toString()),
+                            Long.parseLong(doc.get("end-time").toString()))
+            );
+        }
+        getLogger().info("All auctions successfully imported from the database.");
     }
 
     private void loadCommands() {

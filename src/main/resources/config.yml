@@ -8,5 +8,9 @@ mysql:
 
 use-actionbar: false
 
+mongo-uri: ''
+mong-database: ''
+mong-collection: ''
+
 locations:
   lobbyspawn:
