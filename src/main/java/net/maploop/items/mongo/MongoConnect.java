@@ -2,8 +2,11 @@ package net.maploop.items.mongo;
 
 import com.mongodb.DBCursor;
 import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import net.maploop.items.Items;
 import net.maploop.items.util.BukkitSerialization;
+import net.maploop.items.util.Log;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class MongoConnect {
+    public static boolean connected = false;
+
     private static MongoClient client;
     private static MongoDatabase database;
 
@@ -24,7 +29,9 @@ public class MongoConnect {
         client = MongoClients.create(Items.getInstance().getConfig().getString("mongo-uri"));
         database = client.getDatabase(Items.getInstance().getConfig().getString("mongo-database"));
 
-        System.out.println("MongoDB Successfully connected");
+        connected = true;
+
+        Log.info("Successfully connected to MongoDB!");
     }
 
     public void setData(String collection, String id, String key, Object value) {
@@ -39,7 +46,11 @@ public class MongoConnect {
             return;
         }
 
-        col.updateOne(found, found.append(key, value));
+        col.updateOne(Filters.eq("id", id), Updates.set(key, value));
+    }
+
+    public boolean isConnected() {
+        return connected;
     }
 
     public void insertAuctionItem(String id, String topBidder, ItemStack stack, int topBid, int price, String owner, boolean bin, long endTime) {

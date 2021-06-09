@@ -1,12 +1,17 @@
 package net.maploop.items.user;
 
 import jdk.nashorn.internal.ir.Block;
+import net.maploop.items.auction.AuctionItemHandler;
 import net.maploop.items.item.ItemUtilities;
+import net.maploop.items.mongo.MongoConnect;
 import net.maploop.items.util.Attribute;
+import net.maploop.items.util.BukkitSerialization;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import net.minecraft.server.v1_8_R3.PacketPlayOutNamedSoundEffect;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
+import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class User {
     private final Player user;
@@ -27,6 +33,8 @@ public class User {
     public User(Player player) {
         this.user = player;
     }
+
+    private final static MongoConnect DB = new MongoConnect();
 
     private Map<Enchantment, Integer> ench_opt_1;
     private Map<Enchantment, Integer> ench_opt_2;
@@ -321,6 +329,15 @@ public class User {
         CraftPlayer player = (CraftPlayer) user;
         Location l = user.getLocation();
         player.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(s, l.getX(), l.getY(), l.getZ(), vol, pitch));
+    }
+
+    public boolean hasAuctions() {
+        for (Document doc : DB.getAllDocuments("auctions")) {
+            if (doc.get("owner").equals(getBukkitPlayer().getUniqueId().toString()))
+                return true;
+        }
+
+        return false;
     }
 
 }

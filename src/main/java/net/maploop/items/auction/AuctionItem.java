@@ -2,6 +2,7 @@ package net.maploop.items.auction;
 
 import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.mongo.MongoConnect;
+import net.maploop.items.util.BukkitSerialization;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -23,6 +24,18 @@ public interface AuctionItem {
     boolean isBIN();
 
     void remove();
+
+    boolean isEnded();
+
+    boolean isBought();
+
+    void setBought(boolean b);
+
+    void setEnded(boolean b);
+
+    void setBuyer(String uuid);
+
+    String getBuyer();
 
     int getHighestBid();
 
@@ -54,7 +67,13 @@ public interface AuctionItem {
 
             @Override
             public AuctionItem save() {
-                DB.insertAuctionItem(this.getId().toString(), (this.getHighestBidder() == null ? "none" : this.getHighestBidder().getUniqueId().toString()), this.getStack(), this.getPrice(), this.getPrice(), this.getOwner().getUniqueId().toString(), this.isBIN(), this.getTimeEnding());
+                DB.setData("auctions", this.getId().toString(), "owner", this.getOwner().getUniqueId().toString());
+                DB.setData("auctions", this.getId().toString(), "bin", this.isBIN());
+                DB.setData("auctions", this.getId().toString(), "price", this.getPrice());
+                DB.setData("auctions", this.getId().toString(), "top-bid-amount", this.getHighestBid());
+                DB.setData("auctions", this.getId().toString(), "end-time", this.getTimeEnding());
+                DB.setData("auctions", this.getId().toString(), "top-bidder", (this.getHighestBidder() == null ? "none" : this.getHighestBidder().getUniqueId().toString()));
+                DB.setData("auctions", this.getId().toString(), "item-stack", BukkitSerialization.itemStackToBase64(this.getStack()));
 
                 return this;
             }
@@ -81,6 +100,36 @@ public interface AuctionItem {
             }
 
             @Override
+            public boolean isEnded() {
+                return false;
+            }
+
+            @Override
+            public boolean isBought() {
+                return false;
+            }
+
+            @Override
+            public void setBought(boolean b) {
+
+            }
+
+            @Override
+            public void setEnded(boolean b) {
+
+            }
+
+            @Override
+            public void setBuyer(String uuid) {
+
+            }
+
+            @Override
+            public String getBuyer() {
+                return null;
+            }
+
+            @Override
             public int getHighestBid() {
                 return Integer.parseInt(DB.getData("auctions", this.id, "top-bid-amount").toString());
             }
@@ -96,12 +145,12 @@ public interface AuctionItem {
 
             @Override
             public void setHighestBid(int i) {
-                DB.insertAuctionItem(this.id, (this.getHighestBidder() == null ? "none" : this.getHighestBidder().getUniqueId().toString()), this.getStack(), i, this.getPrice(), this.getOwner().getUniqueId().toString(), this.isBIN(), this.getTimeEnding());
+                DB.setData("auctions", this.id, "top-bid-amount", i);
             }
 
             @Override
             public void setHighestBidder(Player player) {
-                DB.insertAuctionItem(this.id, player.getUniqueId().toString(), this.getStack(), this.getHighestBid(), this.getPrice(), this.getOwner().getUniqueId().toString(), this.isBIN(), this.getTimeEnding());
+                DB.setData("auctions", this.id, "top-bidder", player.getUniqueId().toString());
             }
 
             @Override

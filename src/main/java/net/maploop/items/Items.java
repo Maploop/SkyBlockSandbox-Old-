@@ -206,7 +206,7 @@ public final class Items extends JavaPlugin {
         for (Document doc : mongo.getAllDocuments("auctions")) {
             AuctionBrowserGUI.put(
                     new AuctionItemHandler(UUID.fromString(doc.get("id").toString()), Integer.parseInt(doc.get("price").toString()),
-                            Bukkit.getPlayer(UUID.fromString(doc.get("owner").toString())),
+                            Bukkit.getOfflinePlayer(UUID.fromString(doc.get("owner").toString())),
                             BukkitSerialization.itemStackFromBase64(doc.get("item-stack").toString()),
                             Boolean.parseBoolean(doc.get("bin").toString()),
                             Long.parseLong(doc.get("end-time").toString()))

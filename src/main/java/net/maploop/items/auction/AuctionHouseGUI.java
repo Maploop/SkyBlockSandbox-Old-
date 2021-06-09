@@ -2,6 +2,7 @@ package net.maploop.items.auction;
 
 import net.maploop.items.gui.GUI;
 import net.maploop.items.gui.PlayerMenuUtility;
+import net.maploop.items.user.User;
 import net.maploop.items.util.IUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -39,6 +40,10 @@ public class AuctionHouseGUI extends GUI {
                 player.sendMessage("§cRequest failed please try again later.");
                 break;
             case GOLD_BARDING:
+                if (new User(player).hasAuctions()) {
+                    new YourAuctionsGUI(playerMenuUtility).open();
+                    return;
+                }
                 new AuctionCreatorGUI(playerMenuUtility, false, 500).open();
                 break;
         }

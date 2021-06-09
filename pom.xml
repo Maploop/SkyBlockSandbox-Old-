@@ -141,6 +141,7 @@
             <version>6.2</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
