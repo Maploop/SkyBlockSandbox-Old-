@@ -1,21 +1,21 @@
 package net.maploop.items.extras;
 
-import net.maploop.items.enums.EnchantmentType;
+import net.maploop.items.enums.Enchant;
 
 public class Enchantment {
-    private EnchantmentType type;
+    private Enchant type;
     private int lvl;
 
-    public Enchantment(EnchantmentType type, int lvl) {
+    public Enchantment(Enchant type, int lvl) {
         this.type = type;
         this.lvl = lvl;
     }
 
-    public void setType(EnchantmentType type) {
+    public void setType(Enchant type) {
         this.type = type;
     }
 
-    public EnchantmentType getType() {
+    public Enchant getType() {
         return type;
     }
 

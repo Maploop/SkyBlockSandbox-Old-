@@ -1,25 +1,20 @@
 package net.maploop.items.extras;
 
-import net.maploop.items.Items;
 import net.maploop.items.enums.AbilityScroll;
-import net.maploop.items.enums.EnchantmentType;
-import net.maploop.items.enums.Rarity;
+import net.maploop.items.enums.Enchant;
 import net.maploop.items.enums.Reforge;
 import net.maploop.items.item.CustomItem;
 import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.item.items.Scylla;
 import net.maploop.items.util.IUtil;
-import net.minecraft.server.v1_8_R3.NBTTagByte;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.NBTTagList;
 import net.minecraft.server.v1_8_R3.NBTTagString;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ExtraApplier {
     private ItemStack stack;
@@ -28,7 +23,7 @@ public class ExtraApplier {
         this.stack = stack;
     }
 
-    public void addEnchant(EnchantmentType enchant) {
+    public void addEnchant(Enchant enchant) {
 
     }
 

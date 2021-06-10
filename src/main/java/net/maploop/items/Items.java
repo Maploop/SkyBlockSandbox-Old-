@@ -198,6 +198,7 @@ public final class Items extends JavaPlugin {
         this.getCommand("wardrobe").setExecutor(new Command_wardrobe());
         this.getCommand("ah").setExecutor(new Command_ah());
         this.getCommand("ahreload").setExecutor(new Command_ahreload());
+        this.getCommand("addenchant").setExecutor(new Command_addenchant());
     }
 
     public void loadAuctions() {

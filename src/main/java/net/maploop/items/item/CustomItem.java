@@ -3,10 +3,13 @@ package net.maploop.items.item;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.maploop.items.Items;
+import net.maploop.items.enums.Enchant;
 import net.maploop.items.enums.ItemType;
 import net.maploop.items.enums.Rarity;
 import net.maploop.items.enums.Reforge;
 import net.maploop.items.util.Attribute;
+import net.maploop.items.util.EnchantmentUtil;
+import net.maploop.items.util.IUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -174,6 +177,36 @@ public abstract class CustomItem {
             lore.add("§7Defense: §a+" + defense);
 
         getSpecificLorePrefix(lore, item);
+
+        EnchantmentUtil eutil = new EnchantmentUtil(item);
+        if (eutil.hasAnyEnchant()) {
+            lore.add(" ");
+            Enchant[] enchants = eutil.getAllEnchantments().toArray(new Enchant[0]);
+
+            for (int i = 0; i < enchants.length; ++i) {
+                if (eutil.getEnchant(enchants[i]) < 0) continue;
+                if (enchants.length > 4) {
+                    if (enchants[i].isUltimate()) {
+                        lore.add("§d§l" + enchants[i].getFriendlyName() + " " + IUtil.integerToRomanNumeral(eutil.getEnchant(enchants[i])));
+                    } else {
+                        lore.add("§9" + enchants[i].getFriendlyName() + " " + IUtil.integerToRomanNumeral(eutil.getEnchant(enchants[i])));
+                    }
+                } else {
+                    if (enchants[i].isUltimate()) {
+                        lore.add("§d§l" + enchants[i].getFriendlyName() + " " + IUtil.integerToRomanNumeral(eutil.getEnchant(enchants[i])));
+                        for (String s : enchants[i].getDescription()) {
+                            lore.add(s);
+                        }
+                    } else {
+                        lore.add("§9" + enchants[i].getFriendlyName() + " " + IUtil.integerToRomanNumeral(eutil.getEnchant(enchants[i])));
+                        for (String s : enchants[i].getDescription()) {
+                            lore.add(s);
+                        }
+                    }
+                }
+            }
+        }
+
         if (abilities != null) {
             for (ItemAbility ability : this.abilities) {
                 lore.addAll(ability.toLore());

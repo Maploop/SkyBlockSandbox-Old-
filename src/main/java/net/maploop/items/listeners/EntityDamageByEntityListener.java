@@ -3,8 +3,10 @@ package net.maploop.items.listeners;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.maploop.items.Items;
+import net.maploop.items.enums.Enchant;
 import net.maploop.items.item.ItemUtilities;
 import net.maploop.items.user.User;
+import net.maploop.items.util.EnchantmentUtil;
 import net.maploop.items.util.IUtil;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
@@ -13,16 +15,16 @@ import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
@@ -43,10 +45,59 @@ public class EntityDamageByEntityListener implements Listener {
                     double d = 0;
                     d += (5 + ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") + (user.getTotalStrength() / 5)) * (1 + user.getTotalStrength() / 100);
                     d += 1 + (1 * 0.04);
+
+                    double totalCritDmg = user.getTotalCritDamage();
+
+                    // Calculating enchantments.
+                    EnchantmentUtil eutil = new EnchantmentUtil(player.getItemInHand());
+                    if (eutil.hasAnyEnchant()) {
+                        if (eutil.hasEnchant(Enchant.SHARPNESS))
+                            d += ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") * (eutil.getEnchant(Enchant.SHARPNESS) * 0.05);
+                        if (eutil.hasEnchant(Enchant.CRITICAL))
+                            totalCritDmg += ItemUtilities.getIntFromItem(player.getItemInHand(), "CRIT_DAMAGE") * (eutil.getEnchant(Enchant.CRITICAL) * 0.1);
+                        if (eutil.hasEnchant(Enchant.ENDER_SLAYER)) {
+                            if (event.getEntity() instanceof Enderman) {
+                                d += ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") * (eutil.getEnchant(Enchant.ENDER_SLAYER) * 0.12);
+                            }
+                        }
+
+                        if (eutil.hasEnchant(Enchant.CUBSIM)) {
+                            switch (event.getEntity().getType()) {
+                                case CREEPER:
+                                case MAGMA_CUBE:
+                                case SLIME:
+                                    d += ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") * (eutil.getEnchant(Enchant.CUBSIM) * 0.08);
+                                    break;
+                            }
+                        }
+
+                        if (eutil.hasEnchant(Enchant.SMITE)) {
+                            switch (event.getEntity().getType()) {
+                                case ZOMBIE:
+                                case SKELETON:
+                                case WITHER:
+                                case PIG_ZOMBIE:
+                                    d += ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") * (eutil.getEnchant(Enchant.SMITE) * 0.08);
+                                    break;
+                            }
+                        }
+
+                        if (eutil.hasEnchant(Enchant.BANE_OF_ARTHROPODS)) {
+                            switch (event.getEntity().getType()) {
+                                case SPIDER:
+                                case CAVE_SPIDER:
+                                case SILVERFISH:
+                                    d += ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") * (eutil.getEnchant(Enchant.BANE_OF_ARTHROPODS) * 0.08);
+                                    break;
+                            }
+                        }
+                    }
+                    // Done calculating damage enchantments.
+
                     Random rnd = new Random();
                     int critchancernd = rnd.nextInt(100);
                     if (critchancernd <= user.getTotalCritChance()) {
-                        d *= (1 + user.getTotalCritDamage() / 100);
+                        d *= (1 + totalCritDmg / 100);
                         activatedcrithit = true;
                     }
                     damage = d;
@@ -75,10 +126,59 @@ public class EntityDamageByEntityListener implements Listener {
                 double d = 0;
                 d += (5 + ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") + (user.getTotalStrength() / 5)) * (1 + user.getTotalStrength() / 100);
                 d += 1 + (1 * 0.04);
+
+                double totalCritDmg = user.getTotalCritDamage();
+
+                // Calculating enchantments.
+                EnchantmentUtil eutil = new EnchantmentUtil(player.getItemInHand());
+                if (eutil.hasAnyEnchant()) {
+                    if (eutil.hasEnchant(Enchant.SHARPNESS))
+                        d += ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") * (eutil.getEnchant(Enchant.SHARPNESS) * 0.05);
+                    if (eutil.hasEnchant(Enchant.CRITICAL))
+                        totalCritDmg += ItemUtilities.getIntFromItem(player.getItemInHand(), "CRIT_DAMAGE") * (eutil.getEnchant(Enchant.CRITICAL) * 0.1);
+                    if (eutil.hasEnchant(Enchant.ENDER_SLAYER)) {
+                        if (event.getEntity() instanceof Enderman) {
+                            d += ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") * (eutil.getEnchant(Enchant.ENDER_SLAYER) * 0.12);
+                        }
+                    }
+
+                    if (eutil.hasEnchant(Enchant.CUBSIM)) {
+                        switch (event.getEntity().getType()) {
+                            case CREEPER:
+                            case MAGMA_CUBE:
+                            case SLIME:
+                                d += ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") * (eutil.getEnchant(Enchant.CUBSIM) * 0.08);
+                                break;
+                        }
+                    }
+
+                    if (eutil.hasEnchant(Enchant.SMITE)) {
+                        switch (event.getEntity().getType()) {
+                            case ZOMBIE:
+                            case SKELETON:
+                            case WITHER:
+                            case PIG_ZOMBIE:
+                                d += ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") * (eutil.getEnchant(Enchant.SMITE) * 0.08);
+                                break;
+                        }
+                    }
+
+                    if (eutil.hasEnchant(Enchant.BANE_OF_ARTHROPODS)) {
+                        switch (event.getEntity().getType()) {
+                            case SPIDER:
+                            case CAVE_SPIDER:
+                            case SILVERFISH:
+                                d += ItemUtilities.getIntFromItem(player.getItemInHand(), "DAMAGE") * (eutil.getEnchant(Enchant.BANE_OF_ARTHROPODS) * 0.08);
+                                break;
+                        }
+                    }
+                }
+                // Done calculating damage enchantments.
+
                 Random rnd = new Random();
                 int critchancernd = rnd.nextInt(100);
                 if (critchancernd <= user.getTotalCritChance()) {
-                    d *= (1 + user.getTotalCritDamage() / 100);
+                    d *= (1 + totalCritDmg / 100);
                     activatedcrithit = true;
                 }
                 damage = d;
@@ -190,5 +290,21 @@ public class EntityDamageByEntityListener implements Listener {
                 }
             }
         }.runTaskLater(Items.getInstance(), 10);
+    }
+
+    @EventHandler
+    public void onDeath(EntityDeathEvent event) {
+        if (event.getEntity().getKiller() != null && event.getEntity() instanceof Player) {
+            Player player = event.getEntity().getKiller();
+            if (event.getEntity() instanceof Player) return;
+
+            if (player.getItemInHand().getType() != Material.AIR) {
+                EnchantmentUtil util = new EnchantmentUtil(player.getItemInHand());
+                if (util.hasEnchant(Enchant.TELEKINESIS)) {
+                    player.getInventory().addItem(event.getDrops().toArray(new ItemStack[0]));
+                    event.getDrops().clear();
+                }
+            }
+        }
     }
 }
